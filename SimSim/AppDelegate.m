@@ -218,17 +218,19 @@
 
             NSString* title = [NSString stringWithFormat:@"%@ (%@) on %@", applicationBundleName, applicationVersion, simulatorDetails[@"name"]];
 
+            NSString* applicationContentPath =
+            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/Library/Application Support/%@/",
+             NSHomeDirectory(), simulatorUUID, appDataUUID, applicationBundleIdentifierFromData];
+
+            
             NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title action:@selector(openInFinder:) keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
+            [item setRepresentedObject:applicationContentPath];
 
             NSImage* icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
             icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
             [item setImage:icon];
 
             NSMenu* subMenu = [NSMenu new];
-
-            NSString* applicationContentPath =
-                [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/Library/Application Support/%@/",
-                                           NSHomeDirectory(), simulatorUUID, appDataUUID, applicationBundleIdentifierFromData];
 
             NSMenuItem* terminal = [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:@"1"];
             [terminal setRepresentedObject:applicationContentPath];
