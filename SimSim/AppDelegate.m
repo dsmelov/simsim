@@ -264,7 +264,7 @@
 
     [menu addItem:[NSMenuItem separatorItem]];
 
-    NSString* appVersion = [NSString stringWithFormat:@"About %@", [[NSRunningApplication currentApplication] localizedName]];
+    NSString* appVersion = [NSString stringWithFormat:@"About %@ %@", [[NSRunningApplication currentApplication] localizedName], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
     [menu addItem:about];
 
