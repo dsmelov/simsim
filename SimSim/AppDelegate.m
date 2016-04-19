@@ -79,11 +79,7 @@
     NSImage* sourceImage = anImage;
     [sourceImage setScalesWhenResized:YES];
 
-    if (![sourceImage isValid])
-    {
-        NSLog(@"Invalid Image");
-    }
-    else
+    if ([sourceImage isValid])
     {
         NSImage* smallImage = [[NSImage alloc] initWithSize:size];
         [smallImage lockFocus];
@@ -135,8 +131,7 @@
 
     NSArray* installedApplicationsData = [self getSortedFilesFromFolder:installedApplicationsDataPath];
 
-    NSLog(@"%@", installedApplicationsData);
-
+    
     for (NSUInteger i = 0; i < [installedApplicationsData count]; i++)
     {
         NSString* appDataUUID = installedApplicationsData[i][@"path"];
@@ -150,8 +145,6 @@
 
         if (applicationDataProperties && ![applicationBundleIdentifierFromData hasPrefix:@"com.apple"])
         {
-            NSLog(@"%@: %@ %@/%@", installedApplicationsData[i][@"lastModDate"], applicationBundleIdentifierFromData, appDataUUID, applicationDataProperties[@"MCMMetadataUUID"]);
-
             NSString* installedApplicationsBundlePath =
                 [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/", NSHomeDirectory(), simulatorUUID];
 
