@@ -78,7 +78,6 @@
 - (NSImage*) scaleImage:(NSImage*)anImage toSize:(NSSize)size
 {
     NSImage* sourceImage = anImage;
-    [sourceImage setScalesWhenResized:YES];
 
     if ([sourceImage isValid])
     {
@@ -106,12 +105,12 @@
     //_statusItem.toolTip = @"control-click to quit";
 
     _statusItem.highlightMode = NO;
-    _statusItem.action = @selector(refreshApplicationMenu);
+    _statusItem.action = @selector(presentApplicationMenu);
     _statusItem.enabled = YES;
 }
 
 //----------------------------------------------------------------------------
-- (void) refreshApplicationMenu
+- (void) presentApplicationMenu
 {
     NSMenu* menu = [NSMenu new];
 
@@ -219,7 +218,7 @@
 
             NSString* title = [NSString stringWithFormat:@"%@ (%@) on %@", applicationBundleName, applicationVersion, simulatorDetails[@"name"]];
 
-            NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title action:@selector(openInFinder:) keyEquivalent:[NSString stringWithFormat:@"Alt-%d", i]];
+            NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title action:@selector(openInFinder:) keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
 
             NSImage* icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
             icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
@@ -238,6 +237,13 @@
             NSMenuItem* finder = [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:@"2"];
             [finder setRepresentedObject:applicationContentPath];
             [subMenu addItem:finder];
+            
+            if ([self isCommanderOneAvailable])
+            {
+                NSMenuItem* commanderOne = [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:@"3"];
+                [commanderOne setRepresentedObject:applicationContentPath];
+                [subMenu addItem:commanderOne];
+            }
 
             [item setSubmenu:subMenu];
 
@@ -246,9 +252,6 @@
     }
 
     [menu addItem:[NSMenuItem separatorItem]];
-
-    NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-    NSString* version = infoDict[@"CFBundleVersion"];
 
     NSString* appVersion = [NSString stringWithFormat:@"About %@", [[NSRunningApplication currentApplication] localizedName]];
     NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
@@ -274,6 +277,27 @@
     NSString* path = (NSString*)[sender representedObject];
 
     [[NSWorkspace sharedWorkspace] openFile:path withApplication:@"Terminal"];
+}
+
+//----------------------------------------------------------------------------
+- (BOOL)isCommanderOneAvailable
+{
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSString* plistPath = [NSString stringWithFormat:@"%@/Library/Preferences/com.eltima.cmd1.plist", NSHomeDirectory()];
+    BOOL isPlistExist = [fileManager fileExistsAtPath:plistPath];
+    
+    return isPlistExist;
+}
+
+//----------------------------------------------------------------------------
+- (void)openInCommanderOne:(id)sender
+{
+    NSString* path = (NSString*)[sender representedObject];
+    
+    NSPasteboard* pboard = [NSPasteboard generalPasteboard];
+    [pboard clearContents];
+    [pboard setPropertyList:@[path] forType:NSFilenamesPboardType];
+    NSPerformService(@"reveal-in-commander1", pboard);
 }
 
 //----------------------------------------------------------------------------

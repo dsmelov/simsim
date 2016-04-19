@@ -62,7 +62,6 @@
 				BE7C115819E56B4F001A6220 /* MainMenu.xib */,
 				BE7C114F19E56B4F001A6220 /* Supporting Files */,
 			);
-			name = SimSim;
 			path = SimSim;
 			sourceTree = "<group>";
 		};
