@@ -11,8 +11,6 @@
 //============================================================================
 @interface AppDelegate ()
 
-@property (weak) IBOutlet NSWindow* window;
-
 @property (strong, nonatomic) NSStatusItem* statusItem;
 
 @end
