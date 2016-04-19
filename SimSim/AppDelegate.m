@@ -225,8 +225,8 @@
                                applicationBundleName, applicationVersion];
 
             NSString* applicationContentPath =
-            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/Library/Application Support/%@/",
-             NSHomeDirectory(), simulatorUUID, appDataUUID, applicationBundleIdentifierFromData];
+            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/Library/",
+             NSHomeDirectory(), simulatorUUID, appDataUUID];
 
             
             NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title action:@selector(openInFinder:) keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
@@ -291,6 +291,16 @@
 - (BOOL) isCommanderOneAvailable
 {
     NSFileManager* fileManager = [NSFileManager defaultManager];
+    
+    // Check for App Store version
+    NSString* applicationsPath = @"/Applications/Commander One.app";
+    BOOL isApplicationExist = [fileManager fileExistsAtPath:applicationsPath];
+    if (isApplicationExist)
+    {
+        return YES;
+    }
+    
+    // Check for version from Web
     NSString* plistPath = [NSString stringWithFormat:@"%@/Library/Preferences/com.eltima.cmd1.plist", NSHomeDirectory()];
     BOOL isPlistExist = [fileManager fileExistsAtPath:plistPath];
     
