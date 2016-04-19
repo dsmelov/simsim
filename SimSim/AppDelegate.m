@@ -280,7 +280,7 @@
 }
 
 //----------------------------------------------------------------------------
-- (BOOL)isCommanderOneAvailable
+- (BOOL) isCommanderOneAvailable
 {
     NSFileManager* fileManager = [NSFileManager defaultManager];
     NSString* plistPath = [NSString stringWithFormat:@"%@/Library/Preferences/com.eltima.cmd1.plist", NSHomeDirectory()];
@@ -290,7 +290,7 @@
 }
 
 //----------------------------------------------------------------------------
-- (void)openInCommanderOne:(id)sender
+- (void) openInCommanderOne:(id)sender
 {
     NSString* path = (NSString*)[sender representedObject];
     
