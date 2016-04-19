@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 
+#define KEY_FILE                @"file"
+#define KEY_MODIFICATION_DATE   @"modificationDate"
+
 //============================================================================
 @interface AppDelegate ()
 
@@ -36,8 +39,8 @@
 
             [filesAndProperties addObject:@
             {
-                @"file"             : file,
-                @"modificationDate" : modificationDate
+                KEY_FILE              : file,
+                KEY_MODIFICATION_DATE : modificationDate
             }];
         }
     }
@@ -132,7 +135,7 @@
     
     for (NSUInteger i = 0; i < [installedApplicationsData count]; i++)
     {
-        NSString* appDataUUID = installedApplicationsData[i][@"path"];
+        NSString* appDataUUID = installedApplicationsData[i][KEY_FILE];
 
         NSString* applicationDataPropertiesPath =
             [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/.com.apple.mobile_container_manager.metadata.plist", NSHomeDirectory(), simulatorUUID, appDataUUID];
@@ -154,9 +157,9 @@
             NSString* applicationBundleName = @"";
             NSString* iconPath = @"";
 
-            for (int j = 0; j < [installedApplicationsBundle count]; j++)
+            for (NSUInteger j = 0; j < [installedApplicationsBundle count]; j++)
             {
-                NSString* appBundleUUID = installedApplicationsBundle[j][@"path"];
+                NSString* appBundleUUID = installedApplicationsBundle[j][KEY_FILE];
 
                 NSString* applicationBundlePropertiesPath =
                     [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/.com.apple.mobile_container_manager.metadata.plist", NSHomeDirectory(), simulatorUUID, appBundleUUID];
