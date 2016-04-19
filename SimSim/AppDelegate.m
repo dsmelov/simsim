@@ -131,6 +131,14 @@
 
     NSArray* installedApplicationsData = [self getSortedFilesFromFolder:installedApplicationsDataPath];
 
+    NSString* simulator_name = simulatorDetails[@"name"];
+    NSString* simulator_runtime = [simulatorDetails[@"runtime"] stringByReplacingOccurrencesOfString:@"com.apple.CoreSimulator.SimRuntime." withString:@""];
+    
+    NSString* simulator_title = [NSString stringWithFormat:@"%@ (%@)", simulator_name, simulator_runtime];
+    
+    NSMenuItem* simulator = [[NSMenuItem alloc] initWithTitle:simulator_title action:nil keyEquivalent:@""];
+    [simulator setEnabled:NO];
+    [menu addItem:simulator];
     
     for (NSUInteger i = 0; i < [installedApplicationsData count]; i++)
     {
@@ -216,7 +224,8 @@
                 }
             }
 
-            NSString* title = [NSString stringWithFormat:@"%@ (%@) on %@", applicationBundleName, applicationVersion, simulatorDetails[@"name"]];
+            NSString* title = [NSString stringWithFormat:@"%@ (%@)",
+                               applicationBundleName, applicationVersion];
 
             NSString* applicationContentPath =
             [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/Library/Application Support/%@/",
