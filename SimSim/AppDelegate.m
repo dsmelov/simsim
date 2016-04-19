@@ -261,7 +261,7 @@
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
     NSString* version = [infoDict objectForKey:@"CFBundleVersion"];
 
-    NSString* appVersion = [NSString stringWithFormat:@"%@ %@",  [[NSRunningApplication currentApplication] localizedName], version ];
+    NSString* appVersion = [NSString stringWithFormat:@"About %@",  [[NSRunningApplication currentApplication] localizedName]];
     NSMenuItem *about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
     [menu addItem:about];
     
