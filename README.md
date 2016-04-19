@@ -6,4 +6,4 @@ Free explore application content in Terminal or Finder.
 
 ![Alt text](/screenshot.png?raw=true "Optional Title")
 
-[Get version 1.0](https://github.com/dsmelov/Release/SimSim_1.0.zip)
+[Get version 1.0](https://github.com/dsmelov/simsim/blob/master/Release/SimSim_1.0.zip?raw=true)
