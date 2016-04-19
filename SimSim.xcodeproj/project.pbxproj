@@ -11,7 +11,6 @@
 		BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115419E56B4F001A6220 /* AppDelegate.m */; };
 		BE7C115719E56B4F001A6220 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE7C115619E56B4F001A6220 /* Images.xcassets */; };
 		BE7C115A19E56B4F001A6220 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C115819E56B4F001A6220 /* MainMenu.xib */; };
-		BE7C117019E57841001A6220 /* switchIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7C116F19E57841001A6220 /* switchIcon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,7 +21,6 @@
 		BE7C115419E56B4F001A6220 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BE7C115619E56B4F001A6220 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BE7C115919E56B4F001A6220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		BE7C116F19E57841001A6220 /* switchIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switchIcon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +53,6 @@
 		BE7C114E19E56B4F001A6220 /* SimSim */ = {
 			isa = PBXGroup;
 			children = (
-				BE7C116F19E57841001A6220 /* switchIcon.png */,
 				BE7C115319E56B4F001A6220 /* AppDelegate.h */,
 				BE7C115419E56B4F001A6220 /* AppDelegate.m */,
 				BE7C115619E56B4F001A6220 /* Images.xcassets */,
@@ -131,7 +128,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE7C117019E57841001A6220 /* switchIcon.png in Resources */,
 				BE7C115719E56B4F001A6220 /* Images.xcassets in Resources */,
 				BE7C115A19E56B4F001A6220 /* MainMenu.xib in Resources */,
 			);

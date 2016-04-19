@@ -98,7 +98,7 @@
 - (void) applicationDidFinishLaunching:(NSNotification*)aNotification
 {
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    _statusItem.image = [NSImage imageNamed:@"switchIcon.png"];
+    _statusItem.image = [NSImage imageNamed:@"BarIcon"];
     _statusItem.image.template = YES;
 
     _statusItem.highlightMode = YES;
