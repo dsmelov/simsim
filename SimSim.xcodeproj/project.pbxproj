@@ -1,0 +1,291 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BE7C115219E56B4F001A6220 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115119E56B4F001A6220 /* main.m */; };
+		BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115419E56B4F001A6220 /* AppDelegate.m */; };
+		BE7C115719E56B4F001A6220 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE7C115619E56B4F001A6220 /* Images.xcassets */; };
+		BE7C115A19E56B4F001A6220 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C115819E56B4F001A6220 /* MainMenu.xib */; };
+		BE7C117019E57841001A6220 /* switchIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BE7C116F19E57841001A6220 /* switchIcon.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BE7C114C19E56B4F001A6220 /* SimSim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimSim.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE7C115019E56B4F001A6220 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BE7C115119E56B4F001A6220 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BE7C115319E56B4F001A6220 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		BE7C115419E56B4F001A6220 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		BE7C115619E56B4F001A6220 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		BE7C115919E56B4F001A6220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		BE7C116F19E57841001A6220 /* switchIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switchIcon.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BE7C114919E56B4F001A6220 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BE7C114319E56B4F001A6220 = {
+			isa = PBXGroup;
+			children = (
+				BE7C114E19E56B4F001A6220 /* SimSim */,
+				BE7C114D19E56B4F001A6220 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BE7C114D19E56B4F001A6220 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE7C114C19E56B4F001A6220 /* SimSim.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BE7C114E19E56B4F001A6220 /* SimSim */ = {
+			isa = PBXGroup;
+			children = (
+				BE7C116F19E57841001A6220 /* switchIcon.png */,
+				BE7C115319E56B4F001A6220 /* AppDelegate.h */,
+				BE7C115419E56B4F001A6220 /* AppDelegate.m */,
+				BE7C115619E56B4F001A6220 /* Images.xcassets */,
+				BE7C115819E56B4F001A6220 /* MainMenu.xib */,
+				BE7C114F19E56B4F001A6220 /* Supporting Files */,
+			);
+			name = SimSim;
+			path = SimSim;
+			sourceTree = "<group>";
+		};
+		BE7C114F19E56B4F001A6220 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BE7C115019E56B4F001A6220 /* Info.plist */,
+				BE7C115119E56B4F001A6220 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BE7C114B19E56B4F001A6220 /* SimSim */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE7C116919E56B4F001A6220 /* Build configuration list for PBXNativeTarget "SimSim" */;
+			buildPhases = (
+				BE7C114819E56B4F001A6220 /* Sources */,
+				BE7C114919E56B4F001A6220 /* Frameworks */,
+				BE7C114A19E56B4F001A6220 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimSim;
+			productName = SimSim;
+			productReference = BE7C114C19E56B4F001A6220 /* SimSim.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BE7C114419E56B4F001A6220 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = Daniil Smelov;
+				TargetAttributes = {
+					BE7C114B19E56B4F001A6220 = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+				};
+			};
+			buildConfigurationList = BE7C114719E56B4F001A6220 /* Build configuration list for PBXProject "SimSim" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BE7C114319E56B4F001A6220;
+			productRefGroup = BE7C114D19E56B4F001A6220 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BE7C114B19E56B4F001A6220 /* SimSim */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BE7C114A19E56B4F001A6220 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE7C117019E57841001A6220 /* switchIcon.png in Resources */,
+				BE7C115719E56B4F001A6220 /* Images.xcassets in Resources */,
+				BE7C115A19E56B4F001A6220 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BE7C114819E56B4F001A6220 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */,
+				BE7C115219E56B4F001A6220 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		BE7C115819E56B4F001A6220 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BE7C115919E56B4F001A6220 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BE7C116719E56B4F001A6220 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BE7C116819E56B4F001A6220 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BE7C116A19E56B4F001A6220 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SimSim/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsmelov.SimSim;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BE7C116B19E56B4F001A6220 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SimSim/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsmelov.SimSim;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BE7C114719E56B4F001A6220 /* Build configuration list for PBXProject "SimSim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE7C116719E56B4F001A6220 /* Debug */,
+				BE7C116819E56B4F001A6220 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE7C116919E56B4F001A6220 /* Build configuration list for PBXNativeTarget "SimSim" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE7C116A19E56B4F001A6220 /* Debug */,
+				BE7C116B19E56B4F001A6220 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BE7C114419E56B4F001A6220 /* Project object */;
+}
