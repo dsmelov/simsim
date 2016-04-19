@@ -106,12 +106,12 @@
     //_statusItem.toolTip = @"control-click to quit";
 
     _statusItem.highlightMode = NO;
-    _statusItem.action = @selector(showList);
+    _statusItem.action = @selector(refreshApplicationMenu);
     _statusItem.enabled = YES;
 }
 
 //----------------------------------------------------------------------------
-- (void) showList
+- (void) refreshApplicationMenu
 {
     NSMenu* menu = [NSMenu new];
 
