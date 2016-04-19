@@ -80,7 +80,6 @@
     filesArray =  [filesArray filteredArrayUsingPredicate:predicate];
     
     return filesArray[0];
-    
 }
 
 //----------------------------------------------------------------------------
@@ -117,25 +116,31 @@
     _statusItem.highlightMode = YES;
     //_statusItem.toolTip = @"control-click to quit";
     
-    NSMenu* menu = [[NSMenu alloc] init];
-    
     [_statusItem setHighlightMode:NO];
+    [_statusItem setAction:@selector(showList)];
+    [_statusItem setEnabled:YES];
+}
+
+//----------------------------------------------------------------------------
+- (void)showList
+{
+    NSMenu* menu = [[NSMenu alloc] init];
     
     NSString* simulatorPropertiesPath =
     [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.iphonesimulator.plist", NSHomeDirectory()];
     
     NSDictionary* simulatorProperties = [NSDictionary dictionaryWithContentsOfFile:simulatorPropertiesPath];
-
+    
     NSString* simulatorUUID = simulatorProperties[@"CurrentDeviceUDID"];
     
     NSString* simulatorDetailsPath =
     [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/device.plist", NSHomeDirectory(), simulatorUUID];
-
+    
     NSDictionary* simulatorDetails = [NSDictionary dictionaryWithContentsOfFile:simulatorDetailsPath];
-
+    
     NSString* installedApplicationsDataPath =
     [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/", NSHomeDirectory(), simulatorUUID];
-
+    
     NSArray* installedApplicationsData = [self getSortedFilesFromFolder:installedApplicationsDataPath];
     
     NSLog(@"%@", installedApplicationsData);
@@ -185,7 +190,7 @@
                     NSString* applicationPlistPath =
                     [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/Info.plist",
                      NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName];
-
+                    
                     NSDictionary* applicationPlist = [NSDictionary dictionaryWithContentsOfFile:applicationPlistPath];
                     
                     applicationIcon = applicationPlist[@"CFBundleIconFile"];
@@ -207,7 +212,7 @@
                         NSArray* iconFiles = applicationPrimaryIcons[@"CFBundleIconFiles"];
                         
                         applicationIcon = [iconFiles lastObject];
-
+                        
                         iconPath =
                         [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/%@.png",
                          NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName, applicationIcon];
@@ -225,10 +230,10 @@
                     break;
                 }
             }
-
+            
             NSString* title = [NSString stringWithFormat:@"%@ (%@) on %@", applicationBundleName, applicationVersion, simulatorDetails[@"name"]];
             
-            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title action:@selector(exitApp:) keyEquivalent:[NSString stringWithFormat:@"Alt-%d", i] ];
+            NSMenuItem *item = [[NSMenuItem alloc] initWithTitle:title action:@selector(openInFinder:) keyEquivalent:[NSString stringWithFormat:@"Alt-%d", i] ];
             
             NSImage* icon = [[NSImage alloc] initWithContentsOfFile: iconPath];
             icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
@@ -260,7 +265,7 @@
     
     NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
     NSString* version = [infoDict objectForKey:@"CFBundleVersion"];
-
+    
     NSString* appVersion = [NSString stringWithFormat:@"About %@",  [[NSRunningApplication currentApplication] localizedName]];
     NSMenuItem *about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
     [menu addItem:about];
@@ -268,8 +273,7 @@
     NSMenuItem *quit = [[NSMenuItem alloc] initWithTitle:@"Quit" action:@selector(exitApp:) keyEquivalent:@"Q"];
     [menu addItem:quit];
     
-    [_statusItem setMenu:menu];
-    [_statusItem setEnabled:YES];
+    [_statusItem popUpStatusItemMenu:menu];
 }
 
 //----------------------------------------------------------------------------
@@ -298,11 +302,6 @@
 - (void)aboutApp:(id)sender
 {
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/dsmelov/simsim"]];
-}
-
-//----------------------------------------------------------------------------
-- (void)applicationWillTerminate:(NSNotification *)aNotification
-{
 }
 
 @end
