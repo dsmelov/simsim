@@ -98,13 +98,10 @@
 - (void) applicationDidFinishLaunching:(NSNotification*)aNotification
 {
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+
     _statusItem.image = [NSImage imageNamed:@"BarIcon"];
     _statusItem.image.template = YES;
-
     _statusItem.highlightMode = YES;
-    //_statusItem.toolTip = @"control-click to quit";
-
-    _statusItem.highlightMode = NO;
     _statusItem.action = @selector(presentApplicationMenu);
     _statusItem.enabled = YES;
 }
