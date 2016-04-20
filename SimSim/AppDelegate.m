@@ -198,8 +198,11 @@
                     {
                         NSDictionary* applicationIcons = applicationPlist[@"CFBundleIcons"];
                         
+                        NSString* postfix = @"";
+                        
                         if (!applicationIcons) {
                             applicationIcons = applicationPlist[@"CFBundleIcons~ipad"];
+                            postfix = @"~ipad";
                         }
                         
                         NSDictionary* applicationPrimaryIcons = applicationIcons[@"CFBundlePrimaryIcon"];
@@ -209,16 +212,16 @@
                         applicationIcon = [iconFiles lastObject];
 
                         iconPath =
-                            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/%@.png",
-                                                       NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName, applicationIcon];
+                            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/%@%@.png",
+                                                       NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName, applicationIcon, postfix];
 
                         NSFileManager* fileManager = [NSFileManager defaultManager];
 
                         if (![fileManager fileExistsAtPath:iconPath])
                         {
                             iconPath =
-                                [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/%@@2x.png",
-                                                           NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName, applicationIcon];
+                                [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/%@@2x%@.png",
+                                                           NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName, applicationIcon, postfix];
                         }
                     }
 
