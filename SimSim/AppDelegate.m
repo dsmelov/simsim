@@ -225,7 +225,7 @@
                                applicationBundleName, applicationVersion];
 
             NSString* applicationContentPath =
-            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/Library/",
+            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/",
              NSHomeDirectory(), simulatorUUID, appDataUUID];
 
             
