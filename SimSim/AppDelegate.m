@@ -233,7 +233,7 @@
                                applicationBundleName, applicationVersion];
 
             NSString* applicationContentPath =
-            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/Library/",
+            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/",
              NSHomeDirectory(), simulatorUUID, appDataUUID];
 
             
@@ -243,6 +243,25 @@
             NSImage* icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
             icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
             [item setImage:icon];
+            
+            NSMenu* subMenu = [NSMenu new];
+            
+            NSMenuItem* terminal = [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:@"1"];
+            [terminal setRepresentedObject:applicationContentPath];
+            [subMenu addItem:terminal];
+            
+            NSMenuItem* finder = [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:@"2"];
+            [finder setRepresentedObject:applicationContentPath];
+            [subMenu addItem:finder];
+            
+            if ([self isCommanderOneAvailable])
+            {
+                NSMenuItem* commanderOne = [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:@"3"];
+                [commanderOne setRepresentedObject:applicationContentPath];
+                [subMenu addItem:commanderOne];
+            }
+            
+            [item setSubmenu:subMenu];
 
             [menu addItem:item];
         }
@@ -321,6 +340,8 @@
 - (void) openInCommanderOne:(id)sender
 {
     NSString* path = (NSString*)[sender representedObject];
+    // For some reason Commander One opens not the last folder in path
+    path = [path stringByAppendingString:@"Library/"];
     
     NSPasteboard* pboard = [NSPasteboard generalPasteboard];
     [pboard clearContents];
