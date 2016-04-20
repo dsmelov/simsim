@@ -8,13 +8,16 @@
 
 #import "AppDelegate.h"
 
-#define KEY_FILE                @"file"
-#define KEY_MODIFICATION_DATE   @"modificationDate"
+#define KEY_FILE                    @"file"
+#define KEY_MODIFICATION_DATE       @"modificationDate"
+#define HIDE_SUBMENUS_PREFERENCE    @"hideSubMenus"
+#define ALREADY_LAUNCHED_PREFERENCE @"alreadyLaunched"
 
 //============================================================================
 @interface AppDelegate ()
 
 @property (strong, nonatomic) NSStatusItem* statusItem;
+@property (nonatomic) BOOL hideSubMenus;
 
 @end
 
@@ -104,6 +107,16 @@
     _statusItem.highlightMode = YES;
     _statusItem.action = @selector(presentApplicationMenu);
     _statusItem.enabled = YES;
+    
+    BOOL firstLaunch = [[NSUserDefaults standardUserDefaults] boolForKey:ALREADY_LAUNCHED_PREFERENCE] == NO;
+    
+    if (firstLaunch == YES)
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:HIDE_SUBMENUS_PREFERENCE];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ALREADY_LAUNCHED_PREFERENCE];
+    }
+    
+    self.hideSubMenus = [[NSUserDefaults standardUserDefaults] boolForKey:HIDE_SUBMENUS_PREFERENCE];
 }
 
 //----------------------------------------------------------------------------
@@ -244,24 +257,27 @@
             icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
             [item setImage:icon];
             
-            NSMenu* subMenu = [NSMenu new];
-            
-            NSMenuItem* terminal = [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:@"1"];
-            [terminal setRepresentedObject:applicationContentPath];
-            [subMenu addItem:terminal];
-            
-            NSMenuItem* finder = [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:@"2"];
-            [finder setRepresentedObject:applicationContentPath];
-            [subMenu addItem:finder];
-            
-            if ([self isCommanderOneAvailable])
+            if (self.hideSubMenus == YES)
             {
-                NSMenuItem* commanderOne = [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:@"3"];
-                [commanderOne setRepresentedObject:applicationContentPath];
-                [subMenu addItem:commanderOne];
+                NSMenu* subMenu = [NSMenu new];
+                
+                NSMenuItem* terminal = [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:@"1"];
+                [terminal setRepresentedObject:applicationContentPath];
+                [subMenu addItem:terminal];
+                
+                NSMenuItem* finder = [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:@"2"];
+                [finder setRepresentedObject:applicationContentPath];
+                [subMenu addItem:finder];
+                
+                if ([self isCommanderOneAvailable])
+                {
+                    NSMenuItem* commanderOne = [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:@"3"];
+                    [commanderOne setRepresentedObject:applicationContentPath];
+                    [subMenu addItem:commanderOne];
+                }
+                
+                [item setSubmenu:subMenu];
             }
-            
-            [item setSubmenu:subMenu];
 
             [menu addItem:item];
         }
@@ -352,6 +368,13 @@
 //----------------------------------------------------------------------------
 - (void) exitApp:(id)sender
 {
+    NSEvent *event = [NSApp currentEvent];
+
+    if([event modifierFlags] & NSAlternateKeyMask)
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:HIDE_SUBMENUS_PREFERENCE];
+    }
+    
     [[NSApplication sharedApplication] terminate:self];
 }
 
