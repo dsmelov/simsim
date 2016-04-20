@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "CommanderOne.h"
 
 #define KEY_FILE                    @"file"
 #define KEY_MODIFICATION_DATE       @"modificationDate"
@@ -108,9 +109,9 @@
     _statusItem.action = @selector(presentApplicationMenu);
     _statusItem.enabled = YES;
     
-    BOOL firstLaunch = [[NSUserDefaults standardUserDefaults] boolForKey:ALREADY_LAUNCHED_PREFERENCE] == NO;
+    BOOL firstLaunch = ![[NSUserDefaults standardUserDefaults] boolForKey:ALREADY_LAUNCHED_PREFERENCE];
     
-    if (firstLaunch == YES)
+    if (firstLaunch)
     {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:HIDE_SUBMENUS_PREFERENCE];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ALREADY_LAUNCHED_PREFERENCE];
@@ -272,7 +273,7 @@
             
             [item setImage:icon];
             
-            if (self.hideSubMenus == YES)
+            if (!self.hideSubMenus)
             {
                 NSMenu* subMenu = [NSMenu new];
                 
@@ -284,7 +285,7 @@
                 [finder setRepresentedObject:applicationContentPath];
                 [subMenu addItem:finder];
                 
-                if ([self isCommanderOneAvailable])
+                if ([CommanderOne isCommanderOneAvailable])
                 {
                     NSMenuItem* commanderOne = [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:@"3"];
                     [commanderOne setRepresentedObject:applicationContentPath];
@@ -310,6 +311,15 @@
     [_statusItem popUpStatusItemMenu:menu];
 }
 
+- (NSImage*) getIconForApplicationBundleIdentifier:(NSString*)bundleIdentifier
+                            fromApplicationsBundle:(NSArray*)bundle
+{
+
+
+
+    return nil;
+}
+
 //----------------------------------------------------------------------------
 - (void) openInWithModifier:(id)sender
 {
@@ -321,7 +331,7 @@
     }
     else if ([event modifierFlags] & NSControlKeyMask)
     {
-        if ([self isCommanderOneAvailable])
+        if ([CommanderOne isCommanderOneAvailable])
         {
             [self openInCommanderOne:sender];
         }
@@ -349,36 +359,11 @@
 }
 
 //----------------------------------------------------------------------------
-- (BOOL) isCommanderOneAvailable
-{
-    NSFileManager* fileManager = [NSFileManager defaultManager];
-    
-    // Check for App Store version
-    NSString* applicationsPath = @"/Applications/Commander One.app";
-    BOOL isApplicationExist = [fileManager fileExistsAtPath:applicationsPath];
-    if (isApplicationExist)
-    {
-        return YES;
-    }
-    
-    // Check for version from Web
-    NSString* plistPath = [NSString stringWithFormat:@"%@/Library/Preferences/com.eltima.cmd1.plist", NSHomeDirectory()];
-    BOOL isPlistExist = [fileManager fileExistsAtPath:plistPath];
-    
-    return isPlistExist;
-}
-
-//----------------------------------------------------------------------------
 - (void) openInCommanderOne:(id)sender
 {
     NSString* path = (NSString*)[sender representedObject];
-    // For some reason Commander One opens not the last folder in path
-    path = [path stringByAppendingString:@"Library/"];
-    
-    NSPasteboard* pboard = [NSPasteboard generalPasteboard];
-    [pboard clearContents];
-    [pboard setPropertyList:@[path] forType:NSFilenamesPboardType];
-    NSPerformService(@"reveal-in-commander1", pboard);
+
+    [CommanderOne openInCommanderOne:path];
 }
 
 //----------------------------------------------------------------------------

@@ -7,20 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13F9C8331B0C2C982C9CA14F /* CommanderOne.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F9C749F4EF0EFB3F09E5CC /* CommanderOne.m */; };
+		13F9C8BD40BFC0BD5697F05F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */; };
+		13F9C9CACDE21D1AB57BD94D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F9CAF1018B8DF204603BAC /* MainMenu.xib */; };
 		BE7C115219E56B4F001A6220 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115119E56B4F001A6220 /* main.m */; };
 		BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115419E56B4F001A6220 /* AppDelegate.m */; };
-		BE7C115719E56B4F001A6220 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE7C115619E56B4F001A6220 /* Images.xcassets */; };
-		BE7C115A19E56B4F001A6220 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE7C115819E56B4F001A6220 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		13F9C038950463FE8C9CF8F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = SimSim/Base.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
+		13F9C749F4EF0EFB3F09E5CC /* CommanderOne.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommanderOne.m; sourceTree = "<group>"; };
+		13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		13F9CCF810DDA295016EC047 /* CommanderOne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommanderOne.h; sourceTree = "<group>"; };
 		BE7C114C19E56B4F001A6220 /* SimSim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimSim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7C115019E56B4F001A6220 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BE7C115119E56B4F001A6220 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BE7C115319E56B4F001A6220 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BE7C115419E56B4F001A6220 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		BE7C115619E56B4F001A6220 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		BE7C115919E56B4F001A6220 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +37,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		13F9C773A02CE69113A5F183 /* FileManagerSupport */ = {
+			isa = PBXGroup;
+			children = (
+				13F9C749F4EF0EFB3F09E5CC /* CommanderOne.m */,
+				13F9CCF810DDA295016EC047 /* CommanderOne.h */,
+			);
+			path = FileManagerSupport;
+			sourceTree = "<group>";
+		};
+		13F9CD9C30F220C6ED2765F1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */,
+				13F9CAF1018B8DF204603BAC /* MainMenu.xib */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		BE7C114319E56B4F001A6220 = {
 			isa = PBXGroup;
 			children = (
@@ -55,9 +76,9 @@
 			children = (
 				BE7C115319E56B4F001A6220 /* AppDelegate.h */,
 				BE7C115419E56B4F001A6220 /* AppDelegate.m */,
-				BE7C115619E56B4F001A6220 /* Images.xcassets */,
-				BE7C115819E56B4F001A6220 /* MainMenu.xib */,
 				BE7C114F19E56B4F001A6220 /* Supporting Files */,
+				13F9C773A02CE69113A5F183 /* FileManagerSupport */,
+				13F9CD9C30F220C6ED2765F1 /* Resources */,
 			);
 			path = SimSim;
 			sourceTree = "<group>";
@@ -128,8 +149,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE7C115719E56B4F001A6220 /* Images.xcassets in Resources */,
-				BE7C115A19E56B4F001A6220 /* MainMenu.xib in Resources */,
+				13F9C8BD40BFC0BD5697F05F /* Images.xcassets in Resources */,
+				13F9C9CACDE21D1AB57BD94D /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,16 +163,17 @@
 			files = (
 				BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */,
 				BE7C115219E56B4F001A6220 /* main.m in Sources */,
+				13F9C8331B0C2C982C9CA14F /* CommanderOne.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		BE7C115819E56B4F001A6220 /* MainMenu.xib */ = {
+		13F9CAF1018B8DF204603BAC /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BE7C115919E56B4F001A6220 /* Base */,
+				13F9C038950463FE8C9CF8F9 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
