@@ -132,13 +132,13 @@
 
     NSString* simulatorUUID = simulatorProperties[@"CurrentDeviceUDID"];
 
-    NSString* simulatorDetailsPath =
-        [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/device.plist", NSHomeDirectory(), simulatorUUID];
+    NSString* simulatorRootPath = [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/", NSHomeDirectory(), simulatorUUID];
+
+    NSString* simulatorDetailsPath = [simulatorRootPath stringByAppendingString:@"device.plist"];
 
     NSDictionary* simulatorDetails = [NSDictionary dictionaryWithContentsOfFile:simulatorDetailsPath];
 
-    NSString* installedApplicationsDataPath =
-        [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/", NSHomeDirectory(), simulatorUUID];
+    NSString* installedApplicationsDataPath = [simulatorRootPath stringByAppendingString:@"data/Containers/Data/Application/"];
 
     NSArray* installedApplicationsData = [self getSortedFilesFromFolder:installedApplicationsDataPath];
 
@@ -155,8 +155,9 @@
     {
         NSString* appDataUUID = installedApplicationsData[i][KEY_FILE];
 
-        NSString* applicationDataPropertiesPath =
-            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/.com.apple.mobile_container_manager.metadata.plist", NSHomeDirectory(), simulatorUUID, appDataUUID];
+        NSString* applicationRootPath = [simulatorRootPath stringByAppendingFormat:@"data/Containers/Data/Application/%@/", appDataUUID];
+
+        NSString* applicationDataPropertiesPath = [applicationRootPath stringByAppendingString:@".com.apple.mobile_container_manager.metadata.plist"];
 
         NSDictionary* applicationDataProperties = [NSDictionary dictionaryWithContentsOfFile:applicationDataPropertiesPath];
 
@@ -164,14 +165,12 @@
 
         if (applicationDataProperties && ![applicationBundleIdentifierFromData hasPrefix:@"com.apple"])
         {
-            NSString* installedApplicationsBundlePath =
-                [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/", NSHomeDirectory(), simulatorUUID];
+            NSString* installedApplicationsBundlePath = [simulatorRootPath stringByAppendingString:@"data/Containers/Bundle/Application/"];
 
             NSArray* installedApplicationsBundle = [self getSortedFilesFromFolder:installedApplicationsBundlePath];
 
             NSString* applicationIcon = nil;
             NSString* applicationVersion = @"";
-            NSString* applicationVersionShort = @"";
             NSString* applicationBundleName = @"";
             NSString* iconPath = @"";
 
@@ -179,8 +178,9 @@
             {
                 NSString* appBundleUUID = installedApplicationsBundle[j][KEY_FILE];
 
-                NSString* applicationBundlePropertiesPath =
-                    [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/.com.apple.mobile_container_manager.metadata.plist", NSHomeDirectory(), simulatorUUID, appBundleUUID];
+                NSString* applicationRootBundlePath = [simulatorRootPath stringByAppendingFormat:@"data/Containers/Bundle/Application/%@/", appBundleUUID];
+
+                NSString* applicationBundlePropertiesPath = [applicationRootBundlePath stringByAppendingString:@".com.apple.mobile_container_manager.metadata.plist"];
 
                 NSDictionary* applicationBundleProperties = [NSDictionary dictionaryWithContentsOfFile:applicationBundlePropertiesPath];
 
@@ -188,25 +188,21 @@
 
                 if ([bundleIdentifier isEqualToString:applicationBundleIdentifierFromData])
                 {
-                    NSString* applicationFolderName =
-                        [self getApplicationFolderFromPath:[NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/", NSHomeDirectory(), simulatorUUID, appBundleUUID]];
+                    NSString* applicationFolderName = [self getApplicationFolderFromPath:applicationRootBundlePath];
 
-                    NSString* applicationPlistPath =
-                        [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/Info.plist",
-                                                   NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName];
+                    NSString* applicationFolderPath = [applicationRootBundlePath stringByAppendingFormat:@"%@/", applicationFolderName];
+
+                    NSString* applicationPlistPath = [applicationFolderPath stringByAppendingString:@"Info.plist"];
 
                     NSDictionary* applicationPlist = [NSDictionary dictionaryWithContentsOfFile:applicationPlistPath];
 
                     applicationIcon = applicationPlist[@"CFBundleIconFile"];
-                    applicationVersionShort = applicationPlist[@"CFBundleShortVersionString"];
                     applicationVersion = applicationPlist[@"CFBundleVersion"];
                     applicationBundleName = applicationPlist[@"CFBundleName"];
 
                     if (applicationIcon != nil)
                     {
-                        iconPath =
-                            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/%@",
-                                                       NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName, applicationIcon];
+                        iconPath = [applicationFolderPath stringByAppendingString:applicationIcon];
                     }
                     else
                     {
@@ -226,17 +222,13 @@
 
                         applicationIcon = [iconFiles lastObject];
 
-                        iconPath =
-                            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/%@%@.png",
-                                                       NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName, applicationIcon, postfix];
+                        iconPath = [applicationFolderPath stringByAppendingFormat:@"%@%@.png", applicationIcon, postfix];
 
                         NSFileManager* fileManager = [NSFileManager defaultManager];
 
                         if (![fileManager fileExistsAtPath:iconPath])
                         {
-                            iconPath =
-                                [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/%@@2x%@.png",
-                                                           NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName, applicationIcon, postfix];
+                            iconPath = [applicationFolderPath stringByAppendingFormat:@"%@@2x%@.png", applicationIcon, postfix];
                         
                             if (![fileManager fileExistsAtPath:iconPath])
                             {
