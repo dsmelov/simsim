@@ -313,14 +313,13 @@
 //----------------------------------------------------------------------------
 - (void) openInWithModifier:(id)sender
 {
-    NSEvent *event = [NSApp currentEvent];
+    NSEvent* event = [NSApp currentEvent];
     
-    if([event modifierFlags] & NSAlternateKeyMask)
+    if ([event modifierFlags] & NSAlternateKeyMask)
     {
         [self openInTerminal:sender];
     }
-    else
-    if([event modifierFlags] & NSControlKeyMask)
+    else if ([event modifierFlags] & NSControlKeyMask)
     {
         if ([self isCommanderOneAvailable])
         {
@@ -328,7 +327,9 @@
         }
     }
     else
+    {
         [self openInFinder:sender];
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -383,11 +384,12 @@
 //----------------------------------------------------------------------------
 - (void) exitApp:(id)sender
 {
-    NSEvent *event = [NSApp currentEvent];
+    NSEvent* event = [NSApp currentEvent];
 
-    if([event modifierFlags] & NSAlternateKeyMask)
+    if ([event modifierFlags] & NSAlternateKeyMask)
     {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:HIDE_SUBMENUS_PREFERENCE];
+        BOOL hideSubmenus = [[NSUserDefaults standardUserDefaults] boolForKey:ALREADY_LAUNCHED_PREFERENCE];
+        [[NSUserDefaults standardUserDefaults] setBool:!hideSubmenus forKey:HIDE_SUBMENUS_PREFERENCE];
     }
     
     [[NSApplication sharedApplication] terminate:self];
