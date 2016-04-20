@@ -213,7 +213,8 @@
                         
                         NSString* postfix = @"";
                         
-                        if (!applicationIcons) {
+                        if (!applicationIcons)
+                        {
                             applicationIcons = applicationPlist[@"CFBundleIcons~ipad"];
                             postfix = @"~ipad";
                         }
@@ -235,6 +236,11 @@
                             iconPath =
                                 [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Bundle/Application/%@/%@/%@@2x%@.png",
                                                            NSHomeDirectory(), simulatorUUID, appBundleUUID, applicationFolderName, applicationIcon, postfix];
+                        
+                            if (![fileManager fileExistsAtPath:iconPath])
+                            {
+                                iconPath = nil;
+                            }
                         }
                     }
 
@@ -253,8 +259,17 @@
             NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title action:@selector(openInWithModifier:) keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
             [item setRepresentedObject:applicationContentPath];
 
-            NSImage* icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-            icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
+            NSImage* icon;
+            if (iconPath == nil)
+            {
+                icon = [NSImage imageNamed:@"DefaultIcon"];
+            }
+            else
+            {
+                icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+                icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
+            }
+            
             [item setImage:icon];
             
             if (self.hideSubMenus == YES)
