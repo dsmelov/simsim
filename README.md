@@ -1,6 +1,6 @@
 # SimSim
 
-[Get version 1.0.6](https://github.com/dsmelov/simsim/blob/master/Release/SimSim_1.0.6.zip?raw=true)
+[Get version 1.0.7](https://github.com/dsmelov/simsim/blob/master/Release/SimSim_1.0.7.zip?raw=true)
 
 Use it to quickly get access to application data folders while developing on iOS Simulator.
 Feel free to explore application content in Terminal, Finder or Commander One.
