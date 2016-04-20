@@ -169,10 +169,9 @@
 
             NSArray* installedApplicationsBundle = [self getSortedFilesFromFolder:installedApplicationsBundlePath];
 
-            NSString* applicationIcon = nil;
             NSString* applicationVersion = @"";
             NSString* applicationBundleName = @"";
-            NSString* iconPath = @"";
+            NSImage* icon;
 
             for (NSUInteger j = 0; j < [installedApplicationsBundle count]; j++)
             {
@@ -196,73 +195,23 @@
 
                     NSDictionary* applicationPlist = [NSDictionary dictionaryWithContentsOfFile:applicationPlistPath];
 
-                    applicationIcon = applicationPlist[@"CFBundleIconFile"];
                     applicationVersion = applicationPlist[@"CFBundleVersion"];
                     applicationBundleName = applicationPlist[@"CFBundleName"];
 
-                    if (applicationIcon != nil)
-                    {
-                        iconPath = [applicationFolderPath stringByAppendingString:applicationIcon];
-                    }
-                    else
-                    {
-                        NSDictionary* applicationIcons = applicationPlist[@"CFBundleIcons"];
-                        
-                        NSString* postfix = @"";
-                        
-                        if (!applicationIcons)
-                        {
-                            applicationIcons = applicationPlist[@"CFBundleIcons~ipad"];
-                            postfix = @"~ipad";
-                        }
-                        
-                        NSDictionary* applicationPrimaryIcons = applicationIcons[@"CFBundlePrimaryIcon"];
-
-                        NSArray* iconFiles = applicationPrimaryIcons[@"CFBundleIconFiles"];
-
-                        applicationIcon = [iconFiles lastObject];
-
-                        iconPath = [applicationFolderPath stringByAppendingFormat:@"%@%@.png", applicationIcon, postfix];
-
-                        NSFileManager* fileManager = [NSFileManager defaultManager];
-
-                        if (![fileManager fileExistsAtPath:iconPath])
-                        {
-                            iconPath = [applicationFolderPath stringByAppendingFormat:@"%@@2x%@.png", applicationIcon, postfix];
-                        
-                            if (![fileManager fileExistsAtPath:iconPath])
-                            {
-                                iconPath = nil;
-                            }
-                        }
-                    }
+                    icon = [self getIconForApplicationWithPlist:applicationPlist folder:applicationFolderPath];
 
                     break;
                 }
             }
 
-            NSString* title = [NSString stringWithFormat:@"%@ (%@)",
-                               applicationBundleName, applicationVersion];
+            NSString* title = [NSString stringWithFormat:@"%@ (%@)", applicationBundleName, applicationVersion];
 
-            NSString* applicationContentPath =
-            [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/data/Containers/Data/Application/%@/",
-             NSHomeDirectory(), simulatorUUID, appDataUUID];
+            // This path will be opened on click
+            NSString* applicationContentPath = applicationRootPath;
 
-            
             NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title action:@selector(openInWithModifier:) keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
             [item setRepresentedObject:applicationContentPath];
 
-            NSImage* icon;
-            if (iconPath == nil)
-            {
-                icon = [NSImage imageNamed:@"DefaultIcon"];
-            }
-            else
-            {
-                icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-                icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
-            }
-            
             [item setImage:icon];
             
             if (!self.hideSubMenus)
@@ -303,13 +252,61 @@
     [_statusItem popUpStatusItemMenu:menu];
 }
 
-- (NSImage*) getIconForApplicationBundleIdentifier:(NSString*)bundleIdentifier
-                            fromApplicationsBundle:(NSArray*)bundle
+//----------------------------------------------------------------------------
+- (NSImage*) getIconForApplicationWithPlist:(NSDictionary*)applicationPlist folder:(NSString*)applicationFolderPath
 {
+    NSString* iconPath;
+    NSString* applicationIcon = applicationPlist[@"CFBundleIconFile"];
 
+    if (applicationIcon != nil)
+    {
+        iconPath = [applicationFolderPath stringByAppendingString:applicationIcon];
+    }
+    else
+    {
+        NSDictionary* applicationIcons = applicationPlist[@"CFBundleIcons"];
 
+        NSString* postfix = @"";
 
-    return nil;
+        if (!applicationIcons)
+        {
+            applicationIcons = applicationPlist[@"CFBundleIcons~ipad"];
+            postfix = @"~ipad";
+        }
+
+        NSDictionary* applicationPrimaryIcons = applicationIcons[@"CFBundlePrimaryIcon"];
+
+        NSArray* iconFiles = applicationPrimaryIcons[@"CFBundleIconFiles"];
+
+        applicationIcon = [iconFiles lastObject];
+
+        iconPath = [applicationFolderPath stringByAppendingFormat:@"%@%@.png", applicationIcon, postfix];
+
+        NSFileManager* fileManager = [NSFileManager defaultManager];
+
+        if (![fileManager fileExistsAtPath:iconPath])
+        {
+            iconPath = [applicationFolderPath stringByAppendingFormat:@"%@@2x%@.png", applicationIcon, postfix];
+
+            if (![fileManager fileExistsAtPath:iconPath])
+            {
+                iconPath = nil;
+            }
+        }
+    }
+
+    NSImage* icon;
+    if (iconPath == nil)
+    {
+        icon = [NSImage imageNamed:@"DefaultIcon"];
+    }
+    else
+    {
+        icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+        icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
+    }
+
+    return icon;
 }
 
 //----------------------------------------------------------------------------
