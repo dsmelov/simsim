@@ -197,6 +197,11 @@
                     else
                     {
                         NSDictionary* applicationIcons = applicationPlist[@"CFBundleIcons"];
+                        
+                        if (!applicationIcons) {
+                            applicationIcons = applicationPlist[@"CFBundleIcons~ipad"];
+                        }
+                        
                         NSDictionary* applicationPrimaryIcons = applicationIcons[@"CFBundlePrimaryIcon"];
 
                         NSArray* iconFiles = applicationPrimaryIcons[@"CFBundleIconFiles"];
@@ -229,31 +234,12 @@
              NSHomeDirectory(), simulatorUUID, appDataUUID];
 
             
-            NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title action:@selector(openInFinder:) keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
+            NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title action:@selector(openInWithModifier:) keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
             [item setRepresentedObject:applicationContentPath];
 
             NSImage* icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
             icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
             [item setImage:icon];
-
-            NSMenu* subMenu = [NSMenu new];
-
-            NSMenuItem* terminal = [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:@"1"];
-            [terminal setRepresentedObject:applicationContentPath];
-            [subMenu addItem:terminal];
-
-            NSMenuItem* finder = [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:@"2"];
-            [finder setRepresentedObject:applicationContentPath];
-            [subMenu addItem:finder];
-            
-            if ([self isCommanderOneAvailable])
-            {
-                NSMenuItem* commanderOne = [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:@"3"];
-                [commanderOne setRepresentedObject:applicationContentPath];
-                [subMenu addItem:commanderOne];
-            }
-
-            [item setSubmenu:subMenu];
 
             [menu addItem:item];
         }
@@ -272,10 +258,31 @@
 }
 
 //----------------------------------------------------------------------------
+- (void) openInWithModifier:(id)sender
+{
+    NSEvent *event = [NSApp currentEvent];
+    
+    if([event modifierFlags] & NSAlternateKeyMask)
+    {
+        [self openInTerminal:sender];
+    }
+    else
+    if([event modifierFlags] & NSControlKeyMask)
+    {
+        if ([self isCommanderOneAvailable])
+        {
+            [self openInCommanderOne:sender];
+        }
+    }
+    else
+        [self openInFinder:sender];
+}
+
+//----------------------------------------------------------------------------
 - (void) openInFinder:(id)sender
 {
     NSString* path = (NSString*)[sender representedObject];
-
+    
     [[NSWorkspace sharedWorkspace] openFile:path withApplication:@"Finder"];
 }
 
