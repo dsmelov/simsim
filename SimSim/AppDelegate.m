@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "CommanderOne.h"
+#import "Settings.h"
 
 #define KEY_FILE                    @"file"
 #define KEY_MODIFICATION_DATE       @"modificationDate"
@@ -245,6 +246,19 @@
     NSString* appVersion = [NSString stringWithFormat:@"About %@ %@", [[NSRunningApplication currentApplication] localizedName], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
     [menu addItem:about];
+    
+    NSMenuItem* startAtLogin = [[NSMenuItem alloc] initWithTitle:@"Start at Login" action:@selector(handleStartAtLogin:) keyEquivalent:@""];
+    BOOL isStartAtLoginEnabled = [Settings isStartAtLoginEnabled];
+    if (isStartAtLoginEnabled)
+    {
+        [startAtLogin setState:NSOnState];
+    }
+    else
+    {
+        [startAtLogin setState:NSOffState];
+    }
+    [startAtLogin setRepresentedObject:@(isStartAtLoginEnabled)];
+    [menu addItem:startAtLogin];
 
     NSMenuItem* quit = [[NSMenuItem alloc] initWithTitle:@"Quit" action:@selector(exitApp:) keyEquivalent:@"Q"];
     [menu addItem:quit];
@@ -367,6 +381,25 @@
     }
     
     [[NSApplication sharedApplication] terminate:self];
+}
+
+//----------------------------------------------------------------------------
+- (void) handleStartAtLogin:(id)sender
+{
+    BOOL isEnabled = [[sender representedObject] boolValue];
+    
+    [Settings setStartAtLoginEnabled:!isEnabled];
+    
+    [sender setRepresentedObject:@(!isEnabled)];
+    
+    if (isEnabled)
+    {
+        [sender setState:NSOffState];
+    }
+    else
+    {
+        [sender setState:NSOnState];
+    }
 }
 
 //----------------------------------------------------------------------------
