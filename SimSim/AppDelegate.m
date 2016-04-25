@@ -243,10 +243,6 @@
 
     [menu addItem:[NSMenuItem separatorItem]];
 
-    NSString* appVersion = [NSString stringWithFormat:@"About %@ %@", [[NSRunningApplication currentApplication] localizedName], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-    NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
-    [menu addItem:about];
-    
     NSMenuItem* startAtLogin = [[NSMenuItem alloc] initWithTitle:@"Start at Login" action:@selector(handleStartAtLogin:) keyEquivalent:@""];
     BOOL isStartAtLoginEnabled = [Settings isStartAtLoginEnabled];
     if (isStartAtLoginEnabled)
@@ -260,6 +256,24 @@
     [startAtLogin setRepresentedObject:@(isStartAtLoginEnabled)];
     [menu addItem:startAtLogin];
 
+    NSMenuItem* hideSubMenusItem = [[NSMenuItem alloc] initWithTitle:@"Hide Submenus" action:@selector(handleHideSubMenus:) keyEquivalent:@""];
+    if (self.hideSubMenus)
+    {
+        [hideSubMenusItem setState:NSOnState];
+    }
+    else
+    {
+        [hideSubMenusItem setState:NSOffState];
+    }
+    [hideSubMenusItem setRepresentedObject:@(self.hideSubMenus)];
+    [menu addItem:hideSubMenusItem];
+    
+    [menu addItem:[NSMenuItem separatorItem]];
+    
+    NSString* appVersion = [NSString stringWithFormat:@"About %@ %@", [[NSRunningApplication currentApplication] localizedName], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+    NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
+    [menu addItem:about];
+    
     NSMenuItem* quit = [[NSMenuItem alloc] initWithTitle:@"Quit" action:@selector(exitApp:) keyEquivalent:@"Q"];
     [menu addItem:quit];
 
@@ -372,15 +386,15 @@
 //----------------------------------------------------------------------------
 - (void) exitApp:(id)sender
 {
-    NSEvent* event = [NSApp currentEvent];
-
-    if ([event modifierFlags] & NSAlternateKeyMask)
-    {
-        BOOL hideSubmenus = [[NSUserDefaults standardUserDefaults] boolForKey:ALREADY_LAUNCHED_PREFERENCE];
-        [[NSUserDefaults standardUserDefaults] setBool:!hideSubmenus forKey:HIDE_SUBMENUS_PREFERENCE];
-    }
-    
     [[NSApplication sharedApplication] terminate:self];
+}
+
+//----------------------------------------------------------------------------
+- (void) handleHideSubMenus:(id)sender
+{
+    self.hideSubMenus = ![[sender representedObject] boolValue];
+    
+    [[NSUserDefaults standardUserDefaults] setBool:self.hideSubMenus forKey:HIDE_SUBMENUS_PREFERENCE];
 }
 
 //----------------------------------------------------------------------------
