@@ -383,7 +383,7 @@
 }
 
 //----------------------------------------------------------------------------
-- (void) mount:(NSURL *)networkShare usingName:(NSString*)name user:(NSString *)user password:(NSString *)password
+- (void) mount:(NSURL *)networkShare usingName:(NSString*)name inApp:(NSString*)app
 {
     NSURL *mountPath = [NSURL URLWithString:[NSString stringWithFormat:@"/Volumes/%@/", name]];
     
@@ -428,8 +428,8 @@
     int rc =
     NetFSMountURLAsync((__bridge CFURLRef)networkShare,
         (__bridge CFURLRef)mountPath,
-        (__bridge CFStringRef)(user),
-        (__bridge CFStringRef)(password),
+        (__bridge CFStringRef)(@""), // user
+        (__bridge CFStringRef)(@""), // password
         (__bridge CFMutableDictionaryRef)(openOptions),
         (__bridge CFMutableDictionaryRef)(mountOptions),
         &requestID,
@@ -438,7 +438,7 @@
         {
             NSArray *mounts = CFBridgingRelease(mountpoints);
             NSLog(@"Mounting status code: %d %@", status, mounts);
-            [[NSWorkspace sharedWorkspace] openFile:mounts[0] withApplication:@"Finder"];
+            [[NSWorkspace sharedWorkspace] openFile:mounts[0] withApplication:app];
         });
     
     NSLog(@"Request status code: %d", rc);
@@ -451,7 +451,7 @@
     NSString* path = device[@"url"];
     NSString* name = device[@"name"];
     
-    [self mount:[NSURL URLWithString: path] usingName:name user:@"" password:@""];
+    [self mount:[NSURL URLWithString: path] usingName:name inApp:@"Finder"];
 }
 
 //----------------------------------------------------------------------------
