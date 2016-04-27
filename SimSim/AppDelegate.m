@@ -10,6 +10,8 @@
 #import "CommanderOne.h"
 #import "Settings.h"
 
+#import <NetFS/NetFS.h>
+
 #define KEY_FILE                    @"file"
 #define KEY_MODIFICATION_DATE       @"modificationDate"
 #define HIDE_SUBMENUS_PREFERENCE    @"hideSubMenus"
@@ -382,21 +384,70 @@
 }
 
 //----------------------------------------------------------------------------
+- (void) mount:(NSURL *)networkShare user:(NSString *)user password:(NSString *)password
+{
+    NSURL *mountPath = [NSURL URLWithString:@"/Volumes/"];
+    
+    dispatch_queue_t queue = dispatch_get_main_queue();
+    AsyncRequestID requestID = NULL;
+    
+    /*
+     * The following dictionary keys for open_options are supported:
+     *
+     *	kNetFSUseGuestKey:			Login as a guest user.
+     *
+     *	kNetFSAllowLoopbackKey			Allow a loopback mount.
+     *
+     *	kNAUIOptionKey = UIOption		Suppress authentication dialog UI.
+     *      kNAUIOptionNoUI
+     *      kNAUIOptionAllowUI
+     *      kNAUIOptionForceUI
+     */
+    
+    /*
+     *  The following dictionary keys for mount_options are supported:
+     *
+     *	kNetFSMountFlagsKey = MNT_DONTBROWSE 	No browsable data here (see <sys/mount.h>).
+     *	kNetFSMountFlagsKey = MNT_RDONLY	A read-only mount (see <sys/mount.h>).
+     *	kNetFSAllowSubMountsKey = true		Allow a mount from a dir beneath the share point.
+     *	kNetFSSoftMountKey = true		Mount with "soft" failure semantics.
+     *	kNetFSMountAtMountDirKey = true		Mount on the specified mountpath instead of below it.
+     *
+     * Note that if kNetFSSoftMountKey isn't set, then it's set to TRUE.
+     *
+     */
+    
+    NSMutableDictionary *openOptions =
+    [@{ (__bridge NSString *)kNAUIOptionKey : (__bridge NSString *)kNAUIOptionNoUI,} mutableCopy ];
+    
+    NSMutableDictionary *mountOptions =
+    [@{ (__bridge NSString *)kNetFSAllowSubMountsKey : @YES,} mutableCopy ];
+    
+    int rc =
+    NetFSMountURLAsync((__bridge CFURLRef)networkShare,
+        (__bridge CFURLRef)mountPath,
+        (__bridge CFStringRef)(user),
+        (__bridge CFStringRef)(password),
+        (__bridge CFMutableDictionaryRef)(openOptions),
+        (__bridge CFMutableDictionaryRef)(mountOptions),
+        &requestID,
+        queue,
+        ^(int status, AsyncRequestID requestID, CFArrayRef mountpoints)
+        {
+            NSArray *mounts = CFBridgingRelease(mountpoints);
+            NSLog(@"Mounting status code: %d %@", status, mounts);
+            [[NSWorkspace sharedWorkspace] openFile:mounts[0] withApplication:@"Finder"];
+        });
+    
+    NSLog(@"Request status code: %d", rc);
+}
+
+//----------------------------------------------------------------------------
 - (void) openWebDav:(id)sender
 {
     NSString* path = (NSString*)[sender representedObject];
     
-    NSURL *url = [NSURL URLWithString: path];
-    NSString *host = [url host];
-    NSString *address = [[NSHost hostWithName:host] address];
-    
-    NSString* mountCommand = [NSString stringWithFormat:@"mount volume \"%@\"", path];
-    
-    NSAppleScript* scriptObject = [[NSAppleScript alloc] initWithSource: mountCommand];
-    
-    [scriptObject executeAndReturnError: nil];
-    
-    [[NSWorkspace sharedWorkspace] openFile:[NSString stringWithFormat:@"/Volumes/%@", address] withApplication:@"Finder"];
+    [self mount:[NSURL URLWithString: path] user:@"" password:@""];
 }
 
 //----------------------------------------------------------------------------
