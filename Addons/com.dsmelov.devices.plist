@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="1.0">
+<dict>
+    <key>Devices</key>
+    <array>
+    <dict>
+        <key>name</key>
+        <string>localhost</string>
+        <key>url</key>
+        <string>http://:@127.0.0.1:8082</string>
+    </dict>
+    </array>
+</dict>
+</plist>

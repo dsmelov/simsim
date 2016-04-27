@@ -241,6 +241,28 @@
         }
     }
 
+    
+    NSString* devicesPropertiesPath = [NSString stringWithFormat:@"%@/Library/Preferences/com.dsmelov.devices.plist", NSHomeDirectory()];
+    
+    NSDictionary* devicesList = [NSDictionary dictionaryWithContentsOfFile:devicesPropertiesPath];
+    
+    NSArray* deviceURLS = devicesList[@"Devices"];
+    
+    if ([deviceURLS count])
+    {
+        [menu addItem:[NSMenuItem separatorItem]];
+
+        for (NSDictionary* device in deviceURLS)
+        {
+            NSString* hostname = device[@"name"];
+            NSString* url = device[@"url"];
+            NSMenuItem* webdavDevice = [[NSMenuItem alloc] initWithTitle:hostname action:@selector(openWebDav:) keyEquivalent:@""];
+            [webdavDevice setRepresentedObject:url];
+            [menu addItem:webdavDevice];
+        }
+    }
+    
+    
     [menu addItem:[NSMenuItem separatorItem]];
 
     NSMenuItem* startAtLogin = [[NSMenuItem alloc] initWithTitle:@"Start at Login" action:@selector(handleStartAtLogin:) keyEquivalent:@""];
@@ -357,6 +379,24 @@
     {
         [self openInFinder:sender];
     }
+}
+
+//----------------------------------------------------------------------------
+- (void) openWebDav:(id)sender
+{
+    NSString* path = (NSString*)[sender representedObject];
+    
+    NSURL *url = [NSURL URLWithString: path];
+    NSString *host = [url host];
+    NSString *address = [[NSHost hostWithName:host] address];
+    
+    NSString* mountCommand = [NSString stringWithFormat:@"mount volume \"%@\"", path];
+    
+    NSAppleScript* scriptObject = [[NSAppleScript alloc] initWithSource: mountCommand];
+    
+    [scriptObject executeAndReturnError: nil];
+    
+    [[NSWorkspace sharedWorkspace] openFile:[NSString stringWithFormat:@"/Volumes/%@", address] withApplication:@"Finder"];
 }
 
 //----------------------------------------------------------------------------
