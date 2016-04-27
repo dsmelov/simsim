@@ -384,9 +384,12 @@
 }
 
 //----------------------------------------------------------------------------
-- (void) mount:(NSURL *)networkShare user:(NSString *)user password:(NSString *)password
+- (void) mount:(NSURL *)networkShare usingName:(NSString*)name user:(NSString *)user password:(NSString *)password
 {
-    NSURL *mountPath = [NSURL URLWithString:@"/Volumes/"];
+    NSURL *mountPath = [NSURL URLWithString:[NSString stringWithFormat:@"/Volumes/%@/", name]];
+    
+    [[NSFileManager defaultManager] createDirectoryAtPath:[mountPath absoluteString]
+                              withIntermediateDirectories:NO attributes:nil error:nil];
     
     dispatch_queue_t queue = dispatch_get_main_queue();
     AsyncRequestID requestID = NULL;
@@ -421,8 +424,8 @@
     [@{ (__bridge NSString *)kNAUIOptionKey : (__bridge NSString *)kNAUIOptionNoUI,} mutableCopy ];
     
     NSMutableDictionary *mountOptions =
-    [@{ (__bridge NSString *)kNetFSAllowSubMountsKey : @YES,} mutableCopy ];
-    
+    [@{ (__bridge NSString *)kNetFSAllowSubMountsKey : @YES, (__bridge NSString *)kNetFSMountAtMountDirKey : @YES,} mutableCopy ];
+        
     int rc =
     NetFSMountURLAsync((__bridge CFURLRef)networkShare,
         (__bridge CFURLRef)mountPath,
@@ -447,7 +450,7 @@
 {
     NSString* path = (NSString*)[sender representedObject];
     
-    [self mount:[NSURL URLWithString: path] user:@"" password:@""];
+    [self mount:[NSURL URLWithString: path] usingName:@"localhost" user:@"" password:@""];
 }
 
 //----------------------------------------------------------------------------
