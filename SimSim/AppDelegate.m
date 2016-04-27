@@ -257,9 +257,8 @@
         for (NSDictionary* device in deviceURLS)
         {
             NSString* hostname = device[@"name"];
-            NSString* url = device[@"url"];
             NSMenuItem* webdavDevice = [[NSMenuItem alloc] initWithTitle:hostname action:@selector(openWebDav:) keyEquivalent:@""];
-            [webdavDevice setRepresentedObject:url];
+            [webdavDevice setRepresentedObject:device];
             [menu addItem:webdavDevice];
         }
     }
@@ -347,7 +346,7 @@
         }
     }
 
-    NSImage* icon;
+    NSImage* icon = nil;
     if (iconPath == nil)
     {
         icon = [NSImage imageNamed:@"DefaultIcon"];
@@ -448,9 +447,11 @@
 //----------------------------------------------------------------------------
 - (void) openWebDav:(id)sender
 {
-    NSString* path = (NSString*)[sender representedObject];
+    NSDictionary* device = (NSDictionary*)[sender representedObject];
+    NSString* path = device[@"url"];
+    NSString* name = device[@"name"];
     
-    [self mount:[NSURL URLWithString: path] usingName:@"localhost" user:@"" password:@""];
+    [self mount:[NSURL URLWithString: path] usingName:name user:@"" password:@""];
 }
 
 //----------------------------------------------------------------------------
