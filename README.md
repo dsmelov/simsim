@@ -1,8 +1,10 @@
 # SimSim
 
-[Get version 1.1.1](https://github.com/dsmelov/simsim/blob/master/Release/SimSim_1.1.1.zip?raw=true)
+[Get version 1.2.0](https://github.com/dsmelov/simsim/blob/master/Release/SimSim_1.2.0.zip?raw=true)
 
-Use it to quickly get access to application data folders while developing on iOS Simulator.
+Use it to quickly get access to application data folders while developing on iOS Simulator or device. 
+(Version 1.2.0 or later required to access app folders on device. [Read our wiki](https://github.com/dsmelov/simsim/wiki/Accessing-app-folders-on-device-using-SimSim)).
+
 Feel free to explore application content in Terminal, Finder or Commander One.
 
 - Click on app in list to open it's data folder in Finder
