@@ -199,7 +199,10 @@
                     NSDictionary* applicationPlist = [NSDictionary dictionaryWithContentsOfFile:applicationPlistPath];
 
                     applicationVersion = applicationPlist[@"CFBundleVersion"];
-                    applicationBundleName = applicationPlist[@"CFBundleName"];
+					applicationBundleName = applicationPlist[@"CFBundleName"];
+					if (applicationBundleName.length == 0) {
+						applicationBundleName = applicationPlist[@"CFBundleDisplayName"];
+					}
 
                     icon = [self getIconForApplicationWithPlist:applicationPlist folder:applicationFolderPath];
 
