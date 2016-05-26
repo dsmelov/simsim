@@ -124,7 +124,36 @@
 }
 
 //----------------------------------------------------------------------------
-- (void)addSimulatorApplications:(NSArray*)installedApplicationsData usingRootPath:(NSString*)simulatorRootPath toMenu:(NSMenu*)menu
+- (void) addSubMenusToItem:(NSMenuItem*)item usingPath:(NSString*)path
+{
+    if (!self.hideSubMenus)
+    {
+        NSMenu* subMenu = [NSMenu new];
+        
+        NSMenuItem* terminal =
+        [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:@"1"];
+        [terminal setRepresentedObject:path];
+        [subMenu addItem:terminal];
+        
+        NSMenuItem* finder =
+        [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:@"2"];
+        [finder setRepresentedObject:path];
+        [subMenu addItem:finder];
+        
+        if ([CommanderOne isCommanderOneAvailable])
+        {
+            NSMenuItem* commanderOne =
+            [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:@"3"];
+            [commanderOne setRepresentedObject:path];
+            [subMenu addItem:commanderOne];
+        }
+        
+        [item setSubmenu:subMenu];
+    }
+}
+
+//----------------------------------------------------------------------------
+- (void) addSimulatorApplications:(NSArray*)installedApplicationsData usingRootPath:(NSString*)simulatorRootPath toMenu:(NSMenu*)menu
 {
     for (NSUInteger i = 0; i < [installedApplicationsData count]; i++)
     {
@@ -192,27 +221,8 @@
 
             [item setImage:icon];
             
-            if (!self.hideSubMenus)
-            {
-                NSMenu* subMenu = [NSMenu new];
-                
-                NSMenuItem* terminal = [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:@"1"];
-                [terminal setRepresentedObject:applicationContentPath];
-                [subMenu addItem:terminal];
-                
-                NSMenuItem* finder = [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:@"2"];
-                [finder setRepresentedObject:applicationContentPath];
-                [subMenu addItem:finder];
-                
-                if ([CommanderOne isCommanderOneAvailable])
-                {
-                    NSMenuItem* commanderOne = [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:@"3"];
-                    [commanderOne setRepresentedObject:applicationContentPath];
-                    [subMenu addItem:commanderOne];
-                }
-                
-                [item setSubmenu:subMenu];
-            }
+            [self addSubMenusToItem:item usingPath:applicationContentPath];
+            
 
             [menu addItem:item];
         }
@@ -305,6 +315,47 @@
 }
 
 //----------------------------------------------------------------------------
+- (void) addServiceItemsToMenu:(NSMenu*)menu
+{
+    NSMenuItem* startAtLogin =
+    [[NSMenuItem alloc] initWithTitle:@"Start at Login" action:@selector(handleStartAtLogin:) keyEquivalent:@""];
+    
+    BOOL isStartAtLoginEnabled = [Settings isStartAtLoginEnabled];
+    if (isStartAtLoginEnabled)
+    {
+        [startAtLogin setState:NSOnState];
+    }
+    else
+    {
+        [startAtLogin setState:NSOffState];
+    }
+    [startAtLogin setRepresentedObject:@(isStartAtLoginEnabled)];
+    [menu addItem:startAtLogin];
+    
+    NSMenuItem* hideSubMenusItem =
+    [[NSMenuItem alloc] initWithTitle:@"Hide Submenus" action:@selector(handleHideSubMenus:) keyEquivalent:@""];
+    if (self.hideSubMenus)
+    {
+        [hideSubMenusItem setState:NSOnState];
+    }
+    else
+    {
+        [hideSubMenusItem setState:NSOffState];
+    }
+    [hideSubMenusItem setRepresentedObject:@(self.hideSubMenus)];
+    [menu addItem:hideSubMenusItem];
+    
+    [menu addItem:[NSMenuItem separatorItem]];
+    
+    NSString* appVersion = [NSString stringWithFormat:@"About %@ %@", [[NSRunningApplication currentApplication] localizedName], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+    NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
+    [menu addItem:about];
+    
+    NSMenuItem* quit = [[NSMenuItem alloc] initWithTitle:@"Quit" action:@selector(exitApp:) keyEquivalent:@"Q"];
+    [menu addItem:quit];
+}
+
+//----------------------------------------------------------------------------
 - (void) presentApplicationMenu
 {
     NSMenu* menu = [NSMenu new];
@@ -328,39 +379,7 @@
     
     [menu addItem:[NSMenuItem separatorItem]];
 
-    NSMenuItem* startAtLogin = [[NSMenuItem alloc] initWithTitle:@"Start at Login" action:@selector(handleStartAtLogin:) keyEquivalent:@""];
-    BOOL isStartAtLoginEnabled = [Settings isStartAtLoginEnabled];
-    if (isStartAtLoginEnabled)
-    {
-        [startAtLogin setState:NSOnState];
-    }
-    else
-    {
-        [startAtLogin setState:NSOffState];
-    }
-    [startAtLogin setRepresentedObject:@(isStartAtLoginEnabled)];
-    [menu addItem:startAtLogin];
-
-    NSMenuItem* hideSubMenusItem = [[NSMenuItem alloc] initWithTitle:@"Hide Submenus" action:@selector(handleHideSubMenus:) keyEquivalent:@""];
-    if (self.hideSubMenus)
-    {
-        [hideSubMenusItem setState:NSOnState];
-    }
-    else
-    {
-        [hideSubMenusItem setState:NSOffState];
-    }
-    [hideSubMenusItem setRepresentedObject:@(self.hideSubMenus)];
-    [menu addItem:hideSubMenusItem];
-    
-    [menu addItem:[NSMenuItem separatorItem]];
-    
-    NSString* appVersion = [NSString stringWithFormat:@"About %@ %@", [[NSRunningApplication currentApplication] localizedName], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-    NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
-    [menu addItem:about];
-    
-    NSMenuItem* quit = [[NSMenuItem alloc] initWithTitle:@"Quit" action:@selector(exitApp:) keyEquivalent:@"Q"];
-    [menu addItem:quit];
+    [self addServiceItemsToMenu:menu];
 
     [_statusItem popUpStatusItemMenu:menu];
 }
