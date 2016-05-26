@@ -124,7 +124,7 @@
 }
 
 //----------------------------------------------------------------------------
-- (void)addApplications:(NSArray*)installedApplicationsData usingRootPath:(NSString*)simulatorRootPath toMenu:(NSMenu*)menu
+- (void)addSimulatorApplications:(NSArray*)installedApplicationsData usingRootPath:(NSString*)simulatorRootPath toMenu:(NSMenu*)menu
 {
     for (NSUInteger i = 0; i < [installedApplicationsData count]; i++)
     {
@@ -264,6 +264,47 @@
 }
 
 //----------------------------------------------------------------------------
+- (NSArray*) installedAppsOnSimulator:(NSString*)simulatorRootPath
+{
+    NSString* installedApplicationsDataPath =
+    [simulatorRootPath stringByAppendingString:@"data/Containers/Data/Application/"];
+    
+    NSArray* installedApplications =
+    [self getSortedFilesFromFolder:installedApplicationsDataPath];
+    
+    return installedApplications;
+}
+
+//----------------------------------------------------------------------------
+- (NSArray*) getDevices
+{
+    NSString* devicesPropertiesPath =
+    [NSString stringWithFormat:@"%@/Library/Preferences/com.dsmelov.devices.plist", NSHomeDirectory()];
+    
+    NSDictionary* devicesList = [NSDictionary dictionaryWithContentsOfFile:devicesPropertiesPath];
+    
+    return
+    devicesList[@"Devices"];
+}
+
+//----------------------------------------------------------------------------
+- (void) addDevices:(NSArray*)devices toMenu:(NSMenu*)menu
+{
+    if ([devices count])
+    {
+        [menu addItem:[NSMenuItem separatorItem]];
+        
+        for (NSDictionary* device in devices)
+        {
+            NSString* hostname = device[@"name"];
+            NSMenuItem* webdavDevice = [[NSMenuItem alloc] initWithTitle:hostname action:@selector(openWebDav:) keyEquivalent:@""];
+            [webdavDevice setRepresentedObject:device];
+            [menu addItem:webdavDevice];
+        }
+    }
+}
+
+//----------------------------------------------------------------------------
 - (void) presentApplicationMenu
 {
     NSMenu* menu = [NSMenu new];
@@ -271,9 +312,6 @@
     NSString* simulatorRootPath = [self activeSimulatorRoot];
     NSDictionary* simulatorDetails = [self activeSimulatorProperties];
 
-    NSString* installedApplicationsDataPath = [simulatorRootPath stringByAppendingString:@"data/Containers/Data/Application/"];
-
-    NSArray* installedApplicationsData = [self getSortedFilesFromFolder:installedApplicationsDataPath];
 
     NSString* simulator_title = [NSString stringWithFormat:@"%@ (%@)",
                                  [self activeSimulatorName:simulatorDetails],
@@ -283,27 +321,10 @@
     [simulator setEnabled:NO];
     [menu addItem:simulator];
     
-    [self addApplications:installedApplicationsData usingRootPath:simulatorRootPath toMenu:menu];
+    NSArray* installedApplications = [self installedAppsOnSimulator:simulatorRootPath];
+    [self addSimulatorApplications:installedApplications usingRootPath:simulatorRootPath toMenu:menu];
     
-    NSString* devicesPropertiesPath = [NSString stringWithFormat:@"%@/Library/Preferences/com.dsmelov.devices.plist", NSHomeDirectory()];
-    
-    NSDictionary* devicesList = [NSDictionary dictionaryWithContentsOfFile:devicesPropertiesPath];
-    
-    NSArray* deviceURLS = devicesList[@"Devices"];
-    
-    if ([deviceURLS count])
-    {
-        [menu addItem:[NSMenuItem separatorItem]];
-
-        for (NSDictionary* device in deviceURLS)
-        {
-            NSString* hostname = device[@"name"];
-            NSMenuItem* webdavDevice = [[NSMenuItem alloc] initWithTitle:hostname action:@selector(openWebDav:) keyEquivalent:@""];
-            [webdavDevice setRepresentedObject:device];
-            [menu addItem:webdavDevice];
-        }
-    }
-    
+    [self addDevices:[self getDevices] toMenu:menu];
     
     [menu addItem:[NSMenuItem separatorItem]];
 
