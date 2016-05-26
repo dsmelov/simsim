@@ -153,6 +153,63 @@
 }
 
 //----------------------------------------------------------------------------
+- (NSDictionary*) getMetadataForBundle:(NSString*)applicationBundleIdentifier
+                         usingRootPath:(NSString*)simulatorRootPath
+{
+    NSMutableDictionary* metadata = nil;
+    
+    NSImage* icon = nil;
+
+    NSString* installedApplicationsBundlePath = [simulatorRootPath stringByAppendingString:@"data/Containers/Bundle/Application/"];
+    
+    NSArray* installedApplicationsBundle = [self getSortedFilesFromFolder:installedApplicationsBundlePath];
+    
+    for (NSUInteger j = 0; j < [installedApplicationsBundle count]; j++)
+    {
+        NSString* appBundleUUID = installedApplicationsBundle[j][KEY_FILE];
+        
+        NSString* applicationRootBundlePath = [simulatorRootPath stringByAppendingFormat:@"data/Containers/Bundle/Application/%@/", appBundleUUID];
+        
+        NSString* applicationBundlePropertiesPath = [applicationRootBundlePath stringByAppendingString:@".com.apple.mobile_container_manager.metadata.plist"];
+        
+        NSDictionary* applicationBundleProperties = [NSDictionary dictionaryWithContentsOfFile:applicationBundlePropertiesPath];
+        
+        NSString* bundleIdentifier = applicationBundleProperties[@"MCMMetadataIdentifier"];
+        
+        if ([bundleIdentifier isEqualToString:applicationBundleIdentifier])
+        {
+            NSString* applicationFolderName = [self getApplicationFolderFromPath:applicationRootBundlePath];
+            
+            NSString* applicationFolderPath = [applicationRootBundlePath stringByAppendingFormat:@"%@/", applicationFolderName];
+            
+            NSString* applicationPlistPath = [applicationFolderPath stringByAppendingString:@"Info.plist"];
+            
+            NSDictionary* applicationPlist = [NSDictionary dictionaryWithContentsOfFile:applicationPlistPath];
+            
+            NSString* applicationVersion = applicationPlist[@"CFBundleVersion"];
+            NSString* applicationBundleName = applicationPlist[@"CFBundleName"];
+            
+            if (applicationBundleName.length == 0)
+            {
+                applicationBundleName = applicationPlist[@"CFBundleDisplayName"];
+            }
+            
+            icon = [self getIconForApplicationWithPlist:applicationPlist folder:applicationFolderPath];
+            
+            metadata = [NSMutableDictionary new];
+            
+            metadata[@"applicationBundleName"] = applicationBundleName;
+            metadata[@"applicationVersion"] = applicationVersion;
+            metadata[@"applicationIcon"] = icon;
+            
+            break;
+        }
+    }
+    
+    return metadata;
+}
+
+//----------------------------------------------------------------------------
 - (void) addApplication:(NSDictionary*)application
                  toMenu:(NSMenu*)menu
           usingRootPath:(NSString*)simulatorRootPath
@@ -161,65 +218,30 @@
 {
     NSString* applicationBundleIdentifier = application[@"MCMMetadataIdentifier"];
     
-    NSString* installedApplicationsBundlePath = [simulatorRootPath stringByAppendingString:@"data/Containers/Bundle/Application/"];
-
-    NSArray* installedApplicationsBundle = [self getSortedFilesFromFolder:installedApplicationsBundlePath];
-
-    NSString* applicationVersion = @"";
-    NSString* applicationBundleName = @"";
-    NSImage* icon = nil;
-
-    for (NSUInteger j = 0; j < [installedApplicationsBundle count]; j++)
+    NSDictionary* metadata = [self getMetadataForBundle:applicationBundleIdentifier
+                                          usingRootPath:simulatorRootPath];
+    
+    if (metadata)
     {
-        NSString* appBundleUUID = installedApplicationsBundle[j][KEY_FILE];
-
-        NSString* applicationRootBundlePath = [simulatorRootPath stringByAppendingFormat:@"data/Containers/Bundle/Application/%@/", appBundleUUID];
-
-        NSString* applicationBundlePropertiesPath = [applicationRootBundlePath stringByAppendingString:@".com.apple.mobile_container_manager.metadata.plist"];
-
-        NSDictionary* applicationBundleProperties = [NSDictionary dictionaryWithContentsOfFile:applicationBundlePropertiesPath];
-
-        NSString* bundleIdentifier = applicationBundleProperties[@"MCMMetadataIdentifier"];
-
-        if ([bundleIdentifier isEqualToString:applicationBundleIdentifier])
-        {
-            NSString* applicationFolderName = [self getApplicationFolderFromPath:applicationRootBundlePath];
-
-            NSString* applicationFolderPath = [applicationRootBundlePath stringByAppendingFormat:@"%@/", applicationFolderName];
-
-            NSString* applicationPlistPath = [applicationFolderPath stringByAppendingString:@"Info.plist"];
-
-            NSDictionary* applicationPlist = [NSDictionary dictionaryWithContentsOfFile:applicationPlistPath];
-
-            applicationVersion = applicationPlist[@"CFBundleVersion"];
-            applicationBundleName = applicationPlist[@"CFBundleName"];
-            if (applicationBundleName.length == 0) {
-                applicationBundleName = applicationPlist[@"CFBundleDisplayName"];
-            }
-
-            icon = [self getIconForApplicationWithPlist:applicationPlist folder:applicationFolderPath];
-
-            break;
-        }
+        NSString* title =
+        [NSString stringWithFormat:@"%@ (%@)", metadata[@"applicationBundleName"], metadata[@"applicationVersion"]];
+        
+        // This path will be opened on click
+        NSString* applicationContentPath = [self applicationRootPathByUUID:uuid andRootPath:simulatorRootPath];
+        
+        NSMenuItem* item =
+        [[NSMenuItem alloc] initWithTitle:title action:@selector(openInWithModifier:)
+                            keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
+        
+        [item setRepresentedObject:applicationContentPath];
+        
+        [item setImage:metadata[@"applicationIcon"]];
+        
+        [self addSubMenusToItem:item usingPath:applicationContentPath];
+        
+        
+        [menu addItem:item];
     }
-
-    NSString* title = [NSString stringWithFormat:@"%@ (%@)", applicationBundleName, applicationVersion];
-
-    // This path will be opened on click
-    NSString* applicationContentPath = [self applicationRootPathByUUID:uuid andRootPath:simulatorRootPath];
-
-    NSMenuItem* item =
-    [[NSMenuItem alloc] initWithTitle:title action:@selector(openInWithModifier:)
-                        keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
-    
-    [item setRepresentedObject:applicationContentPath];
-
-    [item setImage:icon];
-    
-    [self addSubMenusToItem:item usingPath:applicationContentPath];
-    
-
-    [menu addItem:item];
 }
 
 //----------------------------------------------------------------------------
