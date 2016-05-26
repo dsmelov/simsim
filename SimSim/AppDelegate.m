@@ -124,36 +124,8 @@
 }
 
 //----------------------------------------------------------------------------
-- (void) presentApplicationMenu
+- (void)addApplications:(NSArray*)installedApplicationsData usingRootPath:(NSString*)simulatorRootPath toMenu:(NSMenu*)menu
 {
-    NSMenu* menu = [NSMenu new];
-
-    NSString* simulatorPropertiesPath =
-        [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.iphonesimulator.plist", NSHomeDirectory()];
-
-    NSDictionary* simulatorProperties = [NSDictionary dictionaryWithContentsOfFile:simulatorPropertiesPath];
-
-    NSString* simulatorUUID = simulatorProperties[@"CurrentDeviceUDID"];
-
-    NSString* simulatorRootPath = [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/", NSHomeDirectory(), simulatorUUID];
-
-    NSString* simulatorDetailsPath = [simulatorRootPath stringByAppendingString:@"device.plist"];
-
-    NSDictionary* simulatorDetails = [NSDictionary dictionaryWithContentsOfFile:simulatorDetailsPath];
-
-    NSString* installedApplicationsDataPath = [simulatorRootPath stringByAppendingString:@"data/Containers/Data/Application/"];
-
-    NSArray* installedApplicationsData = [self getSortedFilesFromFolder:installedApplicationsDataPath];
-
-    NSString* simulator_name = simulatorDetails[@"name"];
-    NSString* simulator_runtime = [simulatorDetails[@"runtime"] stringByReplacingOccurrencesOfString:@"com.apple.CoreSimulator.SimRuntime." withString:@""];
-    
-    NSString* simulator_title = [NSString stringWithFormat:@"%@ (%@)", simulator_name, simulator_runtime];
-    
-    NSMenuItem* simulator = [[NSMenuItem alloc] initWithTitle:simulator_title action:nil keyEquivalent:@""];
-    [simulator setEnabled:NO];
-    [menu addItem:simulator];
-    
     for (NSUInteger i = 0; i < [installedApplicationsData count]; i++)
     {
         NSString* appDataUUID = installedApplicationsData[i][KEY_FILE];
@@ -245,7 +217,73 @@
             [menu addItem:item];
         }
     }
+}
 
+//----------------------------------------------------------------------------
+- (NSString*) simulatorRootPathByUUID:(NSString*)uuid
+{
+    return
+    [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/", NSHomeDirectory(), uuid];
+}
+
+//----------------------------------------------------------------------------
+- (NSString*) activeSimulatorRoot
+{
+    NSString* simulatorPropertiesPath =
+    [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.iphonesimulator.plist", NSHomeDirectory()];
+    
+    NSDictionary* simulatorProperties = [NSDictionary dictionaryWithContentsOfFile:simulatorPropertiesPath];
+
+    NSString* uuid = simulatorProperties[@"CurrentDeviceUDID"];
+    
+    return [self simulatorRootPathByUUID:uuid];
+}
+
+//----------------------------------------------------------------------------
+- (NSDictionary*) activeSimulatorProperties
+{
+    NSString* simulatorDetailsPath =
+    [[self activeSimulatorRoot] stringByAppendingString:@"device.plist"];
+
+    return
+    [NSDictionary dictionaryWithContentsOfFile:simulatorDetailsPath];
+}
+
+//----------------------------------------------------------------------------
+- (NSString*) activeSimulatorName:(NSDictionary*)properties
+{
+    return
+    properties[@"name"];
+}
+
+//----------------------------------------------------------------------------
+- (NSString*) activeSimulatorRuntime:(NSDictionary*)properties
+{
+    return
+    [properties[@"runtime"] stringByReplacingOccurrencesOfString:@"com.apple.CoreSimulator.SimRuntime." withString:@""];
+}
+
+//----------------------------------------------------------------------------
+- (void) presentApplicationMenu
+{
+    NSMenu* menu = [NSMenu new];
+
+    NSString* simulatorRootPath = [self activeSimulatorRoot];
+    NSDictionary* simulatorDetails = [self activeSimulatorProperties];
+
+    NSString* installedApplicationsDataPath = [simulatorRootPath stringByAppendingString:@"data/Containers/Data/Application/"];
+
+    NSArray* installedApplicationsData = [self getSortedFilesFromFolder:installedApplicationsDataPath];
+
+    NSString* simulator_title = [NSString stringWithFormat:@"%@ (%@)",
+                                 [self activeSimulatorName:simulatorDetails],
+                                 [self activeSimulatorRuntime:simulatorDetails]];
+    
+    NSMenuItem* simulator = [[NSMenuItem alloc] initWithTitle:simulator_title action:nil keyEquivalent:@""];
+    [simulator setEnabled:NO];
+    [menu addItem:simulator];
+    
+    [self addApplications:installedApplicationsData usingRootPath:simulatorRootPath toMenu:menu];
     
     NSString* devicesPropertiesPath = [NSString stringWithFormat:@"%@/Library/Preferences/com.dsmelov.devices.plist", NSHomeDirectory()];
     
