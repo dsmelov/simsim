@@ -139,7 +139,21 @@
         [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:@"2"];
         [finder setRepresentedObject:path];
         [subMenu addItem:finder];
-        
+
+        CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
+        CFArrayRef iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(iTermBundleID, NULL);
+
+        if (iTermAppURLs) {
+            NSMenuItem* iTerm =
+            [[NSMenuItem alloc] initWithTitle:@"iTerm" action:@selector(openIniTerm:) keyEquivalent:@"3"];
+            [iTerm setRepresentedObject:path];
+            [subMenu addItem:iTerm];
+
+            CFRelease(iTermAppURLs);
+        }
+
+        CFRelease(iTermBundleID);
+
         if ([CommanderOne isCommanderOneAvailable])
         {
             NSMenuItem* commanderOne =
@@ -620,6 +634,14 @@
     NSString* path = (NSString*)[sender representedObject];
 
     [[NSWorkspace sharedWorkspace] openFile:path withApplication:@"Terminal"];
+}
+
+//----------------------------------------------------------------------------
+- (void) openIniTerm:(id)sender
+{
+    NSString* path = (NSString*)[sender representedObject];
+
+    [[NSWorkspace sharedWorkspace] openFile:path withApplication:@"iTerm"];
 }
 
 //----------------------------------------------------------------------------
