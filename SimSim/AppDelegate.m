@@ -143,7 +143,8 @@
         CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
         CFArrayRef iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(iTermBundleID, NULL);
 
-        if (iTermAppURLs) {
+        if (iTermAppURLs)
+        {
             NSMenuItem* iTerm =
             [[NSMenuItem alloc] initWithTitle:@"iTerm" action:@selector(openIniTerm:) keyEquivalent:@"3"];
             [iTerm setRepresentedObject:path];
@@ -167,58 +168,75 @@
 }
 
 //----------------------------------------------------------------------------
-- (NSDictionary*) getMetadataForBundle:(NSString*)applicationBundleIdentifier
-                         usingRootPath:(NSString*)simulatorRootPath
+- (void) processBundles:(NSArray*)bundles
+          usingRootPath:(NSString*)simulatorRootPath
+    andBundleIdentifier:(NSString*)applicationBundleIdentifier
+         withFinalBlock:(void(^)(NSString* applicationRootBundlePath))block
 {
-    NSMutableDictionary* metadata = nil;
-    
-    NSImage* icon = nil;
-
-    NSString* installedApplicationsBundlePath = [simulatorRootPath stringByAppendingString:@"data/Containers/Bundle/Application/"];
-    
-    NSArray* installedApplicationsBundle = [self getSortedFilesFromFolder:installedApplicationsBundlePath];
-    
-    for (NSUInteger j = 0; j < [installedApplicationsBundle count]; j++)
+    for (NSUInteger j = 0; j < [bundles count]; j++)
     {
-        NSString* appBundleUUID = installedApplicationsBundle[j][KEY_FILE];
+        NSString* appBundleUUID = bundles[j][KEY_FILE];
         
-        NSString* applicationRootBundlePath = [simulatorRootPath stringByAppendingFormat:@"data/Containers/Bundle/Application/%@/", appBundleUUID];
+        NSString* applicationRootBundlePath =
+            [simulatorRootPath stringByAppendingFormat:@"data/Containers/Bundle/Application/%@/", appBundleUUID];
         
-        NSString* applicationBundlePropertiesPath = [applicationRootBundlePath stringByAppendingString:@".com.apple.mobile_container_manager.metadata.plist"];
+        NSString* applicationBundlePropertiesPath =
+            [applicationRootBundlePath stringByAppendingString:@".com.apple.mobile_container_manager.metadata.plist"];
         
-        NSDictionary* applicationBundleProperties = [NSDictionary dictionaryWithContentsOfFile:applicationBundlePropertiesPath];
+        NSDictionary* applicationBundleProperties =
+        [NSDictionary dictionaryWithContentsOfFile:applicationBundlePropertiesPath];
         
         NSString* bundleIdentifier = applicationBundleProperties[@"MCMMetadataIdentifier"];
         
         if ([bundleIdentifier isEqualToString:applicationBundleIdentifier])
         {
-            NSString* applicationFolderName = [self getApplicationFolderFromPath:applicationRootBundlePath];
-            
-            NSString* applicationFolderPath = [applicationRootBundlePath stringByAppendingFormat:@"%@/", applicationFolderName];
-            
-            NSString* applicationPlistPath = [applicationFolderPath stringByAppendingString:@"Info.plist"];
-            
-            NSDictionary* applicationPlist = [NSDictionary dictionaryWithContentsOfFile:applicationPlistPath];
-            
-            NSString* applicationVersion = applicationPlist[@"CFBundleVersion"];
-            NSString* applicationBundleName = applicationPlist[@"CFBundleName"];
-            
-            if (applicationBundleName.length == 0)
-            {
-                applicationBundleName = applicationPlist[@"CFBundleDisplayName"];
-            }
-            
-            icon = [self getIconForApplicationWithPlist:applicationPlist folder:applicationFolderPath];
-            
-            metadata = [NSMutableDictionary new];
-            
-            metadata[@"applicationBundleName"] = applicationBundleName;
-            metadata[@"applicationVersion"] = applicationVersion;
-            metadata[@"applicationIcon"] = icon;
-            
+            block(applicationRootBundlePath);
             break;
         }
     }
+}
+
+//----------------------------------------------------------------------------
+- (NSDictionary*) getMetadataForBundle:(NSString*)applicationBundleIdentifier
+                         usingRootPath:(NSString*)simulatorRootPath
+{
+    __block NSMutableDictionary* metadata = nil;
+
+    NSString* installedApplicationsBundlePath =
+        [simulatorRootPath stringByAppendingString:@"data/Containers/Bundle/Application/"];
+    
+    NSArray* installedApplicationsBundle =
+        [self getSortedFilesFromFolder:installedApplicationsBundlePath];
+    
+    [self processBundles:installedApplicationsBundle
+           usingRootPath:simulatorRootPath
+     andBundleIdentifier:applicationBundleIdentifier
+         withFinalBlock:^(NSString* applicationRootBundlePath)
+    {
+        NSString* applicationFolderName = [self getApplicationFolderFromPath:applicationRootBundlePath];
+        
+        NSString* applicationFolderPath = [applicationRootBundlePath stringByAppendingFormat:@"%@/", applicationFolderName];
+        
+        NSString* applicationPlistPath = [applicationFolderPath stringByAppendingString:@"Info.plist"];
+        
+        NSDictionary* applicationPlist = [NSDictionary dictionaryWithContentsOfFile:applicationPlistPath];
+        
+        NSString* applicationVersion = applicationPlist[@"CFBundleVersion"];
+        NSString* applicationBundleName = applicationPlist[@"CFBundleName"];
+        
+        if (applicationBundleName.length == 0)
+        {
+            applicationBundleName = applicationPlist[@"CFBundleDisplayName"];
+        }
+        
+        NSImage* icon = [self getIconForApplicationWithPlist:applicationPlist folder:applicationFolderPath];
+        
+        metadata = [NSMutableDictionary new];
+        
+        metadata[@"applicationBundleName"] = applicationBundleName;
+        metadata[@"applicationVersion"] = applicationVersion;
+        metadata[@"applicationIcon"] = icon;
+    }];
     
     return metadata;
 }
@@ -232,8 +250,9 @@
 {
     NSString* applicationBundleIdentifier = application[@"MCMMetadataIdentifier"];
     
-    NSDictionary* metadata = [self getMetadataForBundle:applicationBundleIdentifier
-                                          usingRootPath:simulatorRootPath];
+    NSDictionary* metadata =
+        [self getMetadataForBundle:applicationBundleIdentifier
+                     usingRootPath:simulatorRootPath];
     
     if (metadata)
     {
