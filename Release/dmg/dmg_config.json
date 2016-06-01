@@ -1,0 +1,11 @@
+{
+  "title": "SimSim",
+  "icon": "AppIcon.icns",
+  "icon-size": 80,
+  "background": "background.png",
+  "contents": [
+    { "x": 350, "y": 190, "type": "link", "path": "/Applications" },
+    { "x": 160, "y": 190, "type": "file", "path": "../../Build/Products/Release/SimSim.app" }
+  ]
+
+}
