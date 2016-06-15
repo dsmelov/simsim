@@ -8,7 +8,9 @@
 
 #import "AppDelegate.h"
 #import "CommanderOne.h"
+#ifndef APPSTORE
 #import "Settings.h"
+#endif
 
 #import <NetFS/NetFS.h>
 
@@ -421,6 +423,7 @@
 //----------------------------------------------------------------------------
 - (void) addServiceItemsToMenu:(NSMenu*)menu
 {
+#ifndef APPSTORE
     NSMenuItem* startAtLogin =
     [[NSMenuItem alloc] initWithTitle:@"Start at Login" action:@selector(handleStartAtLogin:) keyEquivalent:@""];
     
@@ -435,6 +438,7 @@
     }
     [startAtLogin setRepresentedObject:@(isStartAtLoginEnabled)];
     [menu addItem:startAtLogin];
+#endif
     
     NSMenuItem* hideSubMenusItem =
     [[NSMenuItem alloc] initWithTitle:@"Hide Submenus" action:@selector(handleHideSubMenus:) keyEquivalent:@""];
@@ -685,6 +689,7 @@
     [[NSUserDefaults standardUserDefaults] setBool:self.hideSubMenus forKey:HIDE_SUBMENUS_PREFERENCE];
 }
 
+#ifndef APPSTORE
 //----------------------------------------------------------------------------
 - (void) handleStartAtLogin:(id)sender
 {
@@ -703,6 +708,7 @@
         [sender setState:NSOnState];
     }
 }
+#endif
 
 //----------------------------------------------------------------------------
 - (void) aboutApp:(id)sender
