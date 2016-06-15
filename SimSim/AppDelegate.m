@@ -8,7 +8,9 @@
 
 #import "AppDelegate.h"
 #import "CommanderOne.h"
-#ifndef APPSTORE
+#ifdef APPSTORE
+#include <pwd.h>
+#else
 #import "Settings.h"
 #endif
 
@@ -336,17 +338,31 @@
 }
 
 //----------------------------------------------------------------------------
+- (NSString*) homeDirectoryPath
+{
+#ifdef APPSTORE
+    const char* home = getpwuid(getuid())->pw_dir;
+    NSString* path = [[NSFileManager defaultManager]
+                      stringWithFileSystemRepresentation:home
+                      length:strlen(home)];
+    return path;
+#else
+    return NSHomeDirectory();
+#endif
+}
+
+//----------------------------------------------------------------------------
 - (NSString*) simulatorRootPathByUUID:(NSString*)uuid
 {
     return
-    [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/", NSHomeDirectory(), uuid];
+    [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/", [self homeDirectoryPath], uuid];
 }
 
 //----------------------------------------------------------------------------
 - (NSString*) activeSimulatorRoot
 {
     NSString* simulatorPropertiesPath =
-    [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.iphonesimulator.plist", NSHomeDirectory()];
+    [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.iphonesimulator.plist", [self homeDirectoryPath]];
     
     NSDictionary* simulatorProperties = [NSDictionary dictionaryWithContentsOfFile:simulatorPropertiesPath];
 
@@ -395,7 +411,7 @@
 - (NSArray*) getDevices
 {
     NSString* devicesPropertiesPath =
-    [NSString stringWithFormat:@"%@/Library/Preferences/com.dsmelov.devices.plist", NSHomeDirectory()];
+    [NSString stringWithFormat:@"%@/Library/Preferences/com.dsmelov.devices.plist", [self homeDirectoryPath]];
     
     NSDictionary* devicesList = [NSDictionary dictionaryWithContentsOfFile:devicesPropertiesPath];
     

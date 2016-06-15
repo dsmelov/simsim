@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7C85CC471D117BB6008ED739"
-               BuildableName = "SimSim AppStore.app"
+               BuildableName = "SimSim.app"
                BlueprintName = "SimSim AppStore"
                ReferencedContainer = "container:SimSim.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7C85CC471D117BB6008ED739"
-            BuildableName = "SimSim AppStore.app"
+            BuildableName = "SimSim.app"
             BlueprintName = "SimSim AppStore"
             ReferencedContainer = "container:SimSim.xcodeproj">
          </BuildableReference>
@@ -56,7 +56,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7C85CC471D117BB6008ED739"
-            BuildableName = "SimSim AppStore.app"
+            BuildableName = "SimSim.app"
             BlueprintName = "SimSim AppStore"
             ReferencedContainer = "container:SimSim.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7C85CC471D117BB6008ED739"
-            BuildableName = "SimSim AppStore.app"
+            BuildableName = "SimSim.app"
             BlueprintName = "SimSim AppStore"
             ReferencedContainer = "container:SimSim.xcodeproj">
          </BuildableReference>
