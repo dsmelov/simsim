@@ -13,9 +13,7 @@ Like this app? Write a post about it! Or just share link to this page on Twitter
 - Click on app in list to open it's data folder in Finder
 - Click + Alt - to open in Terminal.
 
-[Read our wiki for more details about device access](https://github.com/dsmelov/simsim/wiki/Accessing-app-folders-on-device-using-SimSim)).
-
-Zero lines of code in Swift. 100% pure copy-paste from StackOverflow.
+[Read our wiki for more details about device access](https://github.com/dsmelov/simsim/wiki/Accessing-app-folders-on-device-using-SimSim).
 
 ![Alt text](/simsim.png?raw=true "screenshot")
 
