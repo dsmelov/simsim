@@ -9,5 +9,5 @@ Like this app? Write a post about it! Or just share link to this page on Twitter
 
 [Read our wiki for more details about device access](https://github.com/dsmelov/simsim/wiki/Accessing-app-folders-on-device-using-SimSim).
 
-->![Alt text](/simsim.png?raw=true "screenshot")<-
+![Alt text](/simsim.png?raw=true "screenshot")
 
