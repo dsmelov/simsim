@@ -149,13 +149,6 @@
         [subMenu addItem:finder];
 
         hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
-
-        NSMenuItem* pasteboard =
-        [[NSMenuItem alloc] initWithTitle:@"PasteBoard" action:@selector(copyToPasteboard:) keyEquivalent:[hotkey stringValue]];
-        [pasteboard setRepresentedObject:path];
-        [subMenu addItem:pasteboard];
-        
-        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
         
         CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
         CFArrayRef iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(iTermBundleID, NULL);
@@ -181,6 +174,22 @@
             [subMenu addItem:commanderOne];
             hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
         }
+
+        [subMenu addItem:[NSMenuItem separatorItem]];
+        
+        NSMenuItem* pasteboard =
+        [[NSMenuItem alloc] initWithTitle:@"Copy path to Clipboard" action:@selector(copyToPasteboard:) keyEquivalent:[hotkey stringValue]];
+        [pasteboard setRepresentedObject:path];
+        [subMenu addItem:pasteboard];
+        
+        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+
+        NSMenuItem* resetApplication =
+        [[NSMenuItem alloc] initWithTitle:@"Reset application data" action:@selector(resetApplication:) keyEquivalent:[hotkey stringValue]];
+        [resetApplication setRepresentedObject:path];
+        [subMenu addItem:resetApplication];
+        
+        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
         
         [item setSubmenu:subMenu];
     }
@@ -685,6 +694,41 @@
     [pasteboard setString:path forType:NSPasteboardTypeString];
 }
 
+
+//----------------------------------------------------------------------------
+- (void) resetFolder:(NSString*)path
+{
+    NSFileManager* fm = [NSFileManager new];
+    NSDirectoryEnumerator* en = [fm enumeratorAtPath:path];
+    NSError* error = nil;
+    BOOL result = NO;
+    
+    NSString* file;
+    
+    while (file = [en nextObject])
+    {
+        result = [fm removeItemAtPath:[path stringByAppendingPathComponent:file] error:&error];
+        if (result == NO && error)
+        {
+            NSLog(@"Something went wrong: %@", error);
+        }
+    }
+}
+
+//----------------------------------------------------------------------------
+- (void) resetApplication:(id)sender
+{
+    NSString* path = (NSString*)[sender representedObject];
+    
+    NSString* target = [path stringByAppendingPathComponent:@"Documents"];
+    [self resetFolder:target];
+
+    target = [path stringByAppendingPathComponent:@"Library"];
+    [self resetFolder:target];
+
+    target = [path stringByAppendingPathComponent:@"tmp"];
+    [self resetFolder:target];
+}
 
 //----------------------------------------------------------------------------
 - (void) openInFinder:(id)sender
