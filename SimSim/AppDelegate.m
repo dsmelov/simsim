@@ -134,25 +134,39 @@
     {
         NSMenu* subMenu = [NSMenu new];
         
+        NSNumber* hotkey = [NSNumber numberWithInt:1];
+        
         NSMenuItem* terminal =
-        [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:@"1"];
+        [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:[hotkey stringValue]];
         [terminal setRepresentedObject:path];
         [subMenu addItem:terminal];
         
+        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+        
         NSMenuItem* finder =
-        [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:@"2"];
+        [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:[hotkey stringValue]];
         [finder setRepresentedObject:path];
         [subMenu addItem:finder];
 
+        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+
+        NSMenuItem* pasteboard =
+        [[NSMenuItem alloc] initWithTitle:@"PasteBoard" action:@selector(copyToPasteboard:) keyEquivalent:[hotkey stringValue]];
+        [pasteboard setRepresentedObject:path];
+        [subMenu addItem:pasteboard];
+        
+        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+        
         CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
         CFArrayRef iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(iTermBundleID, NULL);
 
         if (iTermAppURLs)
         {
             NSMenuItem* iTerm =
-            [[NSMenuItem alloc] initWithTitle:@"iTerm" action:@selector(openIniTerm:) keyEquivalent:@"3"];
+            [[NSMenuItem alloc] initWithTitle:@"iTerm" action:@selector(openIniTerm:) keyEquivalent:[hotkey stringValue]];
             [iTerm setRepresentedObject:path];
             [subMenu addItem:iTerm];
+            hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
 
             CFRelease(iTermAppURLs);
         }
@@ -162,9 +176,10 @@
         if ([CommanderOne isCommanderOneAvailable])
         {
             NSMenuItem* commanderOne =
-            [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:@"3"];
+            [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:[hotkey stringValue]];
             [commanderOne setRepresentedObject:path];
             [subMenu addItem:commanderOne];
+            hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
         }
         
         [item setSubmenu:subMenu];
@@ -658,6 +673,18 @@
     
     [self mount:[NSURL URLWithString: path] usingName:name inApp:@"Finder"];
 }
+
+//----------------------------------------------------------------------------
+- (void) copyToPasteboard:(id)sender
+{
+    NSString* path = (NSString*)[sender representedObject];
+    
+    NSPasteboard* pasteboard = [NSPasteboard generalPasteboard];
+    
+    [pasteboard declareTypes:[NSArray arrayWithObject:NSPasteboardTypeString] owner:nil];
+    [pasteboard setString:path forType:NSPasteboardTypeString];
+}
+
 
 //----------------------------------------------------------------------------
 - (void) openInFinder:(id)sender
