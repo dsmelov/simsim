@@ -11,6 +11,7 @@ Like this app? Write a post about it! Or just share link to this page on Twitter
 - Click + Alt - to open in Terminal.
 
 v1.2.3: Added ability to reset app data and take screenshot from simulator.
+
 v1.2.2: Added ability to copy application path to pasteboard.
 
 [Read our wiki for more details about device access](https://github.com/dsmelov/simsim/wiki/Accessing-app-folders-on-device-using-SimSim).
