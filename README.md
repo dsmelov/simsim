@@ -10,7 +10,7 @@ Like this app? Write a post about it! Or just share link to this page on Twitter
 - Click on app in list to open it's data folder in Finder
 - Click + Alt - to open in Terminal.
 
-v1.2.3: Added ability to reset app data and take screenshot from simulator.
+v1.2.3: Added ability to reset app data and take screenshots from simulator (will be saved in your Desktop folder).
 
 v1.2.2: Added ability to copy application path to pasteboard.
 
