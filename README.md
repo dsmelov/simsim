@@ -1,6 +1,6 @@
 # SimSim
 
-Use [SimSim 1.2.2](https://github.com/dsmelov/simsim/blob/master/Release/SimSim_1.2.2.zip?raw=true) to explore application folders while developing for iOS. SimSim is a free application and there will be no charges in the future.
+Use [SimSim 1.2.3](https://github.com/dsmelov/simsim/blob/master/Release/SimSim_1.2.3.zip?raw=true) to explore application folders while developing for iOS. SimSim is a free application and there will be no charges in the future.
 Works without any problems with Xcode 8! :)
 
 Like this app? Write a post about it! Or just share link to this page on Twitter/Facebook/etc.
@@ -10,6 +10,7 @@ Like this app? Write a post about it! Or just share link to this page on Twitter
 - Click on app in list to open it's data folder in Finder
 - Click + Alt - to open in Terminal.
 
+v1.2.3: Added ability to reset app data and take screenshot from simulator.
 v1.2.2: Added ability to copy application path to pasteboard.
 
 [Read our wiki for more details about device access](https://github.com/dsmelov/simsim/wiki/Accessing-app-folders-on-device-using-SimSim).

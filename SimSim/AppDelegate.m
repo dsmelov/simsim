@@ -14,6 +14,9 @@
 #import "Settings.h"
 #endif
 
+#include <Cocoa/Cocoa.h>
+#include <CoreGraphics/CGWindow.h>
+
 #import <NetFS/NetFS.h>
 
 #define KEY_FILE                    @"file"
@@ -170,6 +173,13 @@
     
     hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
 
+    NSMenuItem* screenshot =
+    [[NSMenuItem alloc] initWithTitle:@"Take Screenshot" action:@selector(takeScreenshot:) keyEquivalent:[hotkey stringValue]];
+    [screenshot setRepresentedObject:path];
+    [subMenu addItem:screenshot];
+    
+    hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+    
     NSMenuItem* resetApplication =
     [[NSMenuItem alloc] initWithTitle:@"Reset application data" action:@selector(resetApplication:) keyEquivalent:[hotkey stringValue]];
     [resetApplication setRepresentedObject:path];
@@ -664,6 +674,48 @@
     [pasteboard setString:path forType:NSPasteboardTypeString];
 }
 
+//----------------------------------------------------------------------------
+- (void) takeScreenshot:(id)sender
+{
+    NSString* owner = @"Simulator";
+    NSArray* windows = (NSArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements,kCGNullWindowID));
+    for(NSDictionary *window in windows)
+    {
+        if ([[window objectForKey:(NSString *)kCGWindowOwnerName] isEqualToString:owner])
+        {
+            NSString* windowName = [window objectForKey:(NSString *)kCGWindowName];
+            
+            if ([windowName containsString:@"iOS"] ||
+                [windowName containsString:@"tvOS"] ||
+                [windowName containsString:@"watchOS"])
+            {
+                NSNumber* windowID = [window objectForKey:(NSString *)kCGWindowNumber];
+
+                NSString* args = @"-l";
+                args = [args stringByAppendingString:[windowID stringValue]];
+                
+                NSString *dateComponents = @"yyyyMMdd_HHmmss";
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+                [dateFormatter setDateFormat:dateComponents];
+                
+                NSDate *date = [NSDate date];
+                NSString *dateString = [dateFormatter stringFromDate:date];
+                
+                NSTask *screencapture = [NSTask new];
+
+                NSString* screenshotPath =
+                [NSString stringWithFormat:@"%@/Desktop/Screen Shot at %@.png", [self homeDirectoryPath], dateString];
+
+                [screencapture setLaunchPath:@"/usr/sbin/screencapture"];
+                [screencapture setArguments:@[args, screenshotPath]];
+                [screencapture launch];
+            }
+        }
+    }
+    
+    NSLog(@"Finished");
+}
 
 //----------------------------------------------------------------------------
 - (void) resetFolder:(NSString*)folder inRoot:(NSString*)root
