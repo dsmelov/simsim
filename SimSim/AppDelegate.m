@@ -679,38 +679,37 @@
 {
     NSString* owner = @"Simulator";
     NSArray* windows = (NSArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements,kCGNullWindowID));
+    
     for(NSDictionary *window in windows)
     {
-        if ([[window objectForKey:(NSString *)kCGWindowOwnerName] isEqualToString:owner])
+        NSString* windowOwner = [window objectForKey:(NSString *)kCGWindowOwnerName];
+        NSString* windowName = [window objectForKey:(NSString *)kCGWindowName];
+                
+        if (([windowOwner isEqualToString:@"Simulator"] &&
+             [windowName containsString:@"iOS"]) ||
+             [windowOwner isEqualToString:@"Simulator (Watch)"])
         {
-            NSString* windowName = [window objectForKey:(NSString *)kCGWindowName];
+            NSNumber* windowID = [window objectForKey:(NSString *)kCGWindowNumber];
+
+            NSString* args = @"-l";
+            args = [args stringByAppendingString:[windowID stringValue]];
             
-            if ([windowName containsString:@"iOS"] ||
-                [windowName containsString:@"tvOS"] ||
-                [windowName containsString:@"watchOS"])
-            {
-                NSNumber* windowID = [window objectForKey:(NSString *)kCGWindowNumber];
+            NSString *dateComponents = @"yyyyMMdd_HHmmss";
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+            [dateFormatter setDateFormat:dateComponents];
+            
+            NSDate *date = [NSDate date];
+            NSString *dateString = [dateFormatter stringFromDate:date];
+            
+            NSTask *screencapture = [NSTask new];
 
-                NSString* args = @"-l";
-                args = [args stringByAppendingString:[windowID stringValue]];
-                
-                NSString *dateComponents = @"yyyyMMdd_HHmmss";
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-                [dateFormatter setDateFormat:dateComponents];
-                
-                NSDate *date = [NSDate date];
-                NSString *dateString = [dateFormatter stringFromDate:date];
-                
-                NSTask *screencapture = [NSTask new];
+            NSString* screenshotPath =
+            [NSString stringWithFormat:@"%@/Desktop/Screen Shot at %@.png", [self homeDirectoryPath], dateString];
 
-                NSString* screenshotPath =
-                [NSString stringWithFormat:@"%@/Desktop/Screen Shot at %@.png", [self homeDirectoryPath], dateString];
-
-                [screencapture setLaunchPath:@"/usr/sbin/screencapture"];
-                [screencapture setArguments:@[args, screenshotPath]];
-                [screencapture launch];
-            }
+            [screencapture setLaunchPath:@"/usr/sbin/screencapture"];
+            [screencapture setArguments:@[args, screenshotPath]];
+            [screencapture launch];
         }
     }
 }
