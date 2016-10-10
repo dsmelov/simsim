@@ -1,7 +1,7 @@
 # SimSim
 
 Use [SimSim 1.2.2](https://github.com/dsmelov/simsim/blob/master/Release/SimSim_1.2.2.zip?raw=true) to explore application folders while developing for iOS. SimSim is a free application and there will be no charges in the future.
-Works like a charm with XCode 8! :)
+Works without any problems with Xcode 8! :)
 
 Like this app? Write a post about it! Or just share link to this page on Twitter/Facebook/etc.
 
