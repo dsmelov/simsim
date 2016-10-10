@@ -666,8 +666,10 @@
 
 
 //----------------------------------------------------------------------------
-- (void) resetFolder:(NSString*)path
+- (void) resetFolder:(NSString*)folder inRoot:(NSString*)root
 {
+    NSString* path = [root stringByAppendingPathComponent:folder];
+    
     NSFileManager* fm = [NSFileManager new];
     NSDirectoryEnumerator* en = [fm enumeratorAtPath:path];
     NSError* error = nil;
@@ -690,14 +692,9 @@
 {
     NSString* path = (NSString*)[sender representedObject];
     
-    NSString* target = [path stringByAppendingPathComponent:@"Documents"];
-    [self resetFolder:target];
-
-    target = [path stringByAppendingPathComponent:@"Library"];
-    [self resetFolder:target];
-
-    target = [path stringByAppendingPathComponent:@"tmp"];
-    [self resetFolder:target];
+    [self resetFolder:@"Documents" inRoot:path];
+    [self resetFolder:@"Library" inRoot:path];
+    [self resetFolder:@"tmp" inRoot:path];
 }
 
 //----------------------------------------------------------------------------
