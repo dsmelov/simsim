@@ -18,14 +18,12 @@
 
 #define KEY_FILE                    @"file"
 #define KEY_MODIFICATION_DATE       @"modificationDate"
-#define HIDE_SUBMENUS_PREFERENCE    @"hideSubMenus"
 #define ALREADY_LAUNCHED_PREFERENCE @"alreadyLaunched"
 
 //============================================================================
 @interface AppDelegate ()
 
 @property (strong, nonatomic) NSStatusItem* statusItem;
-@property (nonatomic) BOOL hideSubMenus;
 
 @end
 
@@ -115,84 +113,71 @@
     _statusItem.highlightMode = YES;
     _statusItem.action = @selector(presentApplicationMenu);
     _statusItem.enabled = YES;
-    
-    BOOL firstLaunch = ![[NSUserDefaults standardUserDefaults] boolForKey:ALREADY_LAUNCHED_PREFERENCE];
-    
-    if (firstLaunch)
-    {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:HIDE_SUBMENUS_PREFERENCE];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:ALREADY_LAUNCHED_PREFERENCE];
-    }
-    
-    self.hideSubMenus = [[NSUserDefaults standardUserDefaults] boolForKey:HIDE_SUBMENUS_PREFERENCE];
 }
 
 //----------------------------------------------------------------------------
 - (void) addSubMenusToItem:(NSMenuItem*)item usingPath:(NSString*)path
 {
-    if (!self.hideSubMenus)
+    NSMenu* subMenu = [NSMenu new];
+    
+    NSNumber* hotkey = [NSNumber numberWithInt:1];
+    
+    NSMenuItem* terminal =
+    [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:[hotkey stringValue]];
+    [terminal setRepresentedObject:path];
+    [subMenu addItem:terminal];
+    
+    hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+    
+    NSMenuItem* finder =
+    [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:[hotkey stringValue]];
+    [finder setRepresentedObject:path];
+    [subMenu addItem:finder];
+
+    hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+    
+    CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
+    CFArrayRef iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(iTermBundleID, NULL);
+
+    if (iTermAppURLs)
     {
-        NSMenu* subMenu = [NSMenu new];
-        
-        NSNumber* hotkey = [NSNumber numberWithInt:1];
-        
-        NSMenuItem* terminal =
-        [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:[hotkey stringValue]];
-        [terminal setRepresentedObject:path];
-        [subMenu addItem:terminal];
-        
-        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
-        
-        NSMenuItem* finder =
-        [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:[hotkey stringValue]];
-        [finder setRepresentedObject:path];
-        [subMenu addItem:finder];
-
-        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
-        
-        CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
-        CFArrayRef iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(iTermBundleID, NULL);
-
-        if (iTermAppURLs)
-        {
-            NSMenuItem* iTerm =
-            [[NSMenuItem alloc] initWithTitle:@"iTerm" action:@selector(openIniTerm:) keyEquivalent:[hotkey stringValue]];
-            [iTerm setRepresentedObject:path];
-            [subMenu addItem:iTerm];
-            hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
-
-            CFRelease(iTermAppURLs);
-        }
-
-        CFRelease(iTermBundleID);
-
-        if ([CommanderOne isCommanderOneAvailable])
-        {
-            NSMenuItem* commanderOne =
-            [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:[hotkey stringValue]];
-            [commanderOne setRepresentedObject:path];
-            [subMenu addItem:commanderOne];
-            hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
-        }
-
-        [subMenu addItem:[NSMenuItem separatorItem]];
-        
-        NSMenuItem* pasteboard =
-        [[NSMenuItem alloc] initWithTitle:@"Copy path to Clipboard" action:@selector(copyToPasteboard:) keyEquivalent:[hotkey stringValue]];
-        [pasteboard setRepresentedObject:path];
-        [subMenu addItem:pasteboard];
-        
+        NSMenuItem* iTerm =
+        [[NSMenuItem alloc] initWithTitle:@"iTerm" action:@selector(openIniTerm:) keyEquivalent:[hotkey stringValue]];
+        [iTerm setRepresentedObject:path];
+        [subMenu addItem:iTerm];
         hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
 
-        NSMenuItem* resetApplication =
-        [[NSMenuItem alloc] initWithTitle:@"Reset application data" action:@selector(resetApplication:) keyEquivalent:[hotkey stringValue]];
-        [resetApplication setRepresentedObject:path];
-        [subMenu addItem:resetApplication];
-        
-        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
-        
-        [item setSubmenu:subMenu];
+        CFRelease(iTermAppURLs);
     }
+
+    CFRelease(iTermBundleID);
+
+    if ([CommanderOne isCommanderOneAvailable])
+    {
+        NSMenuItem* commanderOne =
+        [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:[hotkey stringValue]];
+        [commanderOne setRepresentedObject:path];
+        [subMenu addItem:commanderOne];
+        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+    }
+
+    [subMenu addItem:[NSMenuItem separatorItem]];
+    
+    NSMenuItem* pasteboard =
+    [[NSMenuItem alloc] initWithTitle:@"Copy path to Clipboard" action:@selector(copyToPasteboard:) keyEquivalent:[hotkey stringValue]];
+    [pasteboard setRepresentedObject:path];
+    [subMenu addItem:pasteboard];
+    
+    hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+
+    NSMenuItem* resetApplication =
+    [[NSMenuItem alloc] initWithTitle:@"Reset application data" action:@selector(resetApplication:) keyEquivalent:[hotkey stringValue]];
+    [resetApplication setRepresentedObject:path];
+    [subMenu addItem:resetApplication];
+    
+    hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+    
+    [item setSubmenu:subMenu];
 }
 
 //----------------------------------------------------------------------------
@@ -480,21 +465,6 @@
     [menu addItem:startAtLogin];
 #endif
     
-    NSMenuItem* hideSubMenusItem =
-    [[NSMenuItem alloc] initWithTitle:@"Hide Submenus" action:@selector(handleHideSubMenus:) keyEquivalent:@""];
-    if (self.hideSubMenus)
-    {
-        [hideSubMenusItem setState:NSOnState];
-    }
-    else
-    {
-        [hideSubMenusItem setState:NSOffState];
-    }
-    [hideSubMenusItem setRepresentedObject:@(self.hideSubMenus)];
-    [menu addItem:hideSubMenusItem];
-    
-    [menu addItem:[NSMenuItem separatorItem]];
-    
     NSString* appVersion = [NSString stringWithFormat:@"About %@ %@", [[NSRunningApplication currentApplication] localizedName], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
     [menu addItem:about];
@@ -766,14 +736,6 @@
 - (void) exitApp:(id)sender
 {
     [[NSApplication sharedApplication] terminate:self];
-}
-
-//----------------------------------------------------------------------------
-- (void) handleHideSubMenus:(id)sender
-{
-    self.hideSubMenus = ![[sender representedObject] boolValue];
-    
-    [[NSUserDefaults standardUserDefaults] setBool:self.hideSubMenus forKey:HIDE_SUBMENUS_PREFERENCE];
 }
 
 #ifndef APPSTORE
