@@ -685,7 +685,7 @@
         NSString* windowName = [window objectForKey:(NSString *)kCGWindowName];
 
         if ([windowOwner containsString:@"Simulator"] &&
-            ([windowName containsString:@"iOS"] || [windowName containsString:@"watchOS"]))
+            ([windowName containsString:@"iOS"] || [windowName containsString:@"watchOS"] || [windowName containsString:@"tvOS"]))
         {
             NSNumber* windowID = [window objectForKey:(NSString *)kCGWindowNumber];
 
