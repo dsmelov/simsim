@@ -677,24 +677,22 @@
 //----------------------------------------------------------------------------
 - (void) takeScreenshot:(id)sender
 {
-    NSString* owner = @"Simulator";
     NSArray* windows = (NSArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements,kCGNullWindowID));
     
     for(NSDictionary *window in windows)
     {
         NSString* windowOwner = [window objectForKey:(NSString *)kCGWindowOwnerName];
         NSString* windowName = [window objectForKey:(NSString *)kCGWindowName];
-        
-        if (([windowOwner isEqualToString:@"Simulator"] &&
-             [windowName containsString:@"iOS"]) ||
-             [windowOwner isEqualToString:@"Simulator (Watch)"])
+
+        if ([windowOwner containsString:@"Simulator"] &&
+            ([windowName containsString:@"iOS"] || [windowName containsString:@"watchOS"]))
         {
             NSNumber* windowID = [window objectForKey:(NSString *)kCGWindowNumber];
 
             NSString* args = @"-l";
             args = [args stringByAppendingString:[windowID stringValue]];
             
-            NSString *dateComponents = @"yyyyMMdd_HHmmss";
+            NSString *dateComponents = @"yyyyMMdd_HHmmss_SSSS";
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
             [dateFormatter setDateFormat:dateComponents];
