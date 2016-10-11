@@ -688,9 +688,6 @@
             ([windowName containsString:@"iOS"] || [windowName containsString:@"watchOS"] || [windowName containsString:@"tvOS"]))
         {
             NSNumber* windowID = [window objectForKey:(NSString *)kCGWindowNumber];
-
-            NSString* args = @"-l";
-            args = [args stringByAppendingString:[windowID stringValue]];
             
             NSString *dateComponents = @"yyyyMMdd_HHmmss_SSSS";
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -699,15 +696,20 @@
             
             NSDate *date = [NSDate date];
             NSString *dateString = [dateFormatter stringFromDate:date];
-            
-            NSTask *screencapture = [NSTask new];
 
             NSString* screenshotPath =
             [NSString stringWithFormat:@"%@/Desktop/Screen Shot at %@.png", [self homeDirectoryPath], dateString];
 
-            [screencapture setLaunchPath:@"/usr/sbin/screencapture"];
-            [screencapture setArguments:@[args, screenshotPath]];
-            [screencapture launch];
+            CGRect bounds;
+            CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)[window objectForKey:(NSString*)kCGWindowBounds], &bounds);
+            
+            CGImageRef image = CGWindowListCreateImage(bounds, kCGWindowListOptionIncludingWindow, [windowID intValue], kCGWindowImageDefault);
+            NSBitmapImageRep *bitmap = [[NSBitmapImageRep alloc] initWithCGImage:image];
+            
+            NSData *data = [bitmap representationUsingType: NSPNGFileType properties:@{}];
+            [data writeToFile: screenshotPath atomically:NO];
+            
+            CGImageRelease(image);
         }
     }
 }
