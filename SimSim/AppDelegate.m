@@ -119,6 +119,26 @@
 }
 
 //----------------------------------------------------------------------------
+- (BOOL) simulatorRunning
+{
+    NSArray* windows = (NSArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements, kCGNullWindowID));
+    
+    for(NSDictionary *window in windows)
+    {
+        NSString* windowOwner = [window objectForKey:(NSString *)kCGWindowOwnerName];
+        NSString* windowName = [window objectForKey:(NSString *)kCGWindowName];
+
+        if ([windowOwner containsString:@"Simulator"] &&
+            ([windowName containsString:@"iOS"] || [windowName containsString:@"watchOS"] || [windowName containsString:@"tvOS"]))
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+//----------------------------------------------------------------------------
 - (void) addSubMenusToItem:(NSMenuItem*)item usingPath:(NSString*)path
 {
     NSMenu* subMenu = [NSMenu new];
@@ -173,12 +193,15 @@
     
     hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
 
-    NSMenuItem* screenshot =
-    [[NSMenuItem alloc] initWithTitle:@"Take Screenshot" action:@selector(takeScreenshot:) keyEquivalent:[hotkey stringValue]];
-    [screenshot setRepresentedObject:path];
-    [subMenu addItem:screenshot];
-    
-    hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+    if ([self simulatorRunning])
+    {
+        NSMenuItem* screenshot =
+        [[NSMenuItem alloc] initWithTitle:@"Take Screenshot" action:@selector(takeScreenshot:) keyEquivalent:[hotkey stringValue]];
+        [screenshot setRepresentedObject:path];
+        [subMenu addItem:screenshot];
+        
+        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+    }
     
     NSMenuItem* resetApplication =
     [[NSMenuItem alloc] initWithTitle:@"Reset application data" action:@selector(resetApplication:) keyEquivalent:[hotkey stringValue]];
@@ -677,7 +700,7 @@
 //----------------------------------------------------------------------------
 - (void) takeScreenshot:(id)sender
 {
-    NSArray* windows = (NSArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements,kCGNullWindowID));
+    NSArray* windows = (NSArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements, kCGNullWindowID));
     
     for(NSDictionary *window in windows)
     {
