@@ -684,7 +684,7 @@
     {
         NSString* windowOwner = [window objectForKey:(NSString *)kCGWindowOwnerName];
         NSString* windowName = [window objectForKey:(NSString *)kCGWindowName];
-                
+        
         if (([windowOwner isEqualToString:@"Simulator"] &&
              [windowName containsString:@"iOS"]) ||
              [windowOwner isEqualToString:@"Simulator (Watch)"])
