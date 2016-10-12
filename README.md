@@ -1,7 +1,7 @@
 # SimSim [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NCQG5K5K79LEQ)
 
 <p align="center">
-![Alt text](/simsim.png?raw=true "screenshot")
+<img src="https://github.com/dsmelov/simsim/raw/master/simsim.png?raw=true">
 </p>
 
 Use [SimSim 1.2.4](https://github.com/dsmelov/simsim/blob/master/Release/SimSim_1.2.4.zip?raw=true) to explore application folders while developing for iOS, watchOS or tvOS. SimSim is a free application and there will be no charges in the future.
