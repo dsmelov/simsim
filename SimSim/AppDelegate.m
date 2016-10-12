@@ -138,25 +138,46 @@
     return NO;
 }
 
+#define ACTION_ICON_SIZE 32
+
+// TODO: make it less hardcoded :)
+
+#define FINDER_ICON_PATH @"/System/Library/CoreServices/Finder.app/Contents/Resources/Finder.icns"
+#define TERMINAL_ICON_PATH @"/Applications/Utilities/Terminal.app/Contents/Resources/Terminal.icns"
+#define ITERM_ICON_PATH @"/Applications/iTerm.app/Contents/Resources/AppIcon.icns"
+#define CMDONE_ICON_PATH @"/Applications/Commander One.app/Contents/Resources/AppIcon.icns"
+
 //----------------------------------------------------------------------------
 - (void) addSubMenusToItem:(NSMenuItem*)item usingPath:(NSString*)path
 {
+    NSImage* icon = nil;
     NSMenu* subMenu = [NSMenu new];
     
     NSNumber* hotkey = [NSNumber numberWithInt:1];
     
-    NSMenuItem* terminal =
-    [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:[hotkey stringValue]];
-    [terminal setRepresentedObject:path];
-    [subMenu addItem:terminal];
-    
-    hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
-    
     NSMenuItem* finder =
     [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:[hotkey stringValue]];
     [finder setRepresentedObject:path];
+    
+    icon = [[NSImage alloc] initWithContentsOfFile:FINDER_ICON_PATH];
+    [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
+    [finder setImage:icon];
+    
     [subMenu addItem:finder];
 
+    hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+
+    NSMenuItem* terminal =
+    [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:[hotkey stringValue]];
+    [terminal setRepresentedObject:path];
+    
+    icon = [[NSImage alloc] initWithContentsOfFile:TERMINAL_ICON_PATH];
+    [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
+    [terminal setImage:icon];
+    
+    [subMenu addItem:terminal];
+    
+    
     hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
     
     CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
@@ -167,6 +188,11 @@
         NSMenuItem* iTerm =
         [[NSMenuItem alloc] initWithTitle:@"iTerm" action:@selector(openIniTerm:) keyEquivalent:[hotkey stringValue]];
         [iTerm setRepresentedObject:path];
+        
+        icon = [[NSImage alloc] initWithContentsOfFile:ITERM_ICON_PATH];
+        [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
+        [iTerm setImage:icon];
+        
         [subMenu addItem:iTerm];
         hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
 
@@ -180,6 +206,11 @@
         NSMenuItem* commanderOne =
         [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:[hotkey stringValue]];
         [commanderOne setRepresentedObject:path];
+        
+        icon = [[NSImage alloc] initWithContentsOfFile:CMDONE_ICON_PATH];
+        [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
+        [commanderOne setImage:icon];
+        
         [subMenu addItem:commanderOne];
         hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
     }
@@ -313,7 +344,6 @@
                             keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
         
         [item setRepresentedObject:applicationContentPath];
-        
         [item setImage:metadata[@"applicationIcon"]];
         
         [self addSubMenusToItem:item usingPath:applicationContentPath];
@@ -536,6 +566,29 @@
 }
 
 //----------------------------------------------------------------------------
+- (NSImage*)roundCorners:(NSImage *)image
+{
+    
+    NSImage *existingImage = image;
+    NSSize existingSize = [existingImage size];
+    NSSize newSize = NSMakeSize(existingSize.width, existingSize.height);
+    NSImage *composedImage = [[NSImage alloc] initWithSize:newSize];
+    
+    [composedImage lockFocus];
+    [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
+    
+    NSRect imageFrame = NSRectFromCGRect(CGRectMake(0, 0, existingSize.width, existingSize.height));
+    NSBezierPath *clipPath = [NSBezierPath bezierPathWithRoundedRect:imageFrame xRadius:3 yRadius:3];
+    [clipPath setWindingRule:NSEvenOddWindingRule];
+    [clipPath addClip];
+    
+    [image drawAtPoint:NSZeroPoint fromRect:NSMakeRect(0, 0, newSize.width, newSize.height) operation:NSCompositeSourceOver fraction:1];
+    
+    [composedImage unlockFocus];
+    
+    return composedImage;
+}
+//----------------------------------------------------------------------------
 - (NSImage*) getIconForApplicationWithPlist:(NSDictionary*)applicationPlist folder:(NSString*)applicationFolderPath
 {
     NSString* iconPath;
@@ -581,14 +634,15 @@
     NSImage* icon = nil;
     if (iconPath == nil)
     {
-        icon = [NSImage imageNamed:@"DefaultIcon"];
+        icon = [NSImage imageNamed:@"empty_icon"];
     }
     else
     {
         icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-        icon = [self scaleImage:icon toSize:NSMakeSize(16, 16)];
     }
 
+    icon = [self roundCorners:[self scaleImage:icon toSize:NSMakeSize(32, 32)]];
+    
     return icon;
 }
 

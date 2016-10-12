@@ -17,6 +17,7 @@
 		7C85CC4C1D117BB6008ED739 /* CommanderOne.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F9C749F4EF0EFB3F09E5CC /* CommanderOne.m */; };
 		7C85CC4F1D117BB6008ED739 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */; };
 		7C85CC501D117BB6008ED739 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F9CAF1018B8DF204603BAC /* MainMenu.xib */; };
+		9AE0DDA41DAE4852000029EC /* empty_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AE0DDA31DAE4852000029EC /* empty_icon.png */; };
 		BE7C115219E56B4F001A6220 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115119E56B4F001A6220 /* main.m */; };
 		BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115419E56B4F001A6220 /* AppDelegate.m */; };
 /* End PBXBuildFile section */
@@ -31,6 +32,7 @@
 		7C85CC541D117BB6008ED739 /* SimSim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimSim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C85CC551D117BB6008ED739 /* SimSimAppStore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SimSimAppStore-Info.plist"; path = "/Users/akirienko/Sources/git/simsim/SimSimAppStore-Info.plist"; sourceTree = "<absolute>"; };
 		7C85CC561D11824B008ED739 /* SimSim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimSim.entitlements; sourceTree = "<group>"; };
+		9AE0DDA31DAE4852000029EC /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_icon.png; sourceTree = "<group>"; };
 		BE7C114C19E56B4F001A6220 /* SimSim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimSim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7C115019E56B4F001A6220 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BE7C115119E56B4F001A6220 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 		13F9CD9C30F220C6ED2765F1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9AE0DDA31DAE4852000029EC /* empty_icon.png */,
 				13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */,
 				13F9CAF1018B8DF204603BAC /* MainMenu.xib */,
 			);
@@ -208,6 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13F9C8BD40BFC0BD5697F05F /* Images.xcassets in Resources */,
+				9AE0DDA41DAE4852000029EC /* empty_icon.png in Resources */,
 				13F9C9CACDE21D1AB57BD94D /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
