@@ -138,14 +138,14 @@
     return NO;
 }
 
-#define ACTION_ICON_SIZE 32
+#define ACTION_ICON_SIZE 16
 
 // TODO: make it less hardcoded :)
 
-#define FINDER_ICON_PATH @"/System/Library/CoreServices/Finder.app/Contents/Resources/Finder.icns"
-#define TERMINAL_ICON_PATH @"/Applications/Utilities/Terminal.app/Contents/Resources/Terminal.icns"
-#define ITERM_ICON_PATH @"/Applications/iTerm.app/Contents/Resources/AppIcon.icns"
-#define CMDONE_ICON_PATH @"/Applications/Commander One.app/Contents/Resources/AppIcon.icns"
+#define FINDER_ICON_PATH @"/System/Library/CoreServices/Finder.app"
+#define TERMINAL_ICON_PATH @"/Applications/Utilities/Terminal.app"
+#define ITERM_ICON_PATH @"/Applications/iTerm.app"
+#define CMDONE_ICON_PATH @"/Applications/Commander One.app"
 
 //----------------------------------------------------------------------------
 - (void) addSubMenusToItem:(NSMenuItem*)item usingPath:(NSString*)path
@@ -159,7 +159,7 @@
     [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:[hotkey stringValue]];
     [finder setRepresentedObject:path];
     
-    icon = [[NSImage alloc] initWithContentsOfFile:FINDER_ICON_PATH];
+    icon = [[NSWorkspace sharedWorkspace] iconForFile:FINDER_ICON_PATH];
     [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
     [finder setImage:icon];
     
@@ -171,7 +171,7 @@
     [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:[hotkey stringValue]];
     [terminal setRepresentedObject:path];
     
-    icon = [[NSImage alloc] initWithContentsOfFile:TERMINAL_ICON_PATH];
+    icon = [[NSWorkspace sharedWorkspace] iconForFile:TERMINAL_ICON_PATH];
     [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
     [terminal setImage:icon];
     
@@ -189,7 +189,7 @@
         [[NSMenuItem alloc] initWithTitle:@"iTerm" action:@selector(openIniTerm:) keyEquivalent:[hotkey stringValue]];
         [iTerm setRepresentedObject:path];
         
-        icon = [[NSImage alloc] initWithContentsOfFile:ITERM_ICON_PATH];
+        icon = [[NSWorkspace sharedWorkspace] iconForFile:ITERM_ICON_PATH];
         [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
         [iTerm setImage:icon];
         
@@ -207,7 +207,7 @@
         [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:[hotkey stringValue]];
         [commanderOne setRepresentedObject:path];
         
-        icon = [[NSImage alloc] initWithContentsOfFile:CMDONE_ICON_PATH];
+        icon = [[NSWorkspace sharedWorkspace] iconForFile:CMDONE_ICON_PATH];
         [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
         [commanderOne setImage:icon];
         
