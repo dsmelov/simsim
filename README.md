@@ -1,4 +1,4 @@
-# SimSim [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NCQG5K5K79LEQ)
+# SimSim
 
 <p align="center">
 <img src="https://github.com/dsmelov/simsim/raw/master/simsim.png?raw=true">
