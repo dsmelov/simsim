@@ -8,11 +8,8 @@
 
 #import "AppDelegate.h"
 #import "CommanderOne.h"
-#ifdef APPSTORE
 #include <pwd.h>
-#else
 #import "Settings.h"
-#endif
 
 #include <Cocoa/Cocoa.h>
 #include <CoreGraphics/CGWindow.h>
@@ -412,15 +409,7 @@
 //----------------------------------------------------------------------------
 - (NSString*) homeDirectoryPath
 {
-#ifdef APPSTORE
-    const char* home = getpwuid(getuid())->pw_dir;
-    NSString* path = [[NSFileManager defaultManager]
-                      stringWithFileSystemRepresentation:home
-                      length:strlen(home)];
-    return path;
-#else
     return NSHomeDirectory();
-#endif
 }
 
 //----------------------------------------------------------------------------
@@ -511,7 +500,6 @@
 //----------------------------------------------------------------------------
 - (void) addServiceItemsToMenu:(NSMenu*)menu
 {
-#ifndef APPSTORE
     NSMenuItem* startAtLogin =
     [[NSMenuItem alloc] initWithTitle:@"Start at Login" action:@selector(handleStartAtLogin:) keyEquivalent:@""];
     
@@ -526,7 +514,6 @@
     }
     [startAtLogin setRepresentedObject:@(isStartAtLoginEnabled)];
     [menu addItem:startAtLogin];
-#endif
     
     NSString* appVersion = [NSString stringWithFormat:@"About %@ %@", [[NSRunningApplication currentApplication] localizedName], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
@@ -861,7 +848,6 @@
     [[NSApplication sharedApplication] terminate:self];
 }
 
-#ifndef APPSTORE
 //----------------------------------------------------------------------------
 - (void) handleStartAtLogin:(id)sender
 {
@@ -880,7 +866,6 @@
         [sender setState:NSOnState];
     }
 }
-#endif
 
 //----------------------------------------------------------------------------
 - (void) aboutApp:(id)sender
