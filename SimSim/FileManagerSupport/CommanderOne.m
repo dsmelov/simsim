@@ -12,9 +12,9 @@
     NSFileManager* fileManager = [NSFileManager defaultManager];
 
     // Check for App Store version
-    NSString* applicationsPath = @"/Applications/Commander One.app";
-    BOOL isApplicationExist = [fileManager fileExistsAtPath:applicationsPath];
-    if (isApplicationExist)
+    BOOL isApplicationExist = [fileManager fileExistsAtPath:@"/Applications/Commander One.app"];
+    BOOL isApplicationProExist = [fileManager fileExistsAtPath:@"/Applications/Commander One PRO.app"];
+    if (isApplicationExist || isApplicationProExist)
     {
         return YES;
     }
