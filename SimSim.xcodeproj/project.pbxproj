@@ -23,7 +23,6 @@
 		13F9CCF810DDA295016EC047 /* CommanderOne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommanderOne.h; sourceTree = "<group>"; };
 		7C4BC6391CCA94D200C72BA1 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		7C4BC63A1CCA94D200C72BA1 /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
-		7C85CC551D117BB6008ED739 /* SimSimAppStore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SimSimAppStore-Info.plist"; path = "/Users/akirienko/Sources/git/simsim/SimSimAppStore-Info.plist"; sourceTree = "<absolute>"; };
 		7C85CC561D11824B008ED739 /* SimSim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimSim.entitlements; sourceTree = "<group>"; };
 		9AE0DDA31DAE4852000029EC /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_icon.png; sourceTree = "<group>"; };
 		BE7C114C19E56B4F001A6220 /* SimSim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimSim.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,7 +96,6 @@
 		BE7C114F19E56B4F001A6220 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				7C85CC551D117BB6008ED739 /* SimSimAppStore-Info.plist */,
 				BE7C115019E56B4F001A6220 /* Info.plist */,
 				BE7C115119E56B4F001A6220 /* main.m */,
 			);
