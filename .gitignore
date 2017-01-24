@@ -55,3 +55,4 @@ fastlane/screenshots
 
 ## AppCode
 .idea/
+Release/dmg/*.dmg
