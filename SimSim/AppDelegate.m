@@ -579,8 +579,9 @@
 - (NSImage*) getIconForApplicationWithPlist:(NSDictionary*)applicationPlist folder:(NSString*)applicationFolderPath
 {
     NSString* iconPath;
-    NSString* applicationIcon = applicationPlist[@"CFBundleIconFile"];
-
+    NSString* applicationIcon  = applicationPlist[@"CFBundleIconFile"];
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    
     if (applicationIcon != nil)
     {
         iconPath = [applicationFolderPath stringByAppendingString:applicationIcon];
@@ -605,19 +606,17 @@
 
         iconPath = [applicationFolderPath stringByAppendingFormat:@"%@%@.png", applicationIcon, postfix];
 
-        NSFileManager* fileManager = [NSFileManager defaultManager];
-
         if (![fileManager fileExistsAtPath:iconPath])
         {
             iconPath = [applicationFolderPath stringByAppendingFormat:@"%@@2x%@.png", applicationIcon, postfix];
-
-            if (![fileManager fileExistsAtPath:iconPath])
-            {
-                iconPath = nil;
-            }
         }
     }
 
+    if (![fileManager fileExistsAtPath:iconPath])
+    {
+        iconPath = nil;
+    }
+    
     NSImage* icon = nil;
     if (iconPath == nil)
     {
