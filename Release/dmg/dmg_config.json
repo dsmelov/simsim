@@ -5,7 +5,7 @@
   "background": "background.png",
   "contents": [
     { "x": 350, "y": 190, "type": "link", "path": "/Applications" },
-    { "x": 160, "y": 190, "type": "file", "path": "../../build/SimSim/Build/Products/Release/SimSim.app" }
+    { "x": 160, "y": 190, "type": "file", "path": "../../build/Release/SimSim.app" }
   ]
 
 }
