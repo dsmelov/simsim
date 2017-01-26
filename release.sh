@@ -20,4 +20,7 @@ cd ./build/Release/
 zip -r ../../Release/SimSim_${NEW_VERSION_STRING}.zip ./SimSim.app
 cd ../../
 
+# Create latest ZIP
+yes | cp ./Release/SimSim_${NEW_VERSION_STRING}.zip ./Release/SimSim_latest.zip
+
 echo "Done"
