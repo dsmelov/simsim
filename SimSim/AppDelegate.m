@@ -599,16 +599,29 @@
         }
 
         NSDictionary* applicationPrimaryIcons = applicationIcons[@"CFBundlePrimaryIcon"];
-
-        NSArray* iconFiles = applicationPrimaryIcons[@"CFBundleIconFiles"];
-
-        applicationIcon = [iconFiles lastObject];
-
-        iconPath = [applicationFolderPath stringByAppendingFormat:@"%@%@.png", applicationIcon, postfix];
-
-        if (![fileManager fileExistsAtPath:iconPath])
-        {
-            iconPath = [applicationFolderPath stringByAppendingFormat:@"%@@2x%@.png", applicationIcon, postfix];
+        if (applicationPrimaryIcons && [applicationPrimaryIcons isKindOfClass:[NSDictionary class]]) {
+            NSArray* iconFiles = nil;
+            NS_DURING
+            iconFiles = applicationPrimaryIcons[@"CFBundleIconFiles"];
+            NS_HANDLER
+            NS_ENDHANDLER
+            
+            if (iconFiles && iconFiles.count > 0) {
+                applicationIcon = [iconFiles lastObject];
+                
+                iconPath = [applicationFolderPath stringByAppendingFormat:@"%@%@.png", applicationIcon, postfix];
+                
+                if (![fileManager fileExistsAtPath:iconPath])
+                {
+                    iconPath = [applicationFolderPath stringByAppendingFormat:@"%@@2x%@.png", applicationIcon, postfix];
+                }
+            }
+            else {
+                iconPath = nil;
+            }
+        }
+        else {
+            iconPath = nil;
         }
     }
 
