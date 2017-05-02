@@ -9,79 +9,29 @@
 #import "AppDelegate.h"
 #import "CommanderOne.h"
 #include <pwd.h>
+#import "FileManager.h"
 #import "Settings.h"
+#import "Realm.h"
 
 #include <Cocoa/Cocoa.h>
 #include <CoreGraphics/CGWindow.h>
 
 #import <NetFS/NetFS.h>
 
-#define KEY_FILE                    @"file"
-#define KEY_MODIFICATION_DATE       @"modificationDate"
 #define ALREADY_LAUNCHED_PREFERENCE @"alreadyLaunched"
 
 //============================================================================
 @interface AppDelegate ()
 
 @property (strong, nonatomic) NSStatusItem* statusItem;
+@property (strong, nonatomic) Realm *realmModule;
 
 @end
 
 //============================================================================
 @implementation AppDelegate
 
-//----------------------------------------------------------------------------
-- (NSArray*) getSortedFilesFromFolder:(NSString*)folderPath
-{
-    NSArray* filesArray = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:folderPath error:nil];
 
-    // sort by creation date
-    NSMutableArray* filesAndProperties = [NSMutableArray arrayWithCapacity:filesArray.count];
-
-    for (NSString* file in filesArray)
-    {
-        if (![file isEqualToString:@".DS_Store"])
-        {
-            NSString* filePath = [folderPath stringByAppendingPathComponent:file];
-            NSDictionary* properties = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
-            NSDate* modificationDate = properties[NSFileModificationDate];
-
-            [filesAndProperties addObject:@
-            {
-                KEY_FILE              : file,
-                KEY_MODIFICATION_DATE : modificationDate
-            }];
-        }
-    }
-
-    // Sort using a block - order inverted as we want latest date first
-    NSArray* sortedFiles = [filesAndProperties sortedArrayUsingComparator:^(NSDictionary* path1, NSDictionary* path2)
-    {
-        NSComparisonResult comp = [path1[@"modificationDate"] compare:path2[@"modificationDate"]];
-        // invert ordering
-        if (comp == NSOrderedDescending)
-        {
-            comp = NSOrderedAscending;
-        }
-        else if (comp == NSOrderedAscending)
-        {
-            comp = NSOrderedDescending;
-        }
-        return comp;
-    }];
-
-    return sortedFiles;
-}
-
-//----------------------------------------------------------------------------
-- (NSString*) getApplicationFolderFromPath:(NSString*)folderPath
-{
-    NSArray* filesArray = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:folderPath error:nil];
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"SELF EndsWith '.app'"];
-    filesArray = [filesArray filteredArrayUsingPredicate:predicate];
-
-    return filesArray[0];
-}
 
 //----------------------------------------------------------------------------
 - (NSImage*) scaleImage:(NSImage*)anImage toSize:(NSSize)size
@@ -174,8 +124,25 @@
     
     [subMenu addItem:terminal];
     
-    
     hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+    
+    if ([Realm isRealmAvailableForPath:path]) {
+
+        if (self.realmModule == nil) {
+            self.realmModule = [Realm new];
+        }
+        
+        NSMenuItem* realmMenuItem = [[NSMenuItem alloc] initWithTitle:@"Realm" action:nil keyEquivalent:[hotkey stringValue]];
+        [realmMenuItem setRepresentedObject:path];
+        icon = [[NSWorkspace sharedWorkspace] iconForFile:[Realm applicationPath]];
+        [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
+        [realmMenuItem setImage:icon];
+        
+        [subMenu addItem:realmMenuItem];
+        [subMenu setSubmenu:[self.realmModule generateRealmMenuForPath:path] forItem:realmMenuItem];
+        
+        hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
+    }
     
     CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
     CFArrayRef iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(iTermBundleID, NULL);
@@ -280,14 +247,14 @@
         [simulatorRootPath stringByAppendingString:@"data/Containers/Bundle/Application/"];
     
     NSArray* installedApplicationsBundle =
-        [self getSortedFilesFromFolder:installedApplicationsBundlePath];
+        [FileManager getSortedFilesFromFolder:installedApplicationsBundlePath];
     
     [self processBundles:installedApplicationsBundle
            usingRootPath:simulatorRootPath
      andBundleIdentifier:applicationBundleIdentifier
          withFinalBlock:^(NSString* applicationRootBundlePath)
     {
-        NSString* applicationFolderName = [self getApplicationFolderFromPath:applicationRootBundlePath];
+        NSString* applicationFolderName = [FileManager getApplicationFolderFromPath:applicationRootBundlePath];
         
         NSString* applicationFolderPath = [applicationRootBundlePath stringByAppendingFormat:@"%@/", applicationFolderName];
         
@@ -339,7 +306,7 @@
         NSMenuItem* item =
         [[NSMenuItem alloc] initWithTitle:title action:@selector(openInWithModifier:)
                             keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
-        
+
         [item setRepresentedObject:applicationContentPath];
         [item setImage:metadata[@"applicationIcon"]];
         
@@ -463,7 +430,7 @@
     [simulatorRootPath stringByAppendingString:@"data/Containers/Data/Application/"];
     
     NSArray* installedApplications =
-    [self getSortedFilesFromFolder:installedApplicationsDataPath];
+    [FileManager getSortedFilesFromFolder:installedApplicationsDataPath];
     
     return installedApplications;
 }
