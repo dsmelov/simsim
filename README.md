@@ -14,7 +14,7 @@ Like this app? Write a post about it! Or just share link to this page on Twitter
 
 [Read our wiki for more details about device access](https://github.com/dsmelov/simsim/wiki/Accessing-app-folders-on-device-using-SimSim).
 
-1.2.5: Extended Realm databases support, bugfixing
+v1.2.5: Extended Realm databases support, bugfixing
 
 v1.2.4: UI improvements, updated screenshot functionality
 
