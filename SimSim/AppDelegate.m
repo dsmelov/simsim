@@ -577,6 +577,7 @@
     
     return composedImage;
 }
+
 //----------------------------------------------------------------------------
 - (NSImage*) getIconForApplicationWithPlist:(NSDictionary*)applicationPlist folder:(NSString*)applicationFolderPath
 {
@@ -642,7 +643,7 @@
         icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
     }
 
-    icon = [self roundCorners:[self scaleImage:icon toSize:NSMakeSize(32, 32)]];
+    icon = [self roundCorners:[self scaleImage:icon toSize:NSMakeSize(24, 24)]];
     
     return icon;
 }
