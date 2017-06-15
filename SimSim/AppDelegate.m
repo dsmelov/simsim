@@ -387,7 +387,7 @@
 }
 
 //----------------------------------------------------------------------------
-- (NSString*) activeSimulatorRoot
+- (NSMutableArray*) simulatorPaths
 {
     NSString* simulatorPropertiesPath =
     [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.iphonesimulator.plist", [self homeDirectoryPath]];
@@ -396,17 +396,44 @@
 
     NSString* uuid = simulatorProperties[@"CurrentDeviceUDID"];
     
-    return [self simulatorRootPathByUUID:uuid];
+    NSDictionary* devicePreferences = simulatorProperties[@"DevicePreferences"];
+    
+    NSMutableArray* simulatorPaths = [NSMutableArray new];
+
+    [simulatorPaths addObject:[self simulatorRootPathByUUID:uuid]];
+    
+    if (devicePreferences != nil)
+    {
+        NSString* uuid = nil;
+        // we're running on xcode 9
+        for (uuid in [devicePreferences allKeys])
+        {
+            [simulatorPaths addObject:[self simulatorRootPathByUUID:uuid]];
+        }
+    }
+    
+    return simulatorPaths;
 }
 
 //----------------------------------------------------------------------------
-- (NSDictionary*) activeSimulatorProperties
+- (NSMutableArray*) activeSimulatorProperties
 {
-    NSString* simulatorDetailsPath =
-    [[self activeSimulatorRoot] stringByAppendingString:@"device.plist"];
-
-    return
-    [NSDictionary dictionaryWithContentsOfFile:simulatorDetailsPath];
+    NSMutableArray* simulatorPaths = [self simulatorPaths];
+    
+    NSMutableArray* simulatorProperties = [NSMutableArray new];
+    
+    int i = 0;
+    for (NSString* path in simulatorPaths)
+    {
+        NSString* simulatorDetailsPath = [path stringByAppendingString:@"device.plist"];
+        
+        NSDictionary* properties = [NSDictionary dictionaryWithContentsOfFile:simulatorDetailsPath];
+        
+        [simulatorProperties insertObject:properties atIndex:i]; // to be sure in index correlation
+        i++;
+    }
+    
+    return simulatorProperties;
 }
 
 //----------------------------------------------------------------------------
@@ -495,20 +522,25 @@
 {
     NSMenu* menu = [NSMenu new];
 
-    NSString* simulatorRootPath = [self activeSimulatorRoot];
-    NSDictionary* simulatorDetails = [self activeSimulatorProperties];
-
-
-    NSString* simulator_title = [NSString stringWithFormat:@"%@ (%@)",
-                                 [self activeSimulatorName:simulatorDetails],
-                                 [self activeSimulatorRuntime:simulatorDetails]];
+    NSMutableArray* simulatorPaths = [self simulatorPaths];
+    NSMutableArray* simulatorDetails = [self activeSimulatorProperties];
     
-    NSMenuItem* simulator = [[NSMenuItem alloc] initWithTitle:simulator_title action:nil keyEquivalent:@""];
-    [simulator setEnabled:NO];
-    [menu addItem:simulator];
-    
-    NSArray* installedApplications = [self installedAppsOnSimulator:simulatorRootPath];
-    [self addSimulatorApplications:installedApplications usingRootPath:simulatorRootPath toMenu:menu];
+    for (int i = 0; i < [simulatorPaths count]; i++)
+    {
+        NSString* simulatorRootPath = [simulatorPaths objectAtIndex:i];
+        NSDictionary* details = [simulatorDetails objectAtIndex:i];
+        
+        NSString* simulator_title = [NSString stringWithFormat:@"%@ (%@)",
+                                     [self activeSimulatorName:details],
+                                     [self activeSimulatorRuntime:details]];
+        
+        NSMenuItem* simulator = [[NSMenuItem alloc] initWithTitle:simulator_title action:nil keyEquivalent:@""];
+        [simulator setEnabled:NO];
+        [menu addItem:simulator];
+        
+        NSArray* installedApplications = [self installedAppsOnSimulator:simulatorRootPath];
+        [self addSimulatorApplications:installedApplications usingRootPath:simulatorRootPath toMenu:menu];
+    }
     
     [self addDevices:[self getDevices] toMenu:menu];
     

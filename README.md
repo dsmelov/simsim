@@ -5,7 +5,7 @@
 </p>
 
 Use [SimSim](https://github.com/dsmelov/simsim/blob/master/Release/SimSim_latest.zip?raw=true) to explore application folders while developing for iOS, watchOS or tvOS. SimSim is a free and open source replacement for SimPholders and there will be no charges in the future.
-Works without any problems with Xcode 8! :)
+Works without any problems with Xcode 8 (and 9 beta)! :)
 
 Like this app? Write a post about it! Or just share link to this page on Twitter/Facebook/etc.
 
@@ -13,6 +13,8 @@ Like this app? Write a post about it! Or just share link to this page on Twitter
 - Click + Alt - to open in Terminal.
 
 [Read our wiki for more details about device access](https://github.com/dsmelov/simsim/wiki/Accessing-app-folders-on-device-using-SimSim).
+
+v1.2.6: Added support for multiple simulators in XCode 9 beta
 
 v1.2.5: Extended Realm databases support, bugfixing
 
