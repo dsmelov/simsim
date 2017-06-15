@@ -446,8 +446,11 @@
 //----------------------------------------------------------------------------
 - (NSString*) activeSimulatorRuntime:(NSDictionary*)properties
 {
-    return
-    [properties[@"runtime"] stringByReplacingOccurrencesOfString:@"com.apple.CoreSimulator.SimRuntime." withString:@""];
+    NSString* runtime = [properties[@"runtime"] stringByReplacingOccurrencesOfString:@"com.apple.CoreSimulator.SimRuntime." withString:@""];
+    
+    runtime = [runtime stringByReplacingOccurrencesOfString:@"OS-" withString:@"OS "];
+    runtime = [runtime stringByReplacingOccurrencesOfString:@"-" withString:@"."];
+    return runtime;
 }
 
 //----------------------------------------------------------------------------
