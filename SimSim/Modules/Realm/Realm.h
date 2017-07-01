@@ -18,6 +18,13 @@
 + (void)openInRealmBrowser:(NSString *__nonnull)aPath;
 
 
-- (NSMenu *__nullable)generateRealmMenuForPath:(NSString *__nonnull)aPath;
+- (void)generateRealmMenuForPath:(NSString *__nonnull)aPath forMenu:(NSMenu *_Nonnull)menu withHotKey:(NSNumber *_Nonnull)hotkey icon:(NSImage *_Nonnull)icon;
 
+@end
+
+@interface RealmFile : NSObject
+@property (assign) NSString * _Nonnull fileName;
+@property (assign) NSString * _Nonnull path;
+
+- (NSString *_Nonnull)fullPath;
 @end
