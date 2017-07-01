@@ -131,16 +131,12 @@
         if (self.realmModule == nil) {
             self.realmModule = [Realm new];
         }
-        
-        NSMenuItem* realmMenuItem = [[NSMenuItem alloc] initWithTitle:@"Realm" action:nil keyEquivalent:[hotkey stringValue]];
-        [realmMenuItem setRepresentedObject:path];
+
         icon = [[NSWorkspace sharedWorkspace] iconForFile:[Realm applicationPath]];
         [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
-        [realmMenuItem setImage:icon];
-        
-        [subMenu addItem:realmMenuItem];
-        [subMenu setSubmenu:[self.realmModule generateRealmMenuForPath:path] forItem:realmMenuItem];
-        
+
+        [self.realmModule generateRealmMenuForPath:path forMenu:subMenu withHotKey:hotkey icon:icon];
+
         hotkey = [NSNumber numberWithInt:[hotkey intValue] + 1];
     }
     

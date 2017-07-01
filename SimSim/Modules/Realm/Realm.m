@@ -10,37 +10,55 @@
 #import <Cocoa/Cocoa.h>
 #import "FileManager.h"
 
-#define PATH_REALM_FILES        @"Library/Caches"
+#define PATHS_REALM_FILES  [NSArray arrayWithObjects: @"Documents", @"Library/Caches", nil]
 #define REALM_APP_NAME          @"Realm Browser"
 #define REALM_APP_URL           @"http://itunes.apple.com/es/app/realm-browser/id1007457278"
 
 @implementation Realm
 
 
-- (NSMenu *)generateRealmMenuForPath:(NSString *)aPath {
-    
-    NSMenu* menuRealm = [[NSMenu alloc] initWithTitle:@"Realm Browser"];
-    [menuRealm setAutoenablesItems:NO];
+- (void)generateRealmMenuForPath:(NSString *)aPath forMenu:(NSMenu *)menu withHotKey:(NSNumber *)hotkey icon:(NSImage *)icon {
+
     NSArray *realmFiles = [[self class] findRealmFiles:aPath];
-    
+
+    if ([realmFiles count] == 0) { return; }  // Skip if there are no realm files
+
     BOOL isRealmBrowserInstalled = [[self class] isRealmBrowserAvailable];
-    
-    for (NSString *fileName in realmFiles) {
-        NSMenuItem* menuItem = [[NSMenuItem alloc] initWithTitle:fileName action:@selector(openRealmFile:) keyEquivalent:@""];
-        [menuItem setTarget:self];
-        [menuItem setRepresentedObject:[NSString stringWithFormat:@"%@/%@/%@", aPath, PATH_REALM_FILES, fileName]];
-        [menuItem setEnabled:isRealmBrowserInstalled];;
-        [menuRealm addItem:menuItem];
+    NSMenuItem* realmMenuItem = nil;
+
+    if (isRealmBrowserInstalled == false) { // There is at least one realm file but no realmbrowser installed
+        realmMenuItem = [[NSMenuItem alloc] initWithTitle:@"Install Realm Browser" action:@selector(installRealmBrowser:) keyEquivalent:[hotkey stringValue]];
+        [realmMenuItem setTarget:self];
+        [realmMenuItem setRepresentedObject:REALM_APP_URL];
+    }
+    else if ([realmFiles count] == 1) { // There is exactly one realm file
+        realmMenuItem = [[NSMenuItem alloc] initWithTitle:@"Realm" action:@selector(openRealmFile:) keyEquivalent:[hotkey stringValue]];
+        [realmMenuItem setRepresentedObject:aPath];
+        [realmMenuItem setImage:icon];
+        [realmMenuItem setTarget:self];
+        [realmMenuItem setRepresentedObject:[[realmFiles firstObject] fullPath]];
+    }
+    else {  // There is more than one realm file
+        realmMenuItem = [[NSMenuItem alloc] initWithTitle:@"Realm" action:nil keyEquivalent:[hotkey stringValue]];
+        [realmMenuItem setRepresentedObject:aPath];
+        [realmMenuItem setImage:icon];
+
+
+        NSMenu* menuRealm = [[NSMenu alloc] initWithTitle:@"Realm Browser"];
+        [menuRealm setAutoenablesItems:NO];
+
+        for (RealmFile *realmFile in realmFiles) {
+            NSMenuItem* menuItem = [[NSMenuItem alloc] initWithTitle:[realmFile fileName] action:@selector(openRealmFile:) keyEquivalent:@""];
+            [menuItem setTarget:self];
+            [menuItem setRepresentedObject:[realmFile fullPath]];
+            [menuItem setEnabled:isRealmBrowserInstalled];;
+            [menuRealm addItem:menuItem];
+        }
+        
+        [menu setSubmenu:menuRealm forItem:realmMenuItem];
     }
     
-    if (!isRealmBrowserInstalled) {
-        NSMenuItem* realmBrowserInstallMenuItem = [[NSMenuItem alloc] initWithTitle:@"Install Realm Browser" action:@selector(installRealmBrowser:) keyEquivalent:@""];
-        [realmBrowserInstallMenuItem setTarget:self];
-        [realmBrowserInstallMenuItem setRepresentedObject:REALM_APP_URL];
-        [menuRealm addItem:realmBrowserInstallMenuItem];
-    }
-    
-    return menuRealm;
+    [menu addItem:realmMenuItem];
 }
 
 
@@ -60,11 +78,25 @@
 
 + (NSArray *)findRealmFiles:(NSString *)aPath {
     NSMutableArray *files = [NSMutableArray new];
-    NSArray *allFiles = [FileManager getSortedFilesFromFolder:[NSString stringWithFormat:@"%@/%@", aPath, PATH_REALM_FILES]];
-    for (NSDictionary *file in allFiles) {
-        [files addObject:file[KEY_FILE]];
+
+    for (NSString *realmPath in PATHS_REALM_FILES) {
+        NSString *folderPath = [NSString stringWithFormat:@"%@/%@", aPath, realmPath];
+        NSArray *allFilesOfFolder = [FileManager getSortedFilesFromFolder: folderPath];
+
+        for (NSDictionary *file in allFilesOfFolder) {
+            NSString *fileName = file[KEY_FILE];
+
+            if ([[fileName pathExtension] isEqualToString: @"realm"] == false) { continue; }    // Skip if not a realm file
+
+            RealmFile *realmFile = [[RealmFile alloc] init];
+            realmFile.fileName = fileName;
+            realmFile.path = folderPath;
+
+            [files addObject: realmFile];
+        }
     }
-    return [self removeNonRealmObject:files];
+
+    return files;
 }
 
 + (NSArray *)removeNonRealmObject:(NSArray *)allFiles {
@@ -93,3 +125,12 @@
 }
 
 @end
+
+
+@implementation RealmFile
+- (NSString *)fullPath {
+    return [NSString stringWithFormat:@"%@/%@", [self path], [self fileName]];
+}
+@end
+
+
