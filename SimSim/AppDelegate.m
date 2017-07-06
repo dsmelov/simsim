@@ -424,6 +424,8 @@
         NSString* simulatorDetailsPath = [path stringByAppendingString:@"device.plist"];
         
         NSDictionary* properties = [NSDictionary dictionaryWithContentsOfFile:simulatorDetailsPath];
+
+        if (properties == nil) { continue; } // skip "empty" properties
         
         [simulatorProperties insertObject:properties atIndex:i]; // to be sure in index correlation
         i++;
@@ -524,7 +526,7 @@
     NSMutableArray* simulatorPaths = [self simulatorPaths];
     NSMutableArray* simulatorDetails = [self activeSimulatorProperties];
     
-    for (int i = 0; i < [simulatorPaths count]; i++)
+    for (int i = 0; i < [simulatorDetails count]; i++)
     {
         NSString* simulatorRootPath = [simulatorPaths objectAtIndex:i];
         NSDictionary* details = [simulatorDetails objectAtIndex:i];
