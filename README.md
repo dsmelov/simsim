@@ -14,7 +14,7 @@ Like this app? Write a post about it! Or just share link to this page on Twitter
 
 [Read our wiki for more details about device access](https://github.com/dsmelov/simsim/wiki/Accessing-app-folders-on-device-using-SimSim).
 
-v1.2.6: Added support for multiple simulators in XCode 9 beta
+v1.3.0: Added support for multiple simulators in XCode 9 beta
 
 v1.2.5: Extended Realm databases support, bugfixing
 
