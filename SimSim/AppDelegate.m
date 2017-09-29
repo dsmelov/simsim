@@ -14,6 +14,7 @@
 #import "Realm.h"
 #import "Simulator.h"
 #import "NotificationsHandler.h"
+#import "AppUpdate.h"
 
 #include <Cocoa/Cocoa.h>
 #include <CoreGraphics/CGWindow.h>
@@ -28,6 +29,7 @@
 @property (strong, nonatomic) NSStatusItem* statusItem;
 @property (strong, nonatomic) Realm* realmModule;
 @property (strong, nonatomic) NotificationsHandler* notificationsHandler;
+@property (strong, nonatomic) AppUpdate* appUpdate;
 
 @end
 
@@ -71,6 +73,9 @@
     
     NSUserNotificationCenter* center = [NSUserNotificationCenter defaultUserNotificationCenter];
     center.delegate = self.notificationsHandler;
+    
+    self.appUpdate = [AppUpdate new];
+    [self.appUpdate scheduleCheck];
 }
 
 //----------------------------------------------------------------------------
