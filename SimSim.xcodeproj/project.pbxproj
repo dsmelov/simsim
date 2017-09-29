@@ -12,6 +12,7 @@
 		13F9C9CACDE21D1AB57BD94D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F9CAF1018B8DF204603BAC /* MainMenu.xib */; };
 		7C4BC63B1CCA94D200C72BA1 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BC63A1CCA94D200C72BA1 /* Settings.m */; };
 		7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD93A721F7EBE3D00C4AA85 /* Simulator.m */; };
+		7CD93A761F7EC6FC00C4AA85 /* NotificationsHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD93A751F7EC6FC00C4AA85 /* NotificationsHandler.m */; };
 		9AE0DDA41DAE4852000029EC /* empty_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AE0DDA31DAE4852000029EC /* empty_icon.png */; };
 		BE7C115219E56B4F001A6220 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115119E56B4F001A6220 /* main.m */; };
 		BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115419E56B4F001A6220 /* AppDelegate.m */; };
@@ -29,6 +30,8 @@
 		7C85CC561D11824B008ED739 /* SimSim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimSim.entitlements; sourceTree = "<group>"; };
 		7CD93A711F7EBE3D00C4AA85 /* Simulator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simulator.h; sourceTree = "<group>"; };
 		7CD93A721F7EBE3D00C4AA85 /* Simulator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Simulator.m; sourceTree = "<group>"; };
+		7CD93A741F7EC6FC00C4AA85 /* NotificationsHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationsHandler.h; sourceTree = "<group>"; };
+		7CD93A751F7EC6FC00C4AA85 /* NotificationsHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationsHandler.m; sourceTree = "<group>"; };
 		9AE0DDA31DAE4852000029EC /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_icon.png; sourceTree = "<group>"; };
 		BE7C114C19E56B4F001A6220 /* SimSim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimSim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7C115019E56B4F001A6220 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -107,6 +110,8 @@
 				BE7C115419E56B4F001A6220 /* AppDelegate.m */,
 				7C4BC6391CCA94D200C72BA1 /* Settings.h */,
 				7C4BC63A1CCA94D200C72BA1 /* Settings.m */,
+				7CD93A741F7EC6FC00C4AA85 /* NotificationsHandler.h */,
+				7CD93A751F7EC6FC00C4AA85 /* NotificationsHandler.m */,
 				BE7C114F19E56B4F001A6220 /* Supporting Files */,
 				13F9C773A02CE69113A5F183 /* FileManagerSupport */,
 				13F9CD9C30F220C6ED2765F1 /* Resources */,
@@ -221,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */,
+				7CD93A761F7EC6FC00C4AA85 /* NotificationsHandler.m in Sources */,
 				BE7C115219E56B4F001A6220 /* main.m in Sources */,
 				7C4BC63B1CCA94D200C72BA1 /* Settings.m in Sources */,
 				EAE2ADD21EB07943009D3F39 /* Realm.m in Sources */,

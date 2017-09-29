@@ -13,6 +13,7 @@
 #import "Settings.h"
 #import "Realm.h"
 #import "Simulator.h"
+#import "NotificationsHandler.h"
 
 #include <Cocoa/Cocoa.h>
 #include <CoreGraphics/CGWindow.h>
@@ -25,7 +26,8 @@
 @interface AppDelegate ()
 
 @property (strong, nonatomic) NSStatusItem* statusItem;
-@property (strong, nonatomic) Realm *realmModule;
+@property (strong, nonatomic) Realm* realmModule;
+@property (strong, nonatomic) NotificationsHandler* notificationsHandler;
 
 @end
 
@@ -64,6 +66,11 @@
     _statusItem.highlightMode = YES;
     _statusItem.action = @selector(presentApplicationMenu);
     _statusItem.enabled = YES;
+    
+    self.notificationsHandler = [NotificationsHandler handler];
+    
+    NSUserNotificationCenter* center = [NSUserNotificationCenter defaultUserNotificationCenter];
+    center.delegate = self.notificationsHandler;
 }
 
 //----------------------------------------------------------------------------
