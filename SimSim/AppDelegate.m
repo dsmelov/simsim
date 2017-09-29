@@ -63,22 +63,6 @@
     _statusItem.highlightMode = YES;
     _statusItem.action = @selector(presentApplicationMenu);
     _statusItem.enabled = YES;
-    
-    NSUserNotification *notification = [[NSUserNotification alloc]init];
-    notification.title = @"SimSim update available";
-    notification.informativeText = @"New version released";
-    notification.soundName = NSUserNotificationDefaultSoundName;
-    
-    notification.userInfo = @{@"url": [NSString stringWithFormat:@"https://github.com/dsmelov/simsim/releases"]};
-    NSUserNotificationCenter *center = [NSUserNotificationCenter defaultUserNotificationCenter];
-    [center setDelegate:self];
-//    [center deliverNotification:notification];
-}
-
-//----------------------------------------------------------------------------
-- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification
-{
-    return YES;
 }
 
 //----------------------------------------------------------------------------
