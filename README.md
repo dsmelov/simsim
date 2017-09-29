@@ -13,16 +13,3 @@ Like this app? Write a post about it! Or just share link to this page on Twitter
 - Click + Alt - to open in Terminal.
 
 [Read our wiki for more details about device access](https://github.com/dsmelov/simsim/wiki/Accessing-app-folders-on-device-using-SimSim).
-
-v1.3.0: Added support for multiple simulators in XCode 9 beta
-
-v1.2.5: Extended Realm databases support, bugfixing
-
-v1.2.4: UI improvements, updated screenshot functionality
-
-v1.2.3: Added ability to reset app data and take screenshots from simulator (will be saved in your Desktop folder).
-
-v1.2.2: Added ability to copy application path to pasteboard.
-
-
-
