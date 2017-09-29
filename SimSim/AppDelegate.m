@@ -12,6 +12,7 @@
 #import "FileManager.h"
 #import "Settings.h"
 #import "Realm.h"
+#import "Simulator.h"
 
 #include <Cocoa/Cocoa.h>
 #include <CoreGraphics/CGWindow.h>
@@ -412,13 +413,12 @@
 }
 
 //----------------------------------------------------------------------------
-- (NSMutableArray*) activeSimulatorProperties
+- (NSMutableArray<Simulator*>*) activeSimulators
 {
     NSMutableArray* simulatorPaths = [self simulatorPaths];
     
-    NSMutableArray* simulatorProperties = [NSMutableArray new];
+    NSMutableArray* simulators = [NSMutableArray new];
     
-    int i = 0;
     for (NSString* path in simulatorPaths)
     {
         NSString* simulatorDetailsPath = [path stringByAppendingString:@"device.plist"];
@@ -427,28 +427,11 @@
 
         if (properties == nil) { continue; } // skip "empty" properties
         
-        [simulatorProperties insertObject:properties atIndex:i]; // to be sure in index correlation
-        i++;
+        Simulator* simulator = [Simulator simulatorWithDictionary:properties path:path];
+        [simulators addObject:simulator];
     }
     
-    return simulatorProperties;
-}
-
-//----------------------------------------------------------------------------
-- (NSString*) activeSimulatorName:(NSDictionary*)properties
-{
-    return
-    properties[@"name"];
-}
-
-//----------------------------------------------------------------------------
-- (NSString*) activeSimulatorRuntime:(NSDictionary*)properties
-{
-    NSString* runtime = [properties[@"runtime"] stringByReplacingOccurrencesOfString:@"com.apple.CoreSimulator.SimRuntime." withString:@""];
-    
-    runtime = [runtime stringByReplacingOccurrencesOfString:@"OS-" withString:@"OS "];
-    runtime = [runtime stringByReplacingOccurrencesOfString:@"-" withString:@"."];
-    return runtime;
+    return simulators;
 }
 
 //----------------------------------------------------------------------------
@@ -523,17 +506,15 @@
 {
     NSMenu* menu = [NSMenu new];
 
-    NSMutableArray* simulatorPaths = [self simulatorPaths];
-    NSMutableArray* simulatorDetails = [self activeSimulatorProperties];
+    NSMutableArray* simulators = [self activeSimulators];
     
-    for (int i = 0; i < [simulatorDetails count]; i++)
+    for (Simulator* simulator in simulators)
     {
-        NSString* simulatorRootPath = [simulatorPaths objectAtIndex:i];
-        NSDictionary* details = [simulatorDetails objectAtIndex:i];
+        NSString* simulatorRootPath = simulator.path;
         
         NSString* simulator_title = [NSString stringWithFormat:@"%@ (%@)",
-                                     [self activeSimulatorName:details],
-                                     [self activeSimulatorRuntime:details]];
+                                     simulator.name,
+                                     simulator.os];
         
         NSMenuItem* simulator = [[NSMenuItem alloc] initWithTitle:simulator_title action:nil keyEquivalent:@""];
         [simulator setEnabled:NO];
