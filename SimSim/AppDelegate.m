@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "CommanderOne.h"
+#import "FileManagerSupport/CommanderOne.h"
 #include <pwd.h>
 #import "FileManager.h"
 #import "Settings.h"
@@ -358,14 +358,11 @@
         
         if (applicationDataProperties)
         {
-            if (![self isAppleApplication:applicationDataProperties])
-            {
-                [self addApplication:applicationDataProperties
-                              toMenu:menu
-                       usingRootPath:simulatorRootPath
-                          andAppUUID:uuid
-                             atIndex:i];
-            }
+            [self addApplication:applicationDataProperties
+                          toMenu:menu
+                   usingRootPath:simulatorRootPath
+                      andAppUUID:uuid
+                         atIndex:i];
         }
     }
 }
@@ -443,7 +440,24 @@
     NSArray* installedApplications =
     [FileManager getSortedFilesFromFolder:installedApplicationsDataPath];
     
-    return installedApplications;
+    NSMutableArray* userApplications = [NSMutableArray new];
+    
+    for (NSDictionary* app in installedApplications)
+    {
+        NSDictionary* applicationDataProperties =
+        [self getApplicationPropertiesByUUID:app[@"file"] andRootPath:simulatorRootPath];
+        
+        if (applicationDataProperties)
+        {
+            if (![self isAppleApplication:applicationDataProperties])
+            {
+                [userApplications addObject:app];
+            }
+        }
+
+    }
+    
+    return userApplications;
 }
 
 //----------------------------------------------------------------------------
@@ -511,17 +525,20 @@
     for (Simulator* simulator in simulators)
     {
         NSString* simulatorRootPath = simulator.path;
-        
-        NSString* simulator_title = [NSString stringWithFormat:@"%@ (%@)",
-                                     simulator.name,
-                                     simulator.os];
-        
-        NSMenuItem* simulator = [[NSMenuItem alloc] initWithTitle:simulator_title action:nil keyEquivalent:@""];
-        [simulator setEnabled:NO];
-        [menu addItem:simulator];
-        
+
         NSArray* installedApplications = [self installedAppsOnSimulator:simulatorRootPath];
-        [self addSimulatorApplications:installedApplications usingRootPath:simulatorRootPath toMenu:menu];
+
+        if ([installedApplications count])
+        {
+            NSString* simulator_title = [NSString stringWithFormat:@"%@ (%@)",
+                                         simulator.name,
+                                         simulator.os];
+            
+            NSMenuItem* simulator = [[NSMenuItem alloc] initWithTitle:simulator_title action:nil keyEquivalent:@""];
+            [simulator setEnabled:NO];
+            [menu addItem:simulator];
+            [self addSimulatorApplications:installedApplications usingRootPath:simulatorRootPath toMenu:menu];
+        }
     }
     
     [self addDevices:[self getDevices] toMenu:menu];
