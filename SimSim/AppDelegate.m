@@ -486,6 +486,8 @@
     [menu addItem:quit];
 }
 
+#define MAX_RECENT_SIMULATORS 5
+
 //----------------------------------------------------------------------------
 - (void) presentApplicationMenu
 {
@@ -493,7 +495,15 @@
 
     NSMutableArray* simulators = [self activeSimulators];
     
-    for (Simulator* simulator in simulators)
+    NSArray* recentSimulators = [simulators sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
+    {
+        NSDate* l = [(Simulator*)a date];
+        NSDate* r = [(Simulator*)b date];
+        return [r compare:l];
+    }];
+    
+    int simulatorsCount = 0;
+    for (Simulator* simulator in recentSimulators)
     {
         NSString* simulatorRootPath = simulator.path;
 
@@ -509,6 +519,10 @@
             [simulator setEnabled:NO];
             [menu addItem:simulator];
             [self addSimulatorApplications:installedApplications usingRootPath:simulatorRootPath toMenu:menu];
+            
+            simulatorsCount++;
+            if (simulatorsCount >= MAX_RECENT_SIMULATORS)
+                break;
         }
     }
     

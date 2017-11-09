@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) NSDictionary* properties;
 @property (nonatomic, strong) NSString* path;
+@property (nonatomic, strong) NSDate* date;
 
 @end
 
@@ -35,6 +36,13 @@
     {
         self.properties = dictionary;
         self.path = path;
+        
+        NSError* error = nil;
+        NSDictionary * attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
+        if (attrs && !error)
+        {
+            self.date = [attrs fileModificationDate];
+        }
     }
     
     return self;

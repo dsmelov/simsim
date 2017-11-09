@@ -17,5 +17,6 @@
 @property (nonatomic, readonly) NSString* name;
 @property (nonatomic, readonly) NSString* os;
 @property (nonatomic, readonly) NSString* path;
+@property (nonatomic, readonly) NSDate* date;
 
 @end
