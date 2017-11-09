@@ -461,35 +461,6 @@
 }
 
 //----------------------------------------------------------------------------
-- (NSArray*) getDevices
-{
-    NSString* devicesPropertiesPath =
-    [NSString stringWithFormat:@"%@/Library/Preferences/com.dsmelov.devices.plist", [self homeDirectoryPath]];
-    
-    NSDictionary* devicesList = [NSDictionary dictionaryWithContentsOfFile:devicesPropertiesPath];
-    
-    return
-    devicesList[@"Devices"];
-}
-
-//----------------------------------------------------------------------------
-- (void) addDevices:(NSArray*)devices toMenu:(NSMenu*)menu
-{
-    if ([devices count])
-    {
-        [menu addItem:[NSMenuItem separatorItem]];
-        
-        for (NSDictionary* device in devices)
-        {
-            NSString* hostname = device[@"name"];
-            NSMenuItem* webdavDevice = [[NSMenuItem alloc] initWithTitle:hostname action:@selector(openWebDav:) keyEquivalent:@""];
-            [webdavDevice setRepresentedObject:device];
-            [menu addItem:webdavDevice];
-        }
-    }
-}
-
-//----------------------------------------------------------------------------
 - (void) addServiceItemsToMenu:(NSMenu*)menu
 {
     NSMenuItem* startAtLogin =
@@ -540,8 +511,6 @@
             [self addSimulatorApplications:installedApplications usingRootPath:simulatorRootPath toMenu:menu];
         }
     }
-    
-    [self addDevices:[self getDevices] toMenu:menu];
     
     [menu addItem:[NSMenuItem separatorItem]];
 
@@ -664,78 +633,6 @@
     {
         [self openInFinder:sender];
     }
-}
-
-//----------------------------------------------------------------------------
-- (void) mount:(NSURL *)networkShare usingName:(NSString*)name inApp:(NSString*)app
-{
-    NSURL *mountPath = [NSURL URLWithString:[NSString stringWithFormat:@"/Volumes/%@/", name]];
-    
-    [[NSFileManager defaultManager] createDirectoryAtPath:[mountPath absoluteString]
-                              withIntermediateDirectories:NO attributes:nil error:nil];
-    
-    dispatch_queue_t queue = dispatch_get_main_queue();
-    AsyncRequestID requestID = NULL;
-    
-    /*
-     * The following dictionary keys for open_options are supported:
-     *
-     *	kNetFSUseGuestKey:			Login as a guest user.
-     *
-     *	kNetFSAllowLoopbackKey			Allow a loopback mount.
-     *
-     *	kNAUIOptionKey = UIOption		Suppress authentication dialog UI.
-     *      kNAUIOptionNoUI
-     *      kNAUIOptionAllowUI
-     *      kNAUIOptionForceUI
-     */
-    
-    /*
-     *  The following dictionary keys for mount_options are supported:
-     *
-     *	kNetFSMountFlagsKey = MNT_DONTBROWSE 	No browsable data here (see <sys/mount.h>).
-     *	kNetFSMountFlagsKey = MNT_RDONLY	A read-only mount (see <sys/mount.h>).
-     *	kNetFSAllowSubMountsKey = true		Allow a mount from a dir beneath the share point.
-     *	kNetFSSoftMountKey = true		Mount with "soft" failure semantics.
-     *	kNetFSMountAtMountDirKey = true		Mount on the specified mountpath instead of below it.
-     *
-     * Note that if kNetFSSoftMountKey isn't set, then it's set to TRUE.
-     *
-     */
-    
-    NSMutableDictionary *openOptions =
-    [@{ (__bridge NSString *)kNAUIOptionKey : (__bridge NSString *)kNAUIOptionNoUI,} mutableCopy ];
-    
-    NSMutableDictionary *mountOptions =
-    [@{ (__bridge NSString *)kNetFSAllowSubMountsKey : @YES, (__bridge NSString *)kNetFSMountAtMountDirKey : @YES,} mutableCopy ];
-        
-    int rc =
-    NetFSMountURLAsync((__bridge CFURLRef)networkShare,
-        (__bridge CFURLRef)mountPath,
-        (__bridge CFStringRef)(@""), // user
-        (__bridge CFStringRef)(@""), // password
-        (__bridge CFMutableDictionaryRef)(openOptions),
-        (__bridge CFMutableDictionaryRef)(mountOptions),
-        &requestID,
-        queue,
-        ^(int status, AsyncRequestID requestID, CFArrayRef mountpoints)
-        {
-            NSArray *mounts = CFBridgingRelease(mountpoints);
-            NSLog(@"Mounting status code: %d %@", status, mounts);
-            [[NSWorkspace sharedWorkspace] openFile:mounts[0] withApplication:app];
-        });
-    
-    NSLog(@"Request status code: %d", rc);
-}
-
-//----------------------------------------------------------------------------
-- (void) openWebDav:(id)sender
-{
-    NSDictionary* device = (NSDictionary*)[sender representedObject];
-    NSString* path = device[@"url"];
-    NSString* name = device[@"name"];
-    
-    [self mount:[NSURL URLWithString: path] usingName:name inApp:@"Finder"];
 }
 
 //----------------------------------------------------------------------------
