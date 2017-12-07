@@ -302,7 +302,7 @@
         
         NSMenuItem* item =
         [[NSMenuItem alloc] initWithTitle:title action:@selector(openInWithModifier:)
-                            keyEquivalent:[NSString stringWithFormat:@"Alt-%lu", (unsigned long)i]];
+                            keyEquivalent:@""];
 
         [item setRepresentedObject:applicationContentPath];
         [item setImage:metadata[@"applicationIcon"]];
