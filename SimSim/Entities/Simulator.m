@@ -24,7 +24,7 @@
 //----------------------------------------------------------------------------
 + (instancetype)simulatorWithDictionary:(NSDictionary*)dictionary path:(NSString*)path
 {
-    return [[[self class] alloc] initWithDictionary:dictionary path:path];
+    return [(Simulator*)[[self class] alloc] initWithDictionary:dictionary path:path];
 }
 
 //----------------------------------------------------------------------------
