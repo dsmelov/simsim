@@ -10,6 +10,8 @@
 		13F9C8331B0C2C982C9CA14F /* CommanderOne.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F9C749F4EF0EFB3F09E5CC /* CommanderOne.m */; };
 		13F9C8BD40BFC0BD5697F05F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */; };
 		13F9C9CACDE21D1AB57BD94D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F9CAF1018B8DF204603BAC /* MainMenu.xib */; };
+		5AF0ECBE2566BF2F1C410733 /* RealmFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AF0ECCCF7AF54146B17569B /* RealmFile.m */; };
+		63C2FC36204491690055AFDF /* RealmStudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C2FC34204491690055AFDF /* RealmStudio.m */; };
 		7C457F561FD9AD6F007E84B5 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C457F551FD9AD6F007E84B5 /* Application.m */; };
 		7C4BC63B1CCA94D200C72BA1 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BC63A1CCA94D200C72BA1 /* Settings.m */; };
 		7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD93A721F7EBE3D00C4AA85 /* Simulator.m */; };
@@ -17,7 +19,7 @@
 		BE7C115219E56B4F001A6220 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115119E56B4F001A6220 /* main.m */; };
 		BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115419E56B4F001A6220 /* AppDelegate.m */; };
 		EAE2ADCE1EAF7207009D3F39 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE2ADCD1EAF7207009D3F39 /* FileManager.m */; };
-		EAE2ADD21EB07943009D3F39 /* Realm.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE2ADD11EB07943009D3F39 /* Realm.m */; };
+		EAE2ADD21EB07943009D3F39 /* RealmBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE2ADD11EB07943009D3F39 /* RealmBrowser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,10 @@
 		13F9C749F4EF0EFB3F09E5CC /* CommanderOne.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommanderOne.m; sourceTree = "<group>"; };
 		13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		13F9CCF810DDA295016EC047 /* CommanderOne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommanderOne.h; sourceTree = "<group>"; };
+		5AF0E829E462D88255DB009B /* RealmFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmFile.h; sourceTree = "<group>"; };
+		5AF0ECCCF7AF54146B17569B /* RealmFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmFile.m; sourceTree = "<group>"; };
+		63C2FC34204491690055AFDF /* RealmStudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmStudio.m; sourceTree = "<group>"; };
+		63C2FC35204491690055AFDF /* RealmStudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmStudio.h; sourceTree = "<group>"; };
 		7C457F541FD9AD6F007E84B5 /* Application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
 		7C457F551FD9AD6F007E84B5 /* Application.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
 		7C4BC6391CCA94D200C72BA1 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
@@ -40,8 +46,8 @@
 		BE7C115419E56B4F001A6220 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		EAE2ADCC1EAF7207009D3F39 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FileManager.h; path = Libs/FileManager.h; sourceTree = "<group>"; };
 		EAE2ADCD1EAF7207009D3F39 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FileManager.m; path = Libs/FileManager.m; sourceTree = "<group>"; };
-		EAE2ADD01EB07943009D3F39 /* Realm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Realm.h; sourceTree = "<group>"; };
-		EAE2ADD11EB07943009D3F39 /* Realm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Realm.m; sourceTree = "<group>"; };
+		EAE2ADD01EB07943009D3F39 /* RealmBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmBrowser.h; sourceTree = "<group>"; };
+		EAE2ADD11EB07943009D3F39 /* RealmBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmBrowser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,25 @@
 				13F9CAF1018B8DF204603BAC /* MainMenu.xib */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		63C2FC33204490A10055AFDF /* RealmStudio */ = {
+			isa = PBXGroup;
+			children = (
+				63C2FC35204491690055AFDF /* RealmStudio.h */,
+				63C2FC34204491690055AFDF /* RealmStudio.m */,
+			);
+			name = RealmStudio;
+			path = Modules/RealmStudio;
+			sourceTree = "<group>";
+		};
+		63C2FC37204493710055AFDF /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				5AF0ECCCF7AF54146B17569B /* RealmFile.m */,
+				5AF0E829E462D88255DB009B /* RealmFile.h */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		7CD93A701F7EBE1F00C4AA85 /* Entities */ = {
@@ -131,7 +156,9 @@
 		EA028AAB1EAF40A5008ECFA9 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				EAE2ADCF1EB07943009D3F39 /* Realm */,
+				63C2FC37204493710055AFDF /* Shared */,
+				63C2FC33204490A10055AFDF /* RealmStudio */,
+				EAE2ADCF1EB07943009D3F39 /* RealmBrowser */,
 			);
 			name = Modules;
 			sourceTree = "<group>";
@@ -145,14 +172,14 @@
 			name = Libs;
 			sourceTree = "<group>";
 		};
-		EAE2ADCF1EB07943009D3F39 /* Realm */ = {
+		EAE2ADCF1EB07943009D3F39 /* RealmBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				EAE2ADD01EB07943009D3F39 /* Realm.h */,
-				EAE2ADD11EB07943009D3F39 /* Realm.m */,
+				EAE2ADD01EB07943009D3F39 /* RealmBrowser.h */,
+				EAE2ADD11EB07943009D3F39 /* RealmBrowser.m */,
 			);
-			name = Realm;
-			path = Modules/Realm;
+			name = RealmBrowser;
+			path = Modules/RealmBrowser;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,14 +252,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63C2FC36204491690055AFDF /* RealmStudio.m in Sources */,
 				BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */,
 				BE7C115219E56B4F001A6220 /* main.m in Sources */,
 				7C4BC63B1CCA94D200C72BA1 /* Settings.m in Sources */,
-				EAE2ADD21EB07943009D3F39 /* Realm.m in Sources */,
+				EAE2ADD21EB07943009D3F39 /* RealmBrowser.m in Sources */,
 				7C457F561FD9AD6F007E84B5 /* Application.m in Sources */,
 				13F9C8331B0C2C982C9CA14F /* CommanderOne.m in Sources */,
 				EAE2ADCE1EAF7207009D3F39 /* FileManager.m in Sources */,
 				7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */,
+				5AF0ECBE2566BF2F1C410733 /* RealmFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

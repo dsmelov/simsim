@@ -10,15 +10,18 @@
 #import "FileManagerSupport/CommanderOne.h"
 #import "FileManager.h"
 #import "Settings.h"
-#import "Realm.h"
 #import "Simulator.h"
 #import "Application.h"
+#import "RealmBrowser.h"
+#import "RealmStudio.h"
+#import "RealmFile.h"
 
 //============================================================================
 @interface AppDelegate ()
 
 @property (strong, nonatomic) NSStatusItem* statusItem;
-@property (strong, nonatomic) Realm *realmModule;
+@property (strong, nonatomic) RealmBrowser *realmBrowserModule;
+@property (strong, nonatomic) RealmStudio *realmStudioModule;
 
 @end
 
@@ -41,7 +44,7 @@
 - (BOOL) simulatorRunning
 {
     NSArray* windows = (NSArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements, kCGNullWindowID));
-    
+
     for (NSDictionary* window in windows)
     {
         NSString* windowOwner = window[(NSString*)kCGWindowOwnerName];
@@ -53,7 +56,7 @@
             return YES;
         }
     }
-    
+
     return NO;
 }
 
@@ -71,17 +74,17 @@
 {
     NSImage* icon = nil;
     NSMenu* subMenu = [NSMenu new];
-    
+
     NSNumber* hotkey = @1;
-    
+
     NSMenuItem* finder =
     [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:[hotkey stringValue]];
     [finder setRepresentedObject:path];
-    
+
     icon = [[NSWorkspace sharedWorkspace] iconForFile:FINDER_ICON_PATH];
     [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
     [finder setImage:icon];
-    
+
     [subMenu addItem:finder];
 
     hotkey = @([hotkey intValue] + 1);
@@ -89,30 +92,44 @@
     NSMenuItem* terminal =
     [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:[hotkey stringValue]];
     [terminal setRepresentedObject:path];
-    
+
     icon = [[NSWorkspace sharedWorkspace] iconForFile:TERMINAL_ICON_PATH];
     [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
     [terminal setImage:icon];
-    
-    [subMenu addItem:terminal];
-    
-    hotkey = @([hotkey intValue] + 1);
-    
-    if ([Realm isRealmAvailableForPath:path])
-    {
 
-        if (self.realmModule == nil) {
-            self.realmModule = [Realm new];
+    [subMenu addItem:terminal];
+
+    hotkey = @([hotkey intValue] + 1);
+
+    if ([RealmFile isRealmAvailableForPath:path])
+    {
+        // Add Realm Browser
+        if (self.realmBrowserModule == nil)
+        {
+            self.realmBrowserModule = [RealmBrowser new];
         }
 
-        icon = [[NSWorkspace sharedWorkspace] iconForFile:[Realm applicationPath]];
-        [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
+        icon = [[NSWorkspace sharedWorkspace] iconForFile:[RealmBrowser applicationPath]];
+        [icon setSize:NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
 
-        [self.realmModule generateRealmMenuForPath:path forMenu:subMenu withHotKey:hotkey icon:icon];
+        [self.realmBrowserModule generateRealmMenuForPath:path forMenu:subMenu withHotKey:hotkey icon:icon];
+
+        hotkey = @([hotkey intValue] + 1);
+
+        // Add Realm Studio
+        if (self.realmStudioModule == nil)
+        {
+            self.realmStudioModule = [RealmStudio new];
+        }
+
+        icon = [[NSWorkspace sharedWorkspace] iconForFile:[RealmStudio applicationPath]];
+        [icon setSize:NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
+
+        [self.realmStudioModule generateRealmMenuForPath:path forMenu:subMenu withHotKey:hotkey icon:icon];
 
         hotkey = @([hotkey intValue] + 1);
     }
-    
+
     CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
     CFArrayRef iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(iTermBundleID, NULL);
 
@@ -121,11 +138,11 @@
         NSMenuItem* iTerm =
         [[NSMenuItem alloc] initWithTitle:@"iTerm" action:@selector(openIniTerm:) keyEquivalent:[hotkey stringValue]];
         [iTerm setRepresentedObject:path];
-        
+
         icon = [[NSWorkspace sharedWorkspace] iconForFile:ITERM_ICON_PATH];
         [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
         [iTerm setImage:icon];
-        
+
         [subMenu addItem:iTerm];
         hotkey = @([hotkey intValue] + 1);
 
@@ -139,22 +156,22 @@
         NSMenuItem* commanderOne =
         [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:[hotkey stringValue]];
         [commanderOne setRepresentedObject:path];
-        
+
         icon = [[NSWorkspace sharedWorkspace] iconForFile:CMDONE_ICON_PATH];
         [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
         [commanderOne setImage:icon];
-        
+
         [subMenu addItem:commanderOne];
         hotkey = @([hotkey intValue] + 1);
     }
 
     [subMenu addItem:[NSMenuItem separatorItem]];
-    
+
     NSMenuItem* pasteboard =
     [[NSMenuItem alloc] initWithTitle:@"Copy path to Clipboard" action:@selector(copyToPasteboard:) keyEquivalent:[hotkey stringValue]];
     [pasteboard setRepresentedObject:path];
     [subMenu addItem:pasteboard];
-    
+
     hotkey = @([hotkey intValue] + 1);
 
     if ([self simulatorRunning])
@@ -163,15 +180,15 @@
         [[NSMenuItem alloc] initWithTitle:@"Take Screenshot" action:@selector(takeScreenshot:) keyEquivalent:[hotkey stringValue]];
         [screenshot setRepresentedObject:path];
         [subMenu addItem:screenshot];
-        
+
         hotkey = @([hotkey intValue] + 1);
     }
-    
+
     NSMenuItem* resetApplication =
     [[NSMenuItem alloc] initWithTitle:@"Reset application data" action:@selector(resetApplication:) keyEquivalent:[hotkey stringValue]];
     [resetApplication setRepresentedObject:path];
     [subMenu addItem:resetApplication];
-    
+
     [item setSubmenu:subMenu];
 }
 
@@ -225,17 +242,17 @@
 {
     NSString* simulatorPropertiesPath =
     [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.iphonesimulator.plist", [self homeDirectoryPath]];
-    
+
     NSDictionary* simulatorProperties = [NSDictionary dictionaryWithContentsOfFile:simulatorPropertiesPath];
 
     NSString* uuid = simulatorProperties[@"CurrentDeviceUDID"];
-    
+
     NSDictionary* devicePreferences = simulatorProperties[@"DevicePreferences"];
-    
+
     NSMutableArray* simulatorPaths = [NSMutableArray new];
 
     [simulatorPaths addObject:[self simulatorRootPathByUUID:uuid]];
-    
+
     if (devicePreferences != nil)
     {
         // we're running on xcode 9
@@ -244,7 +261,7 @@
             [simulatorPaths addObject:[self simulatorRootPathByUUID:uuid]];
         }
     }
-    
+
     return simulatorPaths;
 }
 
@@ -252,21 +269,21 @@
 - (NSMutableArray<Simulator*>*) activeSimulators
 {
     NSMutableArray* simulatorPaths = [self simulatorPaths];
-    
+
     NSMutableArray* simulators = [NSMutableArray new];
-    
+
     for (NSString* path in simulatorPaths)
     {
         NSString* simulatorDetailsPath = [path stringByAppendingString:@"device.plist"];
-        
+
         NSDictionary* properties = [NSDictionary dictionaryWithContentsOfFile:simulatorDetailsPath];
 
         if (properties == nil) { continue; } // skip "empty" properties
-        
+
         Simulator* simulator = [Simulator simulatorWithDictionary:properties path:path];
         [simulators addObject:simulator];
     }
-    
+
     return simulators;
 }
 
@@ -275,16 +292,16 @@
 {
     NSString* installedApplicationsDataPath =
     [simulator.path stringByAppendingString:@"data/Containers/Data/Application/"];
-    
+
     NSArray* installedApplications =
     [FileManager getSortedFilesFromFolder:installedApplicationsDataPath];
-    
+
     NSMutableArray* userApplications = [NSMutableArray new];
-    
+
     for (NSDictionary* app in installedApplications)
     {
         Application* application = [Application applicationWithDictionary:app simulator:simulator];
-        
+
         if (application)
         {
             if (!application.isAppleApplication)
@@ -294,7 +311,7 @@
         }
 
     }
-    
+
     return userApplications;
 }
 
@@ -303,7 +320,7 @@
 {
     NSMenuItem* startAtLogin =
     [[NSMenuItem alloc] initWithTitle:@"Start at Login" action:@selector(handleStartAtLogin:) keyEquivalent:@""];
-    
+
     BOOL isStartAtLoginEnabled = [Settings isStartAtLoginEnabled];
     if (isStartAtLoginEnabled)
     {
@@ -315,11 +332,11 @@
     }
     [startAtLogin setRepresentedObject:@(isStartAtLoginEnabled)];
     [menu addItem:startAtLogin];
-    
+
     NSString* appVersion = [NSString stringWithFormat:@"About %@ %@", [[NSRunningApplication currentApplication] localizedName], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
     [menu addItem:about];
-    
+
     NSMenuItem* quit = [[NSMenuItem alloc] initWithTitle:@"Quit" action:@selector(exitApp:) keyEquivalent:@"Q"];
     [menu addItem:quit];
 }
@@ -332,14 +349,14 @@
     NSMenu* menu = [NSMenu new];
 
     NSMutableArray* simulators = [self activeSimulators];
-    
+
     NSArray* recentSimulators = [simulators sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
     {
         NSDate* l = [(Simulator*)a date];
         NSDate* r = [(Simulator*)b date];
         return [r compare:l];
     }];
-    
+
     int simulatorsCount = 0;
     for (Simulator* simulator in recentSimulators)
     {
@@ -350,18 +367,18 @@
             NSString* simulator_title = [NSString stringWithFormat:@"%@ (%@)",
                                          simulator.name,
                                          simulator.os];
-            
+
             NSMenuItem* simulatorMenuItem = [[NSMenuItem alloc] initWithTitle:simulator_title action:nil keyEquivalent:@""];
             [simulatorMenuItem setEnabled:NO];
             [menu addItem:simulatorMenuItem];
             [self addApplications:installedApplications toMenu:menu];
-            
+
             simulatorsCount++;
             if (simulatorsCount >= MAX_RECENT_SIMULATORS)
                 break;
         }
     }
-    
+
     [menu addItem:[NSMenuItem separatorItem]];
 
     [self addServiceItemsToMenu:menu];
@@ -373,7 +390,7 @@
 - (void) openInWithModifier:(id)sender
 {
     NSEvent* event = [NSApp currentEvent];
-    
+
     if ([event modifierFlags] & NSAlternateKeyMask)
     {
         [self openInTerminal:sender];
@@ -395,7 +412,7 @@
 - (void) copyToPasteboard:(id)sender
 {
     NSString* path = (NSString*)[sender representedObject];
-    
+
     NSPasteboard* pasteboard = [NSPasteboard generalPasteboard];
 
     [pasteboard declareTypes:@[ NSPasteboardTypeString ] owner:nil];
@@ -406,7 +423,7 @@
 - (void) takeScreenshot:(id)sender
 {
     NSArray* windows = (NSArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements, kCGNullWindowID));
-    
+
     for(NSDictionary *window in windows)
     {
         NSString* windowOwner = window[(NSString*)kCGWindowOwnerName];
@@ -416,12 +433,12 @@
             ([windowName containsString:@"iOS"] || [windowName containsString:@"watchOS"] || [windowName containsString:@"tvOS"]))
         {
             NSNumber* windowID = window[(NSString*)kCGWindowNumber];
-            
+
             NSString *dateComponents = @"yyyyMMdd_HHmmss_SSSS";
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
             [dateFormatter setDateFormat:dateComponents];
-            
+
             NSDate *date = [NSDate date];
             NSString *dateString = [dateFormatter stringFromDate:date];
 
@@ -430,13 +447,13 @@
 
             CGRect bounds;
             CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)window[(NSString*)kCGWindowBounds], &bounds);
-            
+
             CGImageRef image = CGWindowListCreateImage(bounds, kCGWindowListOptionIncludingWindow, (CGWindowID)[windowID intValue], kCGWindowImageDefault);
             NSBitmapImageRep *bitmap = [[NSBitmapImageRep alloc] initWithCGImage:image];
-            
+
             NSData *data = [bitmap representationUsingType: NSPNGFileType properties:@{}];
             [data writeToFile: screenshotPath atomically:NO];
-            
+
             CGImageRelease(image);
         }
     }
@@ -446,14 +463,14 @@
 - (void) resetFolder:(NSString*)folder inRoot:(NSString*)root
 {
     NSString* path = [root stringByAppendingPathComponent:folder];
-    
+
     NSFileManager* fm = [NSFileManager new];
     NSDirectoryEnumerator* en = [fm enumeratorAtPath:path];
     NSError* error = nil;
     BOOL result = NO;
-    
+
     NSString* file;
-    
+
     while (file = [en nextObject])
     {
         result = [fm removeItemAtPath:[path stringByAppendingPathComponent:file] error:&error];
@@ -468,7 +485,7 @@
 - (void) resetApplication:(id)sender
 {
     NSString* path = (NSString*)[sender representedObject];
-    
+
     [self resetFolder:@"Documents" inRoot:path];
     [self resetFolder:@"Library" inRoot:path];
     [self resetFolder:@"tmp" inRoot:path];
@@ -478,7 +495,7 @@
 - (void) openInFinder:(id)sender
 {
     NSString* path = (NSString*)[sender representedObject];
-    
+
     [[NSWorkspace sharedWorkspace] openFile:path withApplication:@"Finder"];
 }
 
@@ -516,11 +533,11 @@
 - (void) handleStartAtLogin:(id)sender
 {
     BOOL isEnabled = [[sender representedObject] boolValue];
-    
+
     [Settings setStartAtLoginEnabled:!isEnabled];
-    
+
     [sender setRepresentedObject:@(!isEnabled)];
-    
+
     if (isEnabled)
     {
         [sender setState:NSOffState];
