@@ -63,7 +63,6 @@
 + (BOOL) isStartAtLoginEnabled
 {
     NSString* appPath = [[NSBundle mainBundle] bundlePath];
-    CFURLRef url = (__bridge CFURLRef)[NSURL fileURLWithPath:appPath];
     LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
     
     BOOL ret = NO;
@@ -80,7 +79,7 @@
         {
             LSSharedFileListItemRef itemRef = (__bridge LSSharedFileListItemRef)item;
             //Resolve the item with URL
-            url = LSSharedFileListItemCopyResolvedURL(itemRef, 0, NULL);
+            CFURLRef url = LSSharedFileListItemCopyResolvedURL(itemRef, 0, NULL);
             if (url)
             {
                 NSString* urlPath = [(__bridge NSURL*)url path];
