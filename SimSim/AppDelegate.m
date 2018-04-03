@@ -221,7 +221,8 @@
 }
 
 //----------------------------------------------------------------------------
-- (NSMutableArray*) simulatorPaths
+// Since we dont want duplicates, simulatorPaths is now a Set
+- (NSMutableSet*) simulatorPaths
 {
     NSString* simulatorPropertiesPath =
     [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.iphonesimulator.plist", [self homeDirectoryPath]];
@@ -232,7 +233,7 @@
     
     NSDictionary* devicePreferences = simulatorProperties[@"DevicePreferences"];
     
-    NSMutableArray* simulatorPaths = [NSMutableArray new];
+    NSMutableSet* simulatorPaths = [NSMutableSet new];
 
     [simulatorPaths addObject:[self simulatorRootPathByUUID:uuid]];
     
@@ -251,7 +252,7 @@
 //----------------------------------------------------------------------------
 - (NSMutableArray<Simulator*>*) activeSimulators
 {
-    NSMutableArray* simulatorPaths = [self simulatorPaths];
+    NSMutableSet* simulatorPaths = [self simulatorPaths];
     
     NSMutableArray* simulators = [NSMutableArray new];
     
@@ -284,8 +285,9 @@
     for (NSDictionary* app in installedApplications)
     {
         Application* application = [Application applicationWithDictionary:app simulator:simulator];
-        
-        if (application)
+
+        // BundleName and version cant be nil
+        if (application && application.bundleName && application.version)
         {
             if (!application.isAppleApplication)
             {
