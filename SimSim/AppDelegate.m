@@ -186,7 +186,7 @@
 
     NSMenuItem* item =
         [[NSMenuItem alloc] initWithTitle:title action:@selector(openInWithModifier:)
-            keyEquivalent:@""];
+            keyEquivalent:@"\0"];
 
     [item setRepresentedObject:applicationContentPath];
     [item setImage:application.icon];
