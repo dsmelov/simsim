@@ -13,8 +13,6 @@
 #import "Tools.h"
 #import "CommanderOne.h"
 
-static Realm *realmModuleSingleton = nil; // we're going back to the basics!
-
 @implementation Menus
 
 #define ACTION_ICON_SIZE 16
@@ -69,19 +67,27 @@ static Realm *realmModuleSingleton = nil; // we're going back to the basics!
 }
 
 //----------------------------------------------------------------------------
++ (Realm*) realmModule
+{
+    static Realm * realm = nil;
+    
+    if (realm == nil)
+        realm = [Realm new];
+    
+    return realm;
+}
+
+//----------------------------------------------------------------------------
 + (NSNumber*) addActionForRealmTo:(NSMenu*)menu
                           forPath:(NSString*)path
                        withHotkey:(NSNumber*)hotkey
 {
     if ([Realm isRealmAvailableForPath:path])
     {
-        if (realmModuleSingleton == nil)
-            realmModuleSingleton = [Realm new];
-        
         NSImage* icon = [[NSWorkspace sharedWorkspace] iconForFile:[Realm applicationPath]];
         [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
         
-        [realmModuleSingleton generateRealmMenuForPath:path forMenu:menu withHotKey:hotkey icon:icon];
+        [[self realmModule] generateRealmMenuForPath:path forMenu:menu withHotKey:hotkey icon:icon];
         
         return @([hotkey intValue] + 1);
     }
