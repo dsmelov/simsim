@@ -7,12 +7,14 @@
 //
 
 #import "AppDelegate.h"
-#import "FileManagerSupport/CommanderOne.h"
 #import "FileManager.h"
 #import "Settings.h"
 #import "Realm.h"
 #import "Simulator.h"
 #import "Application.h"
+#import "Tools.h"
+#import "Actions.h"
+#import "FileManagerSupport/CommanderOne.h"
 
 //============================================================================
 @interface AppDelegate ()
@@ -37,25 +39,6 @@
     _statusItem.enabled = YES;
 }
 
-//----------------------------------------------------------------------------
-- (BOOL) simulatorRunning
-{
-    NSArray* windows = (NSArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements, kCGNullWindowID));
-    
-    for (NSDictionary* window in windows)
-    {
-        NSString* windowOwner = window[(NSString*)kCGWindowOwnerName];
-        NSString* windowName = window[(NSString*)kCGWindowName];
-
-        if ([windowOwner containsString:@"Simulator"] &&
-            ([windowName containsString:@"iOS"] || [windowName containsString:@"watchOS"] || [windowName containsString:@"tvOS"]))
-        {
-            return YES;
-        }
-    }
-    
-    return NO;
-}
 
 #define ACTION_ICON_SIZE 16
 
@@ -78,6 +61,7 @@
     NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title
                                                   action:selector
                                            keyEquivalent:[hotkey stringValue]];
+    [item setTarget:[Actions class]];
     [item setRepresentedObject:path];
     
     NSImage* icon = [[NSWorkspace sharedWorkspace] iconForFile:iconPath];
@@ -99,6 +83,8 @@
     NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title
                                                   action:selector
                                            keyEquivalent:[hotkey stringValue]];
+    
+    [item setTarget:[Actions class]];
     
     [item setRepresentedObject:path];
     [submenu addItem:item];
@@ -164,7 +150,7 @@
                   withHotkey:hotkey
                         does:@selector(copyToPasteboard:)];
     
-    if ([self simulatorRunning])
+    if ([Tools simulatorRunning])
     {
         hotkey = [self addAction:@"Take Screenshot" toSubmenu:subMenu forPath:path
                       withHotkey:hotkey
@@ -211,16 +197,10 @@
 }
 
 //----------------------------------------------------------------------------
-- (NSString*) homeDirectoryPath
-{
-    return NSHomeDirectory();
-}
-
-//----------------------------------------------------------------------------
 - (NSString*) simulatorRootPathByUUID:(NSString*)uuid
 {
     return
-    [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/", [self homeDirectoryPath], uuid];
+    [NSString stringWithFormat:@"%@/Library/Developer/CoreSimulator/Devices/%@/", [Tools homeDirectoryPath], uuid];
 }
 
 //----------------------------------------------------------------------------
@@ -228,7 +208,7 @@
 - (NSMutableSet*) simulatorPaths
 {
     NSString* simulatorPropertiesPath =
-    [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.iphonesimulator.plist", [self homeDirectoryPath]];
+    [NSString stringWithFormat:@"%@/Library/Preferences/com.apple.iphonesimulator.plist", [Tools homeDirectoryPath]];
     
     NSDictionary* simulatorProperties = [NSDictionary dictionaryWithContentsOfFile:simulatorPropertiesPath];
 
@@ -381,165 +361,20 @@
     
     if ([event modifierFlags] & NSAlternateKeyMask)
     {
-        [self openInTerminal:sender];
+        [Actions openInTerminal:sender];
     }
     else if ([event modifierFlags] & NSControlKeyMask)
     {
         if ([CommanderOne isCommanderOneAvailable])
         {
-            [self openInCommanderOne:sender];
+            [Actions openInCommanderOne:sender];
         }
     }
     else
     {
-        [self openInFinder:sender];
+        [Actions openInFinder:sender];
     }
 }
 
-//----------------------------------------------------------------------------
-- (void) copyToPasteboard:(id)sender
-{
-    NSString* path = (NSString*)[sender representedObject];
-    
-    NSPasteboard* pasteboard = [NSPasteboard generalPasteboard];
-
-    [pasteboard declareTypes:@[ NSPasteboardTypeString ] owner:nil];
-    [pasteboard setString:path forType:NSPasteboardTypeString];
-}
-
-//----------------------------------------------------------------------------
-- (void) takeScreenshot:(id)sender
-{
-    NSArray* windows = (NSArray *)CFBridgingRelease(CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements, kCGNullWindowID));
-    
-    for(NSDictionary *window in windows)
-    {
-        NSString* windowOwner = window[(NSString*)kCGWindowOwnerName];
-        NSString* windowName = window[(NSString*)kCGWindowName];
-
-        if ([windowOwner containsString:@"Simulator"] &&
-            ([windowName containsString:@"iOS"] || [windowName containsString:@"watchOS"] || [windowName containsString:@"tvOS"]))
-        {
-            NSNumber* windowID = window[(NSString*)kCGWindowNumber];
-            
-            NSString *dateComponents = @"yyyyMMdd_HHmmss_SSSS";
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-            [dateFormatter setDateFormat:dateComponents];
-            
-            NSDate *date = [NSDate date];
-            NSString *dateString = [dateFormatter stringFromDate:date];
-
-            NSString* screenshotPath =
-            [NSString stringWithFormat:@"%@/Desktop/Screen Shot at %@.png", [self homeDirectoryPath], dateString];
-
-            CGRect bounds;
-            CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)window[(NSString*)kCGWindowBounds], &bounds);
-            
-            CGImageRef image = CGWindowListCreateImage(bounds, kCGWindowListOptionIncludingWindow, (CGWindowID)[windowID intValue], kCGWindowImageDefault);
-            NSBitmapImageRep *bitmap = [[NSBitmapImageRep alloc] initWithCGImage:image];
-            
-            NSData *data = [bitmap representationUsingType: NSPNGFileType properties:@{}];
-            [data writeToFile: screenshotPath atomically:NO];
-            
-            CGImageRelease(image);
-        }
-    }
-}
-
-//----------------------------------------------------------------------------
-- (void) resetFolder:(NSString*)folder inRoot:(NSString*)root
-{
-    NSString* path = [root stringByAppendingPathComponent:folder];
-    
-    NSFileManager* fm = [NSFileManager new];
-    NSDirectoryEnumerator* en = [fm enumeratorAtPath:path];
-    NSError* error = nil;
-    BOOL result = NO;
-    
-    NSString* file;
-    
-    while (file = [en nextObject])
-    {
-        result = [fm removeItemAtPath:[path stringByAppendingPathComponent:file] error:&error];
-        if (!result && error)
-        {
-            NSLog(@"Something went wrong: %@", error);
-        }
-    }
-}
-
-//----------------------------------------------------------------------------
-- (void) resetApplication:(id)sender
-{
-    NSString* path = (NSString*)[sender representedObject];
-    
-    [self resetFolder:@"Documents" inRoot:path];
-    [self resetFolder:@"Library" inRoot:path];
-    [self resetFolder:@"tmp" inRoot:path];
-}
-
-//----------------------------------------------------------------------------
-- (void) openInFinder:(id)sender
-{
-    NSString* path = (NSString*)[sender representedObject];
-    
-    [[NSWorkspace sharedWorkspace] openFile:path withApplication:@"Finder"];
-}
-
-//----------------------------------------------------------------------------
-- (void) openInTerminal:(id)sender
-{
-    NSString* path = (NSString*)[sender representedObject];
-
-    [[NSWorkspace sharedWorkspace] openFile:path withApplication:@"Terminal"];
-}
-
-//----------------------------------------------------------------------------
-- (void) openIniTerm:(id)sender
-{
-    NSString* path = (NSString*)[sender representedObject];
-
-    [[NSWorkspace sharedWorkspace] openFile:path withApplication:@"iTerm"];
-}
-
-//----------------------------------------------------------------------------
-- (void) openInCommanderOne:(id)sender
-{
-    NSString* path = (NSString*)[sender representedObject];
-
-    [CommanderOne openInCommanderOne:path];
-}
-
-//----------------------------------------------------------------------------
-- (void) exitApp:(id)sender
-{
-    [[NSApplication sharedApplication] terminate:self];
-}
-
-//----------------------------------------------------------------------------
-- (void) handleStartAtLogin:(id)sender
-{
-    BOOL isEnabled = [[sender representedObject] boolValue];
-    
-    [Settings setStartAtLoginEnabled:!isEnabled];
-    
-    [sender setRepresentedObject:@(!isEnabled)];
-    
-    if (isEnabled)
-    {
-        [sender setState:NSOffState];
-    }
-    else
-    {
-        [sender setState:NSOnState];
-    }
-}
-
-//----------------------------------------------------------------------------
-- (void) aboutApp:(id)sender
-{
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/dsmelov/simsim"]];
-}
 
 @end
