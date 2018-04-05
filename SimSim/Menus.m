@@ -71,8 +71,13 @@
 {
     static Realm * realm = nil;
     
-    if (realm == nil)
-        realm = [Realm new];
+    static dispatch_once_t token;
+    
+    dispatch_once(&token, ^
+    {
+        if (realm == nil)
+            realm = [Realm new];
+    });
     
     return realm;
 }
@@ -200,6 +205,8 @@
     NSMenuItem* startAtLogin =
     [[NSMenuItem alloc] initWithTitle:@"Start at Login" action:@selector(handleStartAtLogin:) keyEquivalent:@""];
     
+    [startAtLogin setTarget:[Actions class]];
+
     BOOL isStartAtLoginEnabled = [Settings isStartAtLoginEnabled];
     
     [startAtLogin setState: isStartAtLoginEnabled ? NSOnState : NSOffState];
@@ -209,9 +216,13 @@
     
     NSString* appVersion = [NSString stringWithFormat:@"About %@ %@", [[NSRunningApplication currentApplication] localizedName], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     NSMenuItem* about = [[NSMenuItem alloc] initWithTitle:appVersion action:@selector(aboutApp:) keyEquivalent:@"I"];
+    
+    [about setTarget:[Actions class]];
+
     [menu addItem:about];
     
     NSMenuItem* quit = [[NSMenuItem alloc] initWithTitle:@"Quit" action:@selector(exitApp:) keyEquivalent:@"Q"];
+    [quit setTarget:[Actions class]];
     [menu addItem:quit];
 }
 
