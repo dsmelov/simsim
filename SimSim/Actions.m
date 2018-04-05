@@ -159,5 +159,26 @@
     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/dsmelov/simsim"]];
 }
 
+//----------------------------------------------------------------------------
++ (void) openInWithModifier:(id)sender
+{
+    NSEvent* event = [NSApp currentEvent];
+    
+    if ([event modifierFlags] & NSAlternateKeyMask)
+    {
+        [Actions openInTerminal:sender];
+    }
+    else if ([event modifierFlags] & NSControlKeyMask)
+    {
+        if ([CommanderOne isCommanderOneAvailable])
+        {
+            [Actions openInCommanderOne:sender];
+        }
+    }
+    else
+    {
+        [Actions openInFinder:sender];
+    }
+}
 
 @end

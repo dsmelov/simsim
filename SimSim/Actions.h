@@ -21,5 +21,6 @@
 + (void) exitApp:(id)sender;
 + (void) handleStartAtLogin:(id)sender;
 + (void) aboutApp:(id)sender;
++ (void) openInWithModifier:(id)sender;
 
 @end

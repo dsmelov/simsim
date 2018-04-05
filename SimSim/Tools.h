@@ -7,10 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Entities/Simulator.h"
+#import "Entities/Application.h"
 
 @interface Tools : NSObject
 
 + (NSString*) homeDirectoryPath;
 + (BOOL) simulatorRunning;
++ (NSString*) simulatorRootPathByUUID:(NSString*)uuid;
++ (NSMutableSet*) simulatorPaths;
++ (NSMutableArray<Simulator*>*) activeSimulators;
++ (NSArray<Application*>*) installedAppsOnSimulator:(Simulator*)simulator;
 
 @end
