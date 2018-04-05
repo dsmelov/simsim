@@ -66,6 +66,46 @@
 #define ITERM_ICON_PATH @"/Applications/iTerm.app"
 #define CMDONE_ICON_PATH @"/Applications/Commander One.app"
 
+
+//----------------------------------------------------------------------------
+- (NSNumber*) addAction:(NSString*)title
+              toSubmenu:(NSMenu*)submenu
+                forPath:(NSString*)path
+               withIcon:(NSString*)iconPath
+              andHotkey:(NSNumber*)hotkey
+                   does:(nullable SEL)selector
+{
+    NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title
+                                                  action:selector
+                                           keyEquivalent:[hotkey stringValue]];
+    [item setRepresentedObject:path];
+    
+    NSImage* icon = [[NSWorkspace sharedWorkspace] iconForFile:iconPath];
+    [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
+    [item setImage:icon];
+    
+    [submenu addItem:item];
+
+    return @([hotkey intValue] + 1);
+}
+
+//----------------------------------------------------------------------------
+- (NSNumber*) addAction:(NSString*)title
+              toSubmenu:(NSMenu*)submenu
+                forPath:(NSString*)path
+              withHotkey:(NSNumber*)hotkey
+                    does:(nullable SEL)selector
+{
+    NSMenuItem* item = [[NSMenuItem alloc] initWithTitle:title
+                                                  action:selector
+                                           keyEquivalent:[hotkey stringValue]];
+    
+    [item setRepresentedObject:path];
+    [submenu addItem:item];
+
+    return @([hotkey intValue] + 1);
+}
+
 //----------------------------------------------------------------------------
 - (void) addSubMenusToItem:(NSMenuItem*)item usingPath:(NSString*)path
 {
@@ -73,30 +113,14 @@
     NSMenu* subMenu = [NSMenu new];
     
     NSNumber* hotkey = @1;
-    
-    NSMenuItem* finder =
-    [[NSMenuItem alloc] initWithTitle:@"Finder" action:@selector(openInFinder:) keyEquivalent:[hotkey stringValue]];
-    [finder setRepresentedObject:path];
-    
-    icon = [[NSWorkspace sharedWorkspace] iconForFile:FINDER_ICON_PATH];
-    [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
-    [finder setImage:icon];
-    
-    [subMenu addItem:finder];
 
-    hotkey = @([hotkey intValue] + 1);
-
-    NSMenuItem* terminal =
-    [[NSMenuItem alloc] initWithTitle:@"Terminal" action:@selector(openInTerminal:) keyEquivalent:[hotkey stringValue]];
-    [terminal setRepresentedObject:path];
+    hotkey = [self addAction:@"Finder" toSubmenu:subMenu forPath:path
+                    withIcon:FINDER_ICON_PATH andHotkey:hotkey
+                        does:@selector(openInFinder:)];
     
-    icon = [[NSWorkspace sharedWorkspace] iconForFile:TERMINAL_ICON_PATH];
-    [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
-    [terminal setImage:icon];
-    
-    [subMenu addItem:terminal];
-    
-    hotkey = @([hotkey intValue] + 1);
+    hotkey = [self addAction:@"Terminal" toSubmenu:subMenu forPath:path
+                    withIcon:TERMINAL_ICON_PATH andHotkey:hotkey
+                        does:@selector(openInTerminal:)];
     
     if ([Realm isRealmAvailableForPath:path])
     {
@@ -118,16 +142,9 @@
 
     if (iTermAppURLs)
     {
-        NSMenuItem* iTerm =
-        [[NSMenuItem alloc] initWithTitle:@"iTerm" action:@selector(openIniTerm:) keyEquivalent:[hotkey stringValue]];
-        [iTerm setRepresentedObject:path];
-        
-        icon = [[NSWorkspace sharedWorkspace] iconForFile:ITERM_ICON_PATH];
-        [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
-        [iTerm setImage:icon];
-        
-        [subMenu addItem:iTerm];
-        hotkey = @([hotkey intValue] + 1);
+        hotkey = [self addAction:@"iTerm" toSubmenu:subMenu forPath:path
+                        withIcon:ITERM_ICON_PATH andHotkey:hotkey
+                            does:@selector(openIniTerm:)];
 
         CFRelease(iTermAppURLs);
     }
@@ -136,41 +153,27 @@
 
     if ([CommanderOne isCommanderOneAvailable])
     {
-        NSMenuItem* commanderOne =
-        [[NSMenuItem alloc] initWithTitle:@"Commander One" action:@selector(openInCommanderOne:) keyEquivalent:[hotkey stringValue]];
-        [commanderOne setRepresentedObject:path];
-        
-        icon = [[NSWorkspace sharedWorkspace] iconForFile:CMDONE_ICON_PATH];
-        [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
-        [commanderOne setImage:icon];
-        
-        [subMenu addItem:commanderOne];
-        hotkey = @([hotkey intValue] + 1);
+        hotkey = [self addAction:@"Commander One" toSubmenu:subMenu forPath:path
+                        withIcon:CMDONE_ICON_PATH andHotkey:hotkey
+                            does:@selector(openInCommanderOne:)];
     }
 
     [subMenu addItem:[NSMenuItem separatorItem]];
     
-    NSMenuItem* pasteboard =
-    [[NSMenuItem alloc] initWithTitle:@"Copy path to Clipboard" action:@selector(copyToPasteboard:) keyEquivalent:[hotkey stringValue]];
-    [pasteboard setRepresentedObject:path];
-    [subMenu addItem:pasteboard];
+    hotkey = [self addAction:@"Copy path to Clipboard" toSubmenu:subMenu forPath:path
+                  withHotkey:hotkey
+                        does:@selector(copyToPasteboard:)];
     
-    hotkey = @([hotkey intValue] + 1);
-
     if ([self simulatorRunning])
     {
-        NSMenuItem* screenshot =
-        [[NSMenuItem alloc] initWithTitle:@"Take Screenshot" action:@selector(takeScreenshot:) keyEquivalent:[hotkey stringValue]];
-        [screenshot setRepresentedObject:path];
-        [subMenu addItem:screenshot];
-        
-        hotkey = @([hotkey intValue] + 1);
+        hotkey = [self addAction:@"Take Screenshot" toSubmenu:subMenu forPath:path
+                      withHotkey:hotkey
+                            does:@selector(takeScreenshot:)];
     }
-    
-    NSMenuItem* resetApplication =
-    [[NSMenuItem alloc] initWithTitle:@"Reset application data" action:@selector(resetApplication:) keyEquivalent:[hotkey stringValue]];
-    [resetApplication setRepresentedObject:path];
-    [subMenu addItem:resetApplication];
+
+    hotkey = [self addAction:@"Reset application data" toSubmenu:subMenu forPath:path
+                  withHotkey:hotkey
+                        does:@selector(resetApplication:)];
     
     [item setSubmenu:subMenu];
 }
