@@ -13,7 +13,7 @@
 #import "Tools.h"
 #import "CommanderOne.h"
 
-static Realm *realmModuleSingleton = nil;
+static Realm *realmModuleSingleton = nil; // we're going back to the basics!
 
 @implementation Menus
 
@@ -69,9 +69,52 @@ static Realm *realmModuleSingleton = nil;
 }
 
 //----------------------------------------------------------------------------
++ (NSNumber*) addActionForRealmTo:(NSMenu*)menu
+                          forPath:(NSString*)path
+                       withHotkey:(NSNumber*)hotkey
+{
+    if ([Realm isRealmAvailableForPath:path])
+    {
+        if (realmModuleSingleton == nil)
+            realmModuleSingleton = [Realm new];
+        
+        NSImage* icon = [[NSWorkspace sharedWorkspace] iconForFile:[Realm applicationPath]];
+        [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
+        
+        [realmModuleSingleton generateRealmMenuForPath:path forMenu:menu withHotKey:hotkey icon:icon];
+        
+        return @([hotkey intValue] + 1);
+    }
+    
+    return hotkey;
+}
+
+//----------------------------------------------------------------------------
++ (NSNumber*) addActionForiTermTo:(NSMenu*)menu
+                          forPath:(NSString*)path
+                       withHotkey:(NSNumber*)hotkey
+{
+    CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
+    CFArrayRef iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(iTermBundleID, NULL);
+    
+    if (iTermAppURLs)
+    {
+        hotkey = [self addAction:@"iTerm" toSubmenu:menu forPath:path
+                        withIcon:ITERM_ICON_PATH andHotkey:hotkey
+                            does:@selector(openIniTerm:)];
+        
+        CFRelease(iTermAppURLs);
+        return @([hotkey intValue] + 1);
+    }
+    
+    CFRelease(iTermBundleID);
+
+    return hotkey;
+}
+
+//----------------------------------------------------------------------------
 + (void) addSubMenusToItem:(NSMenuItem*)item usingPath:(NSString*)path
 {
-    NSImage* icon = nil;
     NSMenu* subMenu = [NSMenu new];
     
     NSNumber* hotkey = @1;
@@ -83,36 +126,9 @@ static Realm *realmModuleSingleton = nil;
     hotkey = [self addAction:@"Terminal" toSubmenu:subMenu forPath:path
                     withIcon:TERMINAL_ICON_PATH andHotkey:hotkey
                         does:@selector(openInTerminal:)];
-    
-    if ([Realm isRealmAvailableForPath:path])
-    {
-        
-        if (realmModuleSingleton == nil)
-        {
-            realmModuleSingleton = [Realm new];
-        }
-        
-        icon = [[NSWorkspace sharedWorkspace] iconForFile:[Realm applicationPath]];
-        [icon setSize: NSMakeSize(ACTION_ICON_SIZE, ACTION_ICON_SIZE)];
-        
-        [realmModuleSingleton generateRealmMenuForPath:path forMenu:subMenu withHotKey:hotkey icon:icon];
-        
-        hotkey = @([hotkey intValue] + 1);
-    }
-    
-    CFStringRef iTermBundleID = CFStringCreateWithCString(CFAllocatorGetDefault(), "com.googlecode.iterm2", kCFStringEncodingUTF8);
-    CFArrayRef iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(iTermBundleID, NULL);
-    
-    if (iTermAppURLs)
-    {
-        hotkey = [self addAction:@"iTerm" toSubmenu:subMenu forPath:path
-                        withIcon:ITERM_ICON_PATH andHotkey:hotkey
-                            does:@selector(openIniTerm:)];
-        
-        CFRelease(iTermAppURLs);
-    }
-    
-    CFRelease(iTermBundleID);
+
+    hotkey = [self addActionForRealmTo:subMenu forPath:path withHotkey:hotkey];
+    hotkey = [self addActionForiTermTo:subMenu forPath:path withHotkey:hotkey];
     
     if ([CommanderOne isCommanderOneAvailable])
     {
@@ -179,14 +195,9 @@ static Realm *realmModuleSingleton = nil;
     [[NSMenuItem alloc] initWithTitle:@"Start at Login" action:@selector(handleStartAtLogin:) keyEquivalent:@""];
     
     BOOL isStartAtLoginEnabled = [Settings isStartAtLoginEnabled];
-    if (isStartAtLoginEnabled)
-    {
-        [startAtLogin setState:NSOnState];
-    }
-    else
-    {
-        [startAtLogin setState:NSOffState];
-    }
+    
+    [startAtLogin setState: isStartAtLoginEnabled ? NSOnState : NSOffState];
+    
     [startAtLogin setRepresentedObject:@(isStartAtLoginEnabled)];
     [menu addItem:startAtLogin];
     
@@ -208,11 +219,11 @@ static Realm *realmModuleSingleton = nil;
     NSMutableArray* simulators = [Tools activeSimulators];
     
     NSArray* recentSimulators = [simulators sortedArrayUsingComparator:^NSComparisonResult(id a, id b)
-                                 {
-                                     NSDate* l = [(Simulator*)a date];
-                                     NSDate* r = [(Simulator*)b date];
-                                     return [r compare:l];
-                                 }];
+    {
+        NSDate* l = [(Simulator*)a date];
+        NSDate* r = [(Simulator*)b date];
+        return [r compare:l];
+    }];
     
     int simulatorsCount = 0;
     for (Simulator* simulator in recentSimulators)
