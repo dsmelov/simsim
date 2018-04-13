@@ -74,7 +74,7 @@
 }
 
 //----------------------------------------------------------------------------
-+ (NSMutableArray<Simulator*>*) activeSimulators
++ (NSArray<Simulator*>*) activeSimulators
 {
     NSMutableSet* simulatorPaths = [self simulatorPaths];
     

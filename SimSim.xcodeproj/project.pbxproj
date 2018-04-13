@@ -15,7 +15,7 @@
 		7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD93A721F7EBE3D00C4AA85 /* Simulator.m */; };
 		9A04C008207652240060BB4E /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C006207652230060BB4E /* Tools.m */; };
 		9A04C00B207652B00060BB4E /* Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C00A207652B00060BB4E /* Actions.m */; };
-		9A04C00E2076621E0060BB4E /* Menus.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C00D2076621E0060BB4E /* Menus.m */; };
+		9A04C014208126C90060BB4E /* Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C013208126C90060BB4E /* Menus.swift */; };
 		9AE0DDA41DAE4852000029EC /* empty_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AE0DDA31DAE4852000029EC /* empty_icon.png */; };
 		BE7C115219E56B4F001A6220 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115119E56B4F001A6220 /* main.m */; };
 		BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115419E56B4F001A6220 /* AppDelegate.m */; };
@@ -39,8 +39,8 @@
 		9A04C007207652230060BB4E /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		9A04C009207652B00060BB4E /* Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Actions.h; sourceTree = "<group>"; };
 		9A04C00A207652B00060BB4E /* Actions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Actions.m; sourceTree = "<group>"; };
-		9A04C00C2076621E0060BB4E /* Menus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menus.h; sourceTree = "<group>"; };
-		9A04C00D2076621E0060BB4E /* Menus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Menus.m; sourceTree = "<group>"; };
+		9A04C012208126C80060BB4E /* SimSim-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimSim-Bridging-Header.h"; sourceTree = "<group>"; };
+		9A04C013208126C90060BB4E /* Menus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menus.swift; sourceTree = "<group>"; };
 		9AE0DDA31DAE4852000029EC /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_icon.png; sourceTree = "<group>"; };
 		BE7C114C19E56B4F001A6220 /* SimSim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimSim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7C115019E56B4F001A6220 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -114,12 +114,11 @@
 		BE7C114E19E56B4F001A6220 /* SimSim */ = {
 			isa = PBXGroup;
 			children = (
-				9A04C00C2076621E0060BB4E /* Menus.h */,
-				9A04C00D2076621E0060BB4E /* Menus.m */,
 				9A04C009207652B00060BB4E /* Actions.h */,
 				9A04C00A207652B00060BB4E /* Actions.m */,
 				9A04C007207652230060BB4E /* Tools.h */,
 				9A04C006207652230060BB4E /* Tools.m */,
+				9A04C013208126C90060BB4E /* Menus.swift */,
 				7CD93A701F7EBE1F00C4AA85 /* Entities */,
 				EAE2ADCB1EAF71E9009D3F39 /* Libs */,
 				EA028AAB1EAF40A5008ECFA9 /* Modules */,
@@ -130,6 +129,7 @@
 				BE7C114F19E56B4F001A6220 /* Supporting Files */,
 				13F9C773A02CE69113A5F183 /* FileManagerSupport */,
 				13F9CD9C30F220C6ED2765F1 /* Resources */,
+				9A04C012208126C80060BB4E /* SimSim-Bridging-Header.h */,
 			);
 			path = SimSim;
 			sourceTree = "<group>";
@@ -201,6 +201,7 @@
 				TargetAttributes = {
 					BE7C114B19E56B4F001A6220 = {
 						CreatedOnToolsVersion = 6.0.1;
+						LastSwiftMigration = 0920;
 					};
 				};
 			};
@@ -241,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */,
+				9A04C014208126C90060BB4E /* Menus.swift in Sources */,
 				BE7C115219E56B4F001A6220 /* main.m in Sources */,
 				7C4BC63B1CCA94D200C72BA1 /* Settings.m in Sources */,
 				9A04C00B207652B00060BB4E /* Actions.m in Sources */,
@@ -248,7 +250,6 @@
 				EAE2ADD21EB07943009D3F39 /* Realm.m in Sources */,
 				7C457F561FD9AD6F007E84B5 /* Application.m in Sources */,
 				13F9C8331B0C2C982C9CA14F /* CommanderOne.m in Sources */,
-				9A04C00E2076621E0060BB4E /* Menus.m in Sources */,
 				EAE2ADCE1EAF7207009D3F39 /* FileManager.m in Sources */,
 				7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */,
 			);
@@ -371,11 +372,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = SimSim/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dsmelov.SimSim;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SimSim/SimSim-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -383,11 +388,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = SimSim/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dsmelov.SimSim;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SimSim/SimSim-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

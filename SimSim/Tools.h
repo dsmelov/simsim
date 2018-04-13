@@ -12,11 +12,15 @@
 
 @interface Tools : NSObject
 
+NS_ASSUME_NONNULL_BEGIN
+
 + (NSString*) homeDirectoryPath;
 + (BOOL) simulatorRunning;
 + (NSString*) simulatorRootPathByUUID:(NSString*)uuid;
 + (NSMutableSet*) simulatorPaths;
-+ (NSMutableArray<Simulator*>*) activeSimulators;
++ (NSArray<Simulator*>*) activeSimulators;
 + (NSArray<Application*>*) installedAppsOnSimulator:(Simulator*)simulator;
+
+NS_ASSUME_NONNULL_END
 
 @end
