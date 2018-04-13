@@ -98,20 +98,22 @@ import Cocoa
     {
         let subMenu = NSMenu()
         var hotkey = NSNumber(value: 1)
-        hotkey = addAction("Finder", toSubmenu: subMenu, forPath: path, withIcon: Paths.FINDER_ICON_PATH, andHotkey: hotkey, does: #selector(Actions.openInFinder(_:)))
         
-        hotkey = addAction("Terminal", toSubmenu: subMenu, forPath: path, withIcon: Paths.TERMINAL_ICON_PATH, andHotkey: hotkey, does: #selector(Actions.openInTerminal(_:)))
+        
+        hotkey = addAction("Finder", toSubmenu: subMenu, forPath: path, withIcon: Paths.FINDER_ICON_PATH, andHotkey: hotkey, does: #selector(Actions.open(inFinder:)))
+        
+        hotkey = addAction("Terminal", toSubmenu: subMenu, forPath: path, withIcon: Paths.TERMINAL_ICON_PATH, andHotkey: hotkey, does: #selector(Actions.open(inTerminal:)))
 
         hotkey = addActionForRealm(to: subMenu, forPath: path, withHotkey: hotkey)
         hotkey = addActionForiTerm(to: subMenu, forPath: path, withHotkey: hotkey)
         
         if CommanderOne.isCommanderOneAvailable()
         {
-            hotkey = addAction("Commander One", toSubmenu: subMenu, forPath: path, withIcon: Paths.CMDONE_ICON_PATH, andHotkey: hotkey, does: #selector(Actions.openInCommanderOne(_:)))
+            hotkey = addAction("Commander One", toSubmenu: subMenu, forPath: path, withIcon: Paths.CMDONE_ICON_PATH, andHotkey: hotkey, does: #selector(Actions.open(inCommanderOne:)))
         }
 
         subMenu.addItem(NSMenuItem.separator())
-        hotkey = addAction("Copy path to Clipboard", toSubmenu: subMenu, forPath: path, withHotkey: hotkey, does: #selector(Actions.copyToPasteboard(_:)))
+        hotkey = addAction("Copy path to Clipboard", toSubmenu: subMenu, forPath: path, withHotkey: hotkey, does: #selector(Actions.copy(toPasteboard:)))
         if Tools.simulatorRunning()
         {
             hotkey = addAction("Take Screenshot", toSubmenu: subMenu, forPath: path, withHotkey: hotkey, does: #selector(Actions.takeScreenshot(_:)))
@@ -127,7 +129,7 @@ import Cocoa
         let title = "\(application?.bundleName ?? "") (\(application?.version ?? ""))"
         // This path will be opened on click
         let applicationContentPath = application?.contentPath
-        let item = NSMenuItem(title: title, action: #selector(Actions.openInWithModifier(_:)), keyEquivalent: "\0")
+        let item = NSMenuItem(title: title, action: #selector(Actions.openIn(withModifier:)), keyEquivalent: "\0")
         item.target = Actions.self
         item.representedObject = applicationContentPath
         item.image = application?.icon
@@ -148,7 +150,7 @@ import Cocoa
     //----------------------------------------------------------------------------
     @objc class func addServiceItems(to menu: NSMenu)
     {
-        let startAtLogin = NSMenuItem(title: "Start at Login", action: #selector(Actions.handleStartAtLogin(_:)), keyEquivalent: "")
+        let startAtLogin = NSMenuItem(title: "Start at Login", action: #selector(Actions.handleStart(atLogin:)), keyEquivalent: "")
         startAtLogin.target = Actions.self
         let isStartAtLoginEnabled: Bool = Settings.isStartAtLoginEnabled()
         

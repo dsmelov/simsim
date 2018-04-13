@@ -7,12 +7,10 @@
 //
 
 #import "AppDelegate.h"
-#import "FileManager.h"
 #import "Settings.h"
 #import "Simulator.h"
 #import "Application.h"
 #import "Tools.h"
-#import "Actions.h"
 #import "FileManagerSupport/CommanderOne.h"
 #import "SimSim-Swift.h"
 
