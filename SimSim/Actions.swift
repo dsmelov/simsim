@@ -15,47 +15,59 @@ import Cocoa
     //----------------------------------------------------------------------------
     @objc class func copy(toPasteboard sender: NSMenuItem)
     {
-        let path = sender.representedObject as? String
+        let path = sender.representedObject as! String
         let pasteboard = NSPasteboard.general
         pasteboard().declareTypes([NSPasteboardTypeString], owner: nil)
-        pasteboard().setString(path!, forType: NSPasteboardTypeString)
+        pasteboard().setString(path, forType: NSPasteboardTypeString)
     }
 
     //----------------------------------------------------------------------------
     @objc class func takeScreenshot(_ sender: NSMenuItem)
     {
-//        let windows = CGWindowListCopyWindowInfo(.excludeDesktopElements, kCGNullWindowID) as NSArray? as? [[String: AnyObject]]
-//        for window in windows!
-//        {
-//            let windowOwner = window[kCGWindowOwnerName as String]
-//            let windowName = window[kCGWindowName as String]
-//            if (windowOwner?.contains("Simulator"))! && ((windowName?.contains("iOS"))! ||
-//                (windowName?.contains("watchOS"))! || (windowName?.contains("tvOS"))!)
-//            {
-//                let windowID = window[kCGWindowNumber as String]
-//
-//                var dateComponents = "yyyyMMdd_HHmmss_SSSS"
-//                var dateFormatter = DateFormatter()
-//                dateFormatter.timeZone = NSTimeZone.local
-//                dateFormatter.dateFormat = dateComponents
-//                var date = Date()
-//                var dateString = dateFormatter.string(from: date)
-//
-//                var screenshotPath = "\(Tools.homeDirectoryPath())/Desktop/Screen Shot at \(dateString).png"
-//                var bounds = CGRect.zero
-//                CGRectMakeWithDictionaryRepresentation((window[kCGWindowBounds as String] as? CFDictionary?)!, &bounds)
-//                var image = CGWindowListCreateImage(bounds, .optionIncludingWindow, CGWindowID(windowID), [])
-//                var bitmap = NSBitmapImageRep(cgImage: image)
-//                var data: Data? = bitmap.representation(using: NSPNGFileType, properties: [:])
-//                data?.write(to: screenshotPath, options: false)
-//                CGImageRelease(image)
-//            }
-//        }
+        let windows = CGWindowListCopyWindowInfo(.excludeDesktopElements, kCGNullWindowID) as! [[String: AnyObject]]
+        for window in windows
+        {
+            let windowOwner = window[kCGWindowOwnerName as String] as! String
+            guard let windowName = window[kCGWindowName as String] as? String else
+            {
+                continue
+            }
+            
+            if (windowOwner.contains("Simulator")) &&
+                (
+                    windowName.contains("iPhone") ||
+                    windowName.contains("iPad") ||
+                    windowName.contains("Apple Watch") ||
+                    windowName.contains("Apple TV")
+                )
+            {
+                let windowID = window[kCGWindowNumber as String] as! CFNumber
+                
+                let boundsDictionary = window[kCGWindowBounds as String] as! CFDictionary
+                guard let bounds = CGRect(dictionaryRepresentation: boundsDictionary),
+                      let image = CGWindowListCreateImage(bounds, .optionIncludingWindow, CGWindowID(windowID), [])
+                    else
+                {
+                    return
+                }
+                
+                let dateComponents = "yyyyMMdd_HHmmss_SSSS"
+                let dateFormatter = DateFormatter()
+                dateFormatter.timeZone = NSTimeZone.local
+                dateFormatter.dateFormat = dateComponents
+                let dateString = dateFormatter.string(from: Date())
+                let screenshotUrl = URL(fileURLWithPath: "\(Tools.homeDirectoryPath())/Desktop/Screen Shot at \(dateString).png")
+                
+                let bitmap = NSBitmapImageRep(cgImage: image)
+                let data = bitmap.representation(using: NSPNGFileType, properties: [:])
+                try? data?.write(to: screenshotUrl, options: [])
+            }
+        }
     }
     //----------------------------------------------------------------------------
     @objc class func resetFolder(_ folder: String, inRoot root: String!)
     {
-        let path = URL(fileURLWithPath: root ).appendingPathComponent(folder).absoluteString
+        let path = URL(fileURLWithPath: root).appendingPathComponent(folder).absoluteString
         let fm = FileManager()
         let en = fm.enumerator(atPath: path)
         while let file = en?.nextObject() as? String
@@ -84,28 +96,28 @@ import Cocoa
     //----------------------------------------------------------------------------
     @objc class func open(inFinder sender: NSMenuItem)
     {
-        let path = sender.representedObject as? String
-        NSWorkspace.shared().openFile(path!, withApplication: "Finder")
+        guard let path = sender.representedObject as? String else { return }
+        NSWorkspace.shared().openFile(path, withApplication: "Finder")
     }
     
     //----------------------------------------------------------------------------
     @objc class func open(inTerminal sender: NSMenuItem)
     {
-        let path = sender.representedObject as? String
-        NSWorkspace.shared().openFile(path!, withApplication: "Terminal")
+        guard let path = sender.representedObject as? String else { return }
+        NSWorkspace.shared().openFile(path, withApplication: "Terminal")
     }
 
     //----------------------------------------------------------------------------
     @objc class func openIniTerm(_ sender: NSMenuItem)
     {
-        let path = sender.representedObject as? String
-        NSWorkspace.shared().openFile(path ?? "", withApplication: "iTerm")
+        guard let path = sender.representedObject as? String else { return }
+        NSWorkspace.shared().openFile(path, withApplication: "iTerm")
     }
     
     //----------------------------------------------------------------------------
     @objc class func open(inCommanderOne sender: NSMenuItem)
     {
-        let path = sender.representedObject as? String
+        guard let path = sender.representedObject as? String else { return }
         CommanderOne.open(inCommanderOne: path)
     }
     
@@ -126,7 +138,8 @@ import Cocoa
         if isEnabled
         {
             sender.state = NSOffState
-        } else
+        }
+        else
         {
             sender.state = NSOnState
         }
@@ -135,21 +148,20 @@ import Cocoa
     //----------------------------------------------------------------------------
     @objc class func aboutApp(_ sender: NSMenuItem)
     {
-        if let aString = URL(string: "https://github.com/dsmelov/simsim") {
-            NSWorkspace.shared().open(aString)
-        }
+        let url = URL(string: "https://github.com/dsmelov/simsim")!
+        NSWorkspace.shared().open(url)
     }
 
     //----------------------------------------------------------------------------
     @objc class func openIn(withModifier sender: NSMenuItem)
     {
-        let event: NSEvent? = NSApp.currentEvent
-        if (UInt8((event?.modifierFlags)!.rawValue) & UInt8(NSAlternateKeyMask.rawValue) != 0)
+        guard let event = NSApp.currentEvent else { return }
+        
+        if UInt8(event.modifierFlags.rawValue) & UInt8(NSAlternateKeyMask.rawValue) != 0
         {
             Actions.open(inTerminal: sender)
         }
-        else
-        if (UInt8((event?.modifierFlags)!.rawValue) & UInt8(NSControlKeyMask.rawValue) != 0)
+        else if UInt8(event.modifierFlags.rawValue) & UInt8(NSControlKeyMask.rawValue) != 0
         {
             if CommanderOne.isCommanderOneAvailable()
             {

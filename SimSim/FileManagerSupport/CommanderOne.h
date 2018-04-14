@@ -7,7 +7,11 @@
 
 @interface CommanderOne : NSObject
 
+NS_ASSUME_NONNULL_BEGIN
+
 + (BOOL) isCommanderOneAvailable;
 + (void) openInCommanderOne:(NSString*)path;
+
+NS_ASSUME_NONNULL_END
 
 @end

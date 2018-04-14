@@ -28,7 +28,10 @@
         NSString* windowName = window[(NSString*)kCGWindowName];
         
         if ([windowOwner containsString:@"Simulator"] &&
-            ([windowName containsString:@"iOS"] || [windowName containsString:@"watchOS"] || [windowName containsString:@"tvOS"]))
+            ([windowName containsString:@"iPhone"] ||
+             [windowName containsString:@"iPad"] ||
+             [windowName containsString:@"Apple Watch"] ||
+             [windowName containsString:@"Apple TV"]))
         {
             return YES;
         }

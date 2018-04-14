@@ -114,11 +114,7 @@ import Cocoa
 
         subMenu.addItem(NSMenuItem.separator())
         hotkey = addAction("Copy path to Clipboard", toSubmenu: subMenu, forPath: path, withHotkey: hotkey, does: #selector(Actions.copy(toPasteboard:)))
-        if Tools.simulatorRunning()
-        {
-            hotkey = addAction("Take Screenshot", toSubmenu: subMenu, forPath: path, withHotkey: hotkey, does: #selector(Actions.takeScreenshot(_:)))
-        }
-
+        
         hotkey = addAction("Reset application data", toSubmenu: subMenu, forPath: path, withHotkey: hotkey, does: #selector(Actions.resetApplication(_:)))
         item.submenu = subMenu
     }
@@ -150,6 +146,13 @@ import Cocoa
     //----------------------------------------------------------------------------
     @objc class func addServiceItems(to menu: NSMenu)
     {
+        if Tools.simulatorRunning()
+        {
+            let takeScreenshot = NSMenuItem(title: "Take Screenshot", action: #selector(Actions.takeScreenshot(_:)), keyEquivalent: "")
+            takeScreenshot.target = Actions.self
+            menu.addItem(takeScreenshot)
+        }
+        
         let startAtLogin = NSMenuItem(title: "Start at Login", action: #selector(Actions.handleStart(atLogin:)), keyEquivalent: "")
         startAtLogin.target = Actions.self
         let isStartAtLoginEnabled: Bool = Settings.isStartAtLoginEnabled()
@@ -174,10 +177,10 @@ import Cocoa
         let menu = NSMenu()
         let simulators = Tools.activeSimulators()
 
-        let recentSimulators = simulators.sorted { $1.date > $0.date }
+        let recentSimulators = simulators.sorted { $0.date > $1.date }
         
         var simulatorsCount: Int = 0
-        for simulator: Simulator in recentSimulators
+        for simulator in recentSimulators
         {
             let installedApplications = Tools.installedApps(on: simulator)
             
