@@ -146,13 +146,6 @@ import Cocoa
     //----------------------------------------------------------------------------
     @objc class func addServiceItems(to menu: NSMenu)
     {
-        if Tools.simulatorRunning()
-        {
-            let takeScreenshot = NSMenuItem(title: "Take Screenshot", action: #selector(Actions.takeScreenshot(_:)), keyEquivalent: "")
-            takeScreenshot.target = Actions.self
-            menu.addItem(takeScreenshot)
-        }
-        
         let startAtLogin = NSMenuItem(title: "Start at Login", action: #selector(Actions.handleStart(atLogin:)), keyEquivalent: "")
         startAtLogin.target = Actions.self
         let isStartAtLoginEnabled: Bool = Settings.isStartAtLoginEnabled()

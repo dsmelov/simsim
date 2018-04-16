@@ -22,49 +22,6 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func takeScreenshot(_ sender: NSMenuItem)
-    {
-        let windows = CGWindowListCopyWindowInfo(.excludeDesktopElements, kCGNullWindowID) as! [[String: AnyObject]]
-        for window in windows
-        {
-            let windowOwner = window[kCGWindowOwnerName as String] as! String
-            guard let windowName = window[kCGWindowName as String] as? String else
-            {
-                continue
-            }
-            
-            if (windowOwner.contains("Simulator")) &&
-                (
-                    windowName.contains("iPhone") ||
-                    windowName.contains("iPad") ||
-                    windowName.contains("Apple Watch") ||
-                    windowName.contains("Apple TV")
-                )
-            {
-                let windowID = window[kCGWindowNumber as String] as! CFNumber
-                
-                let boundsDictionary = window[kCGWindowBounds as String] as! CFDictionary
-                guard let bounds = CGRect(dictionaryRepresentation: boundsDictionary),
-                      let image = CGWindowListCreateImage(bounds, .optionIncludingWindow, CGWindowID(windowID), [])
-                    else
-                {
-                    return
-                }
-                
-                let dateComponents = "yyyyMMdd_HHmmss_SSSS"
-                let dateFormatter = DateFormatter()
-                dateFormatter.timeZone = NSTimeZone.local
-                dateFormatter.dateFormat = dateComponents
-                let dateString = dateFormatter.string(from: Date())
-                let screenshotUrl = URL(fileURLWithPath: "\(Tools.homeDirectoryPath())/Desktop/Screen Shot at \(dateString).png")
-                
-                let bitmap = NSBitmapImageRep(cgImage: image)
-                let data = bitmap.representation(using: NSPNGFileType, properties: [:])
-                try? data?.write(to: screenshotUrl, options: [])
-            }
-        }
-    }
-    //----------------------------------------------------------------------------
     @objc class func resetFolder(_ folder: String, inRoot root: String!)
     {
         let path = URL(fileURLWithPath: root).appendingPathComponent(folder).absoluteString
