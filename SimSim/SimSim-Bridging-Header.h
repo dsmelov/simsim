@@ -3,6 +3,6 @@
 //
 
 #import "Realm.h"
-#import "Tools.h"
 #import "Settings.h"
-
+#import "Simulator.h"
+#import "Application.h"

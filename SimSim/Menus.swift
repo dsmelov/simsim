@@ -164,7 +164,7 @@ import Cocoa
         var simulatorsCount: Int = 0
         for simulator in recentSimulators
         {
-            let installedApplications = Tools.installedApps(on: simulator)
+            let installedApplications = Tools.installedApps(on: simulator)!
             
             if installedApplications.count != 0
             {

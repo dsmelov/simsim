@@ -81,11 +81,11 @@
 
     for (NSString *realmPath in PATHS_REALM_FILES) {
         NSString *folderPath = [NSString stringWithFormat:@"%@/%@", aPath, realmPath];
-        NSArray *allFilesOfFolder = [FileTools getSortedFilesFromFolder: folderPath];
+        NSArray *allFilesOfFolder = [Tools getSortedFilesFromFolder: folderPath];
 
         for (NSDictionary *file in allFilesOfFolder)
         {
-            NSString *fileName = [FileTools getNameFrom:file];
+            NSString *fileName = [Tools getNameFrom:file];
 
             if ([[fileName pathExtension] isEqualToString: @"realm"] == false) { continue; }    // Skip if not a realm file
 

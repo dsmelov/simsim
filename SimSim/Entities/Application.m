@@ -39,7 +39,7 @@
 
     if (self)
     {
-        self.uuid = [FileTools getNameFrom:dictionary];
+        self.uuid = [Tools getNameFrom:dictionary];
 
         self.properties = [self getApplicationPropertiesByUUID:self.uuid andRootPath:simulator.path];
 
@@ -90,14 +90,14 @@
         [simulatorRootPath stringByAppendingString:@"data/Containers/Bundle/Application/"];
 
     NSArray* installedApplicationsBundle =
-        [FileTools getSortedFilesFromFolder:installedApplicationsBundlePath];
+        [Tools getSortedFilesFromFolder:installedApplicationsBundlePath];
 
     [self processBundles:installedApplicationsBundle
         usingRootPath:simulatorRootPath
         andBundleIdentifier:applicationBundleIdentifier
         withFinalBlock:^(NSString* applicationRootBundlePath)
         {
-            NSString* applicationFolderName = [FileTools getApplicationFolderFromPath:applicationRootBundlePath];
+            NSString* applicationFolderName = [Tools getApplicationFolderFromPath:applicationRootBundlePath];
 
             NSString* applicationFolderPath = [applicationRootBundlePath stringByAppendingFormat:@"%@/", applicationFolderName];
 
@@ -222,7 +222,7 @@
 {
     for (NSUInteger j = 0; j < [bundles count]; j++)
     {
-        NSString* appBundleUUID = [FileTools getNameFrom:bundles[j]];
+        NSString* appBundleUUID = [Tools getNameFrom:bundles[j]];
 
         NSString* applicationRootBundlePath =
             [simulatorRootPath stringByAppendingFormat:@"data/Containers/Bundle/Application/%@/", appBundleUUID];

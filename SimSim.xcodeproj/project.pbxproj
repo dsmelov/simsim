@@ -12,10 +12,9 @@
 		7C457F561FD9AD6F007E84B5 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C457F551FD9AD6F007E84B5 /* Application.m */; };
 		7C4BC63B1CCA94D200C72BA1 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BC63A1CCA94D200C72BA1 /* Settings.m */; };
 		7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD93A721F7EBE3D00C4AA85 /* Simulator.m */; };
-		9A04C008207652240060BB4E /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C006207652230060BB4E /* Tools.m */; };
 		9A04C014208126C90060BB4E /* Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C013208126C90060BB4E /* Menus.swift */; };
-		9A04C0162084CD970060BB4E /* FileTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C0152084CD970060BB4E /* FileTools.swift */; };
 		9A04C01A20851B350060BB4E /* ConfigSys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01920851B350060BB4E /* ConfigSys.swift */; };
+		9A04C01C20851CB60060BB4E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01B20851CB60060BB4E /* Tools.swift */; };
 		9AE0DDA41DAE4852000029EC /* empty_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AE0DDA31DAE4852000029EC /* empty_icon.png */; };
 		BE7C115219E56B4F001A6220 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115119E56B4F001A6220 /* main.m */; };
 		BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115419E56B4F001A6220 /* AppDelegate.m */; };
@@ -33,12 +32,10 @@
 		7C85CC561D11824B008ED739 /* SimSim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimSim.entitlements; sourceTree = "<group>"; };
 		7CD93A711F7EBE3D00C4AA85 /* Simulator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simulator.h; sourceTree = "<group>"; };
 		7CD93A721F7EBE3D00C4AA85 /* Simulator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Simulator.m; sourceTree = "<group>"; };
-		9A04C006207652230060BB4E /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
-		9A04C007207652230060BB4E /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		9A04C012208126C80060BB4E /* SimSim-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimSim-Bridging-Header.h"; sourceTree = "<group>"; };
 		9A04C013208126C90060BB4E /* Menus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menus.swift; sourceTree = "<group>"; };
-		9A04C0152084CD970060BB4E /* FileTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileTools.swift; sourceTree = "<group>"; };
 		9A04C01920851B350060BB4E /* ConfigSys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigSys.swift; sourceTree = "<group>"; };
+		9A04C01B20851CB60060BB4E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		9AE0DDA31DAE4852000029EC /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_icon.png; sourceTree = "<group>"; };
 		BE7C114C19E56B4F001A6220 /* SimSim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimSim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7C115019E56B4F001A6220 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -102,10 +99,8 @@
 		BE7C114E19E56B4F001A6220 /* SimSim */ = {
 			isa = PBXGroup;
 			children = (
+				9A04C01B20851CB60060BB4E /* Tools.swift */,
 				9A04C01920851B350060BB4E /* ConfigSys.swift */,
-				9A04C0152084CD970060BB4E /* FileTools.swift */,
-				9A04C007207652230060BB4E /* Tools.h */,
-				9A04C006207652230060BB4E /* Tools.m */,
 				EAA9E4B520814AD400DEEBC7 /* Actions.swift */,
 				9A04C013208126C90060BB4E /* Menus.swift */,
 				7CD93A701F7EBE1F00C4AA85 /* Entities */,
@@ -222,13 +217,12 @@
 				9A04C01A20851B350060BB4E /* ConfigSys.swift in Sources */,
 				BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */,
 				9A04C014208126C90060BB4E /* Menus.swift in Sources */,
-				9A04C0162084CD970060BB4E /* FileTools.swift in Sources */,
 				BE7C115219E56B4F001A6220 /* main.m in Sources */,
 				7C4BC63B1CCA94D200C72BA1 /* Settings.m in Sources */,
-				9A04C008207652240060BB4E /* Tools.m in Sources */,
 				EAE2ADD21EB07943009D3F39 /* Realm.m in Sources */,
 				7C457F561FD9AD6F007E84B5 /* Application.m in Sources */,
 				EAA9E4B620814AD400DEEBC7 /* Actions.swift in Sources */,
+				9A04C01C20851CB60060BB4E /* Tools.swift in Sources */,
 				7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

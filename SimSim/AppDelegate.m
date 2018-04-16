@@ -10,7 +10,6 @@
 #import "Settings.h"
 #import "Simulator.h"
 #import "Application.h"
-#import "Tools.h"
 #import "SimSim-Swift.h"
 
 //============================================================================
