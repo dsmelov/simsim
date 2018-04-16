@@ -8,7 +8,7 @@
 
 #import "Realm.h"
 #import <Cocoa/Cocoa.h>
-#import "FileManager.h"
+#import "SimSim-Swift.h"
 
 #define PATHS_REALM_FILES  [NSArray arrayWithObjects: @"Documents", @"Library/Caches", nil]
 #define REALM_APP_NAME          @"Realm Browser"
@@ -81,10 +81,11 @@
 
     for (NSString *realmPath in PATHS_REALM_FILES) {
         NSString *folderPath = [NSString stringWithFormat:@"%@/%@", aPath, realmPath];
-        NSArray *allFilesOfFolder = [FileManager getSortedFilesFromFolder: folderPath];
+        NSArray *allFilesOfFolder = [FileTools getSortedFilesFromFolder: folderPath];
 
-        for (NSDictionary *file in allFilesOfFolder) {
-            NSString *fileName = file[KEY_FILE];
+        for (NSDictionary *file in allFilesOfFolder)
+        {
+            NSString *fileName = [FileTools getNameFrom:file];
 
             if ([[fileName pathExtension] isEqualToString: @"realm"] == false) { continue; }    // Skip if not a realm file
 

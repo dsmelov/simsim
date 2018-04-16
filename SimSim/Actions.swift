@@ -3,7 +3,7 @@
 //  SimSim
 //
 //  Created by Daniil Smelov on 13/04/2018.
-//  Copyright © 2018 DaniilSmelov. All rights reserved.
+//  Copyright © 2018 Daniil Smelov. All rights reserved.
 //
 
 import Foundation

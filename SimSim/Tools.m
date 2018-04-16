@@ -7,7 +7,7 @@
 //
 
 #import "Tools.h"
-#import "FileManager.h"
+#import "SimSim-Swift.h"
 
 @implementation Tools
 
@@ -104,8 +104,7 @@
     NSString* installedApplicationsDataPath =
     [simulator.path stringByAppendingString:@"data/Containers/Data/Application/"];
     
-    NSArray* installedApplications =
-    [FileManager getSortedFilesFromFolder:installedApplicationsDataPath];
+    NSArray* installedApplications = [FileTools getSortedFilesFromFolder:installedApplicationsDataPath];
     
     NSMutableArray* userApplications = [NSMutableArray new];
     
