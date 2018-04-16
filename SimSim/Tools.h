@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSMutableSet*) simulatorPaths;
 + (NSArray<Simulator*>*) activeSimulators;
 + (NSArray<Application*>*) installedAppsOnSimulator:(Simulator*)simulator;
++ (BOOL) commanderOneAvailable;
 
 NS_ASSUME_NONNULL_END
 

@@ -74,8 +74,14 @@ import Cocoa
     //----------------------------------------------------------------------------
     @objc class func open(inCommanderOne sender: NSMenuItem)
     {
-        guard let path = sender.representedObject as? String else { return }
-        CommanderOne.open(inCommanderOne: path)
+        guard var path = sender.representedObject as? String else { return }
+        
+        // For some reason Commander One opens not the last folder in path
+        path = path + ("Library/")
+        let pasteboard = NSPasteboard.general
+        pasteboard().clearContents()
+        pasteboard().setPropertyList([path], forType: NSFilenamesPboardType)
+        NSPerformService("reveal-in-commander1", pasteboard())
     }
     
     //----------------------------------------------------------------------------
@@ -120,7 +126,7 @@ import Cocoa
         }
         else if UInt8(event.modifierFlags.rawValue) & UInt8(NSControlKeyMask.rawValue) != 0
         {
-            if CommanderOne.isCommanderOneAvailable()
+            if Tools.commanderOneAvailable()
             {
                 Actions.open(inCommanderOne: sender)
             }

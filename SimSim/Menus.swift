@@ -107,7 +107,7 @@ import Cocoa
         hotkey = addActionForRealm(to: subMenu, forPath: path, withHotkey: hotkey)
         hotkey = addActionForiTerm(to: subMenu, forPath: path, withHotkey: hotkey)
         
-        if CommanderOne.isCommanderOneAvailable()
+        if Tools.commanderOneAvailable()
         {
             hotkey = addAction("Commander One", toSubmenu: subMenu, forPath: path, withIcon: Paths.CMDONE_ICON_PATH, andHotkey: hotkey, does: #selector(Actions.open(inCommanderOne:)))
         }

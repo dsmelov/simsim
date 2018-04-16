@@ -126,5 +126,25 @@
     return userApplications;
 }
 
+//----------------------------------------------------------------------------
++ (BOOL) commanderOneAvailable
+{
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    
+    // Check for App Store version
+    BOOL isApplicationExist = [fileManager fileExistsAtPath:@"/Applications/Commander One.app"];
+    BOOL isApplicationProExist = [fileManager fileExistsAtPath:@"/Applications/Commander One PRO.app"];
+    if (isApplicationExist || isApplicationProExist)
+    {
+        return YES;
+    }
+    
+    // Check for version from Web
+    NSString* plistPath = [NSString stringWithFormat:@"%@/Library/Preferences/com.eltima.cmd1.plist", NSHomeDirectory()];
+    BOOL isPlistExist = [fileManager fileExistsAtPath:plistPath];
+    
+    return isPlistExist;
+}
+
 
 @end

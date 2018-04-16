@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		13F9C8331B0C2C982C9CA14F /* CommanderOne.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F9C749F4EF0EFB3F09E5CC /* CommanderOne.m */; };
 		13F9C8BD40BFC0BD5697F05F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */; };
 		13F9C9CACDE21D1AB57BD94D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F9CAF1018B8DF204603BAC /* MainMenu.xib */; };
 		7C457F561FD9AD6F007E84B5 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C457F551FD9AD6F007E84B5 /* Application.m */; };
@@ -25,9 +24,7 @@
 
 /* Begin PBXFileReference section */
 		13F9C038950463FE8C9CF8F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = SimSim/Base.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
-		13F9C749F4EF0EFB3F09E5CC /* CommanderOne.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommanderOne.m; sourceTree = "<group>"; };
 		13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		13F9CCF810DDA295016EC047 /* CommanderOne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommanderOne.h; sourceTree = "<group>"; };
 		7C457F541FD9AD6F007E84B5 /* Application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
 		7C457F551FD9AD6F007E84B5 /* Application.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
 		7C4BC6391CCA94D200C72BA1 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
@@ -62,15 +59,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13F9C773A02CE69113A5F183 /* FileManagerSupport */ = {
-			isa = PBXGroup;
-			children = (
-				13F9C749F4EF0EFB3F09E5CC /* CommanderOne.m */,
-				13F9CCF810DDA295016EC047 /* CommanderOne.h */,
-			);
-			path = FileManagerSupport;
-			sourceTree = "<group>";
-		};
 		13F9CD9C30F220C6ED2765F1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,7 +112,6 @@
 				7C4BC6391CCA94D200C72BA1 /* Settings.h */,
 				7C4BC63A1CCA94D200C72BA1 /* Settings.m */,
 				BE7C114F19E56B4F001A6220 /* Supporting Files */,
-				13F9C773A02CE69113A5F183 /* FileManagerSupport */,
 				13F9CD9C30F220C6ED2765F1 /* Resources */,
 				9A04C012208126C80060BB4E /* SimSim-Bridging-Header.h */,
 			);
@@ -238,7 +225,6 @@
 				EAE2ADD21EB07943009D3F39 /* Realm.m in Sources */,
 				7C457F561FD9AD6F007E84B5 /* Application.m in Sources */,
 				EAA9E4B620814AD400DEEBC7 /* Actions.swift in Sources */,
-				13F9C8331B0C2C982C9CA14F /* CommanderOne.m in Sources */,
 				7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
