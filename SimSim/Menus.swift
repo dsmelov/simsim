@@ -12,18 +12,7 @@ import Cocoa
 //----------------------------------------------------------------------------
 @objc class Menus: NSObject
 {
-    static let ACTION_ICON_SIZE = 16
-    static let MAX_RECENT_SIMULATORS = 5
-    
     private static var realm = Realm()
-
-    struct Paths
-    {
-        static let FINDER_ICON_PATH = "/System/Library/CoreServices/Finder.app"
-        static let TERMINAL_ICON_PATH = "/Applications/Utilities/Terminal.app"
-        static let ITERM_ICON_PATH = "/Applications/iTerm.app"
-        static let CMDONE_ICON_PATH = "/Applications/Commander One.app"
-    }
     
     //----------------------------------------------------------------------------
     @objc class func addAction(_ title: String, toSubmenu submenu: NSMenu,
@@ -36,7 +25,7 @@ import Cocoa
         item.representedObject = path
         
         item.image = NSWorkspace.shared().icon(forFile: iconPath)
-        item.image?.size = NSMakeSize(CGFloat(ACTION_ICON_SIZE), CGFloat(ACTION_ICON_SIZE))
+        item.image?.size = NSMakeSize(CGFloat(ConfigSys.iconSize), CGFloat(ConfigSys.iconSize))
         
         submenu.addItem(item)
         
@@ -73,7 +62,7 @@ import Cocoa
         }
         
         let icon = NSWorkspace.shared().icon(forFile: Realm.applicationPath())
-        icon.size = NSMakeSize(CGFloat(ACTION_ICON_SIZE), CGFloat(ACTION_ICON_SIZE))
+        icon.size = NSMakeSize(CGFloat(ConfigSys.iconSize), CGFloat(ConfigSys.iconSize))
         realm.generateMenu(forPath: path, for: menu, withHotKey: hotkey, icon: icon)
         return NSNumber(value: hotkey.intValue + 1)
     }
@@ -87,7 +76,7 @@ import Cocoa
             return hotkey
         }
         
-        let newkey = addAction("iTerm", toSubmenu: menu, forPath: path, withIcon: Paths.ITERM_ICON_PATH,
+        let newkey = addAction("iTerm", toSubmenu: menu, forPath: path, withIcon: ConfigSys.Paths.iTermApp,
                                andHotkey: hotkey, does: #selector(Actions.openIniTerm(_:)))
         
         return NSNumber(value: newkey.intValue + 1)
@@ -100,16 +89,16 @@ import Cocoa
         var hotkey = NSNumber(value: 1)
         
         
-        hotkey = addAction("Finder", toSubmenu: subMenu, forPath: path, withIcon: Paths.FINDER_ICON_PATH, andHotkey: hotkey, does: #selector(Actions.open(inFinder:)))
+        hotkey = addAction("Finder", toSubmenu: subMenu, forPath: path, withIcon: ConfigSys.Paths.finderApp, andHotkey: hotkey, does: #selector(Actions.open(inFinder:)))
         
-        hotkey = addAction("Terminal", toSubmenu: subMenu, forPath: path, withIcon: Paths.TERMINAL_ICON_PATH, andHotkey: hotkey, does: #selector(Actions.open(inTerminal:)))
+        hotkey = addAction("Terminal", toSubmenu: subMenu, forPath: path, withIcon: ConfigSys.Paths.terminalApp, andHotkey: hotkey, does: #selector(Actions.open(inTerminal:)))
 
         hotkey = addActionForRealm(to: subMenu, forPath: path, withHotkey: hotkey)
         hotkey = addActionForiTerm(to: subMenu, forPath: path, withHotkey: hotkey)
         
         if Tools.commanderOneAvailable()
         {
-            hotkey = addAction("Commander One", toSubmenu: subMenu, forPath: path, withIcon: Paths.CMDONE_ICON_PATH, andHotkey: hotkey, does: #selector(Actions.open(inCommanderOne:)))
+            hotkey = addAction("Commander One", toSubmenu: subMenu, forPath: path, withIcon: ConfigSys.Paths.commanderOneApp, andHotkey: hotkey, does: #selector(Actions.open(inCommanderOne:)))
         }
 
         subMenu.addItem(NSMenuItem.separator())
@@ -186,7 +175,7 @@ import Cocoa
                 addApplications(installedApplications, to: menu)
                 simulatorsCount += 1
             
-                if simulatorsCount >= MAX_RECENT_SIMULATORS
+                if simulatorsCount >= ConfigSys.maxRecentSimulators
                 {
                     break
                 }
