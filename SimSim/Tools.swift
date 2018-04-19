@@ -19,7 +19,6 @@ class Tools: NSObject
         static let fileDate = "modificationDate"
         static let fileType = "fileType"
     }
-    
 
     //----------------------------------------------------------------------------
     class func homeDirectoryPath() -> String
@@ -120,12 +119,19 @@ class Tools: NSObject
     }
 
     //----------------------------------------------------------------------------
+    class func allFilesAt(path: String) -> [String]
+    {
+        let files = try? FileManager.default.contentsOfDirectory(atPath: path)
+        return files!
+    }
+    
+    //----------------------------------------------------------------------------
     class func getFiles(fromFolder folderPath: String) -> NSArray
     {
-        let filesArray = try? FileManager.default.contentsOfDirectory(atPath: folderPath)
+        let files = allFilesAt(path: folderPath)
         let filesAndProperties = NSMutableArray()
         
-        for file: String in filesArray!
+        for file in files
         {
             if !(file == ".DS_Store")
             {
@@ -180,10 +186,10 @@ class Tools: NSObject
     //----------------------------------------------------------------------------
     class func getApplicationFolder(fromPath folderPath: String) -> String
     {
-        var filesArray = try? FileManager.default.contentsOfDirectory(atPath: folderPath)
+        var files = allFilesAt(path: folderPath)
         let predicate = NSPredicate(format: "SELF EndsWith '.app'")
-        filesArray = ((filesArray as NSArray?)?.filtered(using: predicate) as! [String])
-        return filesArray![0]
+        files = ((files as NSArray).filtered(using: predicate) as! [String])
+        return files[0]
     }
 }
 
