@@ -6,8 +6,6 @@
 //  Copyright (c) 2016 Daniil Smelov. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+import Cocoa
 
-int main(int argc, const char * argv[]) {
-    return NSApplicationMain(argc, argv);
-}
+_ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
