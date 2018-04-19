@@ -35,7 +35,7 @@ import Cocoa
             // There is at least one realm file but no realmbrowser installed
             realmMenuItem = NSMenuItem(title: "Install Realm Browser", action: #selector(Realm.installRealmBrowser(_:)), keyEquivalent: "\(hotkey)")
             realmMenuItem?.target = self
-            realmMenuItem?.representedObject = ConfigSys.Realm.appUrl
+            realmMenuItem?.representedObject = Constants.Realm.appUrl
         }
         else if realmFiles?.count == 1 {
             // There is exactly one realm file
@@ -93,7 +93,7 @@ import Cocoa
     @objc class func findRealmFiles(_ aPath: String) -> NSArray?
     {
         let files = NSMutableArray()
-        for realmPath: String? in ConfigSys.Realm.dbPaths
+        for realmPath: String? in Constants.Realm.dbPaths
         {
             if realmPath == nil
             {
@@ -139,7 +139,7 @@ import Cocoa
     //----------------------------------------------------------------------------
     @objc class func applicationPath() -> String
     {
-        return ConfigSys.Paths.realmApp
+        return Constants.Paths.realmApp
     }
     
     //----------------------------------------------------------------------------
@@ -152,7 +152,7 @@ import Cocoa
     //----------------------------------------------------------------------------
     @objc class func open(inRealmBrowser aPath: String)
     {
-        NSWorkspace.shared().openFile(aPath, withApplication: ConfigSys.Realm.appName)
+        NSWorkspace.shared().openFile(aPath, withApplication: Constants.Realm.appName)
     }
 
 }

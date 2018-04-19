@@ -2,7 +2,7 @@ import Foundation
 import Cocoa
 
 //----------------------------------------------------------------------------
-@objc class ConfigSys: NSObject
+@objc class Constants: NSObject
 {
     static let iconSize = 16
     static let maxRecentSimulators = 5

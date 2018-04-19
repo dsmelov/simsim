@@ -13,7 +13,7 @@
 		7C4BC63B1CCA94D200C72BA1 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BC63A1CCA94D200C72BA1 /* Settings.m */; };
 		7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD93A721F7EBE3D00C4AA85 /* Simulator.m */; };
 		9A04C014208126C90060BB4E /* Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C013208126C90060BB4E /* Menus.swift */; };
-		9A04C01A20851B350060BB4E /* ConfigSys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01920851B350060BB4E /* ConfigSys.swift */; };
+		9A04C01A20851B350060BB4E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01920851B350060BB4E /* Constants.swift */; };
 		9A04C01C20851CB60060BB4E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01B20851CB60060BB4E /* Tools.swift */; };
 		9A4FE7842087C70500158845 /* Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FE7832087C70500158845 /* Realm.swift */; };
 		9A4FE7862088BE7600158845 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FE7852088BE7500158845 /* main.swift */; };
@@ -34,7 +34,7 @@
 		7CD93A721F7EBE3D00C4AA85 /* Simulator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Simulator.m; sourceTree = "<group>"; };
 		9A04C012208126C80060BB4E /* SimSim-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimSim-Bridging-Header.h"; sourceTree = "<group>"; };
 		9A04C013208126C90060BB4E /* Menus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menus.swift; sourceTree = "<group>"; };
-		9A04C01920851B350060BB4E /* ConfigSys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigSys.swift; sourceTree = "<group>"; };
+		9A04C01920851B350060BB4E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		9A04C01B20851CB60060BB4E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		9A4FE7832087C70500158845 /* Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Realm.swift; sourceTree = "<group>"; };
 		9A4FE7852088BE7500158845 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 				9A4FE7892088D2A000158845 /* Application.swift */,
 				9A4FE7832087C70500158845 /* Realm.swift */,
 				9A04C01B20851CB60060BB4E /* Tools.swift */,
-				9A04C01920851B350060BB4E /* ConfigSys.swift */,
+				9A04C01920851B350060BB4E /* Constants.swift */,
 				EAA9E4B520814AD400DEEBC7 /* Actions.swift */,
 				9A04C013208126C90060BB4E /* Menus.swift */,
 				7CD93A701F7EBE1F00C4AA85 /* Entities */,
@@ -193,7 +193,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A04C01A20851B350060BB4E /* ConfigSys.swift in Sources */,
+				9A04C01A20851B350060BB4E /* Constants.swift in Sources */,
 				9A4FE78A2088D2A000158845 /* Application.swift in Sources */,
 				9A04C014208126C90060BB4E /* Menus.swift in Sources */,
 				9A4FE7842087C70500158845 /* Realm.swift in Sources */,
