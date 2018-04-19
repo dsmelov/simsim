@@ -166,19 +166,21 @@ class Menus: NSObject
         {
             let installedApplications = Tools.installedApps(on: simulator)!
             
-            if installedApplications.count != 0
+            guard installedApplications.count != 0 else
             {
-                let simulator_title = "\(simulator.name ?? "") (\(simulator.os ?? ""))"
-                let simulatorMenuItem = NSMenuItem(title: simulator_title, action: nil, keyEquivalent: "")
-                simulatorMenuItem.isEnabled = false
-                menu.addItem(simulatorMenuItem)
-                addApplications(installedApplications, to: menu)
-                simulatorsCount += 1
+                continue
+            }
             
-                if simulatorsCount >= Constants.maxRecentSimulators
-                {
-                    break
-                }
+            let simulator_title = "\(simulator.name) (\(simulator.os))"
+            let simulatorMenuItem = NSMenuItem(title: simulator_title, action: nil, keyEquivalent: "")
+            simulatorMenuItem.isEnabled = false
+            menu.addItem(simulatorMenuItem)
+            addApplications(installedApplications, to: menu)
+            simulatorsCount += 1
+        
+            if simulatorsCount >= Constants.maxRecentSimulators
+            {
+                break
             }
         }
         menu.addItem(NSMenuItem.separator())
