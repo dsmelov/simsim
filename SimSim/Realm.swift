@@ -17,6 +17,7 @@ class RealmFile: NSObject
 //----------------------------------------------------------------------------
 class Realm: NSObject
 {
+    //----------------------------------------------------------------------------
     class func insertInstallerItem(for menu: NSMenu, withHotKey hotkey: NSNumber)
     {
         var item: NSMenuItem? = nil
@@ -119,7 +120,7 @@ class Realm: NSObject
         let files = NSMutableArray()
         for realmPath: String? in Constants.Realm.dbPaths
         {
-            if realmPath == nil
+            guard realmPath != nil else
             {
                 break
             }
@@ -130,17 +131,15 @@ class Realm: NSObject
             
             for file in allFilesOfFolder
             {
-                let fileName = Tools.getName(from: file as! NSDictionary)
-                if (URL(fileURLWithPath: fileName as String).pathExtension == "realm") == false
-                {
-                    continue
-                }
+                let fileName = Tools.getName(from: file as! NSDictionary) as NSString
                 
-                // Skip if not a realm file
-                let realmFile = RealmFile()
-                realmFile.fileName = fileName as String
-                realmFile.path = folderPath as String
-                files.add(realmFile)
+                if (fileName.pathExtension == "realm")
+                {
+                    let realmFile = RealmFile()
+                    realmFile.fileName = fileName as String
+                    realmFile.path = folderPath
+                    files.add(realmFile)
+                }
             }
         }
         return files
