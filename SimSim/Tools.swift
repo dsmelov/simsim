@@ -32,13 +32,21 @@ class Tools: NSObject
         return Tools.homeDirectoryPath() + "/Library/Developer/CoreSimulator/Devices/\(uuid)/"
     }
 
+    
+    //----------------------------------------------------------------------------
+    class func getSimulatorProperties() -> NSDictionary
+    {
+        let path = Tools.homeDirectoryPath() + "/Library/Preferences/com.apple.iphonesimulator.plist"
+        return NSDictionary(contentsOfFile: path)!
+    }
+    
     //----------------------------------------------------------------------------
     class func simulatorPaths() -> Set<String>
     {
-        let simulatorPropertiesPath = Tools.homeDirectoryPath() + "/Library/Preferences/com.apple.iphonesimulator.plist"
-        let simulatorProperties = NSDictionary(contentsOfFile: simulatorPropertiesPath)!
-        let uuid = simulatorProperties["CurrentDeviceUDID"] as! String
-        let devicePreferences = simulatorProperties["DevicePreferences"] as? NSDictionary
+        let properties = getSimulatorProperties()
+        
+        let uuid = properties["CurrentDeviceUDID"] as! String
+        let devicePreferences = properties["DevicePreferences"] as? NSDictionary
         
         var simulatorPaths = Set<String>()
         _ = simulatorPaths.insert(simulatorRootPath(byUUID: uuid))
@@ -57,23 +65,24 @@ class Tools: NSObject
     //----------------------------------------------------------------------------
     class func activeSimulators() -> [Simulator]
     {
-        let simulatorPaths = self.simulatorPaths()
-        var simulators = [AnyHashable]()
+        let paths = self.simulatorPaths()
+        var simulators = [Simulator]()
     
-        for path in simulatorPaths
+        for path in paths
         {
-            let simulatorDetailsPath = path + ("device.plist")
-            let properties = NSDictionary(contentsOfFile: simulatorDetailsPath)
-            if properties == nil
+            let properties = NSDictionary(contentsOfFile: path + "device.plist")
+
+            // skip "empty" properties
+            guard properties != nil else
             {
                 continue
             }
             
-            // skip "empty" properties
             let simulator = Simulator(dictionary: properties as? [AnyHashable: Any], path: path)!
+            
             simulators.append(simulator)
         }
-        return simulators as! [Simulator]
+        return simulators
     }
 
     //----------------------------------------------------------------------------
@@ -81,7 +90,7 @@ class Tools: NSObject
     {
         let installedApplicationsDataPath = (simulator?.path)! + ("data/Containers/Data/Application/")
         let installedApplications = Tools.getSortedFiles(fromFolder: installedApplicationsDataPath)
-        var userApplications = [AnyHashable]()
+        var userApplications = [Application]()
         
         for app in installedApplications
         {
@@ -95,7 +104,7 @@ class Tools: NSObject
                 }
             }
         }
-        return userApplications as? [Application]
+        return userApplications
     }
 
     //----------------------------------------------------------------------------
