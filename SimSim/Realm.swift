@@ -17,55 +17,79 @@ class RealmFile: NSObject
 //----------------------------------------------------------------------------
 class Realm: NSObject
 {
+    class func insertInstallerItem(for menu: NSMenu, withHotKey hotkey: NSNumber)
+    {
+        var item: NSMenuItem? = nil
+       
+        // There is at least one realm file but no realmbrowser installed
+        item = NSMenuItem(title: "Install Realm Browser", action: #selector(Realm.installRealmBrowser(_:)), keyEquivalent: "\(hotkey)")
+        item?.target = self
+        item?.representedObject = Constants.Realm.appUrl
+
+        menu.addItem(item!)
+    }
+    
+    //----------------------------------------------------------------------------
+    class func insertRealmFiles(files: NSArray, forPath aPath: String, for menu: NSMenu,
+                                withHotKey hotkey: NSNumber, icon: NSImage)
+    {
+        var item: NSMenuItem
+        
+        if files.count == 1
+        {
+            // There is exactly one realm file
+            item = NSMenuItem(title: "Realm", action: #selector(Realm.openRealmFile(_:)), keyEquivalent: "\(hotkey)")
+            item.representedObject = aPath
+            item.image = icon
+            item.target = self
+            
+            item.representedObject = (files.firstObject as! RealmFile).fullPath()
+        }
+        else
+        {
+            // There is more than one realm file
+            item = NSMenuItem(title: "Realm", action: nil, keyEquivalent: "\(hotkey)")
+            item.representedObject = aPath
+            item.image = icon
+            
+            let menuRealm = NSMenu(title: "Realm Browser")
+            menuRealm.autoenablesItems = false
+            
+            let browserInstalled = isRealmBrowserAvailable()
+            for file in files
+            {
+                let realmFile = file as! RealmFile
+                let menuItem = NSMenuItem(title: realmFile.fileName as String, action: #selector(Realm.openRealmFile(_:)), keyEquivalent: "")
+                menuItem.target = self
+                menuItem.representedObject = realmFile.fullPath()
+                menuItem.isEnabled = browserInstalled
+                menuRealm.addItem(menuItem)
+            }
+            menu.setSubmenu(menuRealm, for: item)
+        }
+        menu.addItem(item)
+    }
+    
     //----------------------------------------------------------------------------
     class func generateRealmMenu(forPath aPath: String, for menu: NSMenu, withHotKey hotkey: NSNumber, icon: NSImage)
     {
-        let realmFiles = findRealmFiles(aPath)
+        let files = findRealmFiles(aPath)!
         
-        if realmFiles?.count == 0
+        if files.count == 0
         {
             return
         }
         
         // Skip if there are no realm files
-        let isRealmBrowserInstalled = isRealmBrowserAvailable()
-        var realmMenuItem: NSMenuItem? = nil
-        if isRealmBrowserInstalled == false
+        if !isRealmBrowserAvailable()
         {
-            // There is at least one realm file but no realmbrowser installed
-            realmMenuItem = NSMenuItem(title: "Install Realm Browser", action: #selector(Realm.installRealmBrowser(_:)), keyEquivalent: "\(hotkey)")
-            realmMenuItem?.target = self
-            realmMenuItem?.representedObject = Constants.Realm.appUrl
-        }
-        else if realmFiles?.count == 1 {
-            // There is exactly one realm file
-            realmMenuItem = NSMenuItem(title: "Realm", action: #selector(Realm.openRealmFile(_:)), keyEquivalent: "\(hotkey)")
-            realmMenuItem?.representedObject = aPath
-            realmMenuItem?.image = icon
-            realmMenuItem?.target = self
-            
-            realmMenuItem?.representedObject = (realmFiles?.firstObject as! RealmFile).fullPath()
+            insertInstallerItem(for: menu, withHotKey: hotkey)
         }
         else
         {
-            // There is more than one realm file
-            realmMenuItem = NSMenuItem(title: "Realm", action: nil, keyEquivalent: "\(hotkey)")
-            realmMenuItem?.representedObject = aPath
-            realmMenuItem?.image = icon
-            let menuRealm = NSMenu(title: "Realm Browser")
-            menuRealm.autoenablesItems = false
-            for file in realmFiles! {
-                let realmFile = file as! RealmFile
-                let menuItem = NSMenuItem(title: realmFile.fileName as String, action: #selector(Realm.openRealmFile(_:)), keyEquivalent: "")
-                menuItem.target = self
-                menuItem.representedObject = realmFile.fullPath()
-                menuItem.isEnabled = isRealmBrowserInstalled
-                menuRealm.addItem(menuItem)
-            }
-            menu.setSubmenu(menuRealm, for: realmMenuItem!)
+            insertRealmFiles(files: files, forPath: aPath, for: menu, withHotKey: hotkey, icon: icon)
         }
 
-        menu.addItem(realmMenuItem!)
     }
 
     //----------------------------------------------------------------------------
