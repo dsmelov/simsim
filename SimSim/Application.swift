@@ -29,12 +29,15 @@ extension AppDelegate: NSApplicationDelegate
     //----------------------------------------------------------------------------
     func applicationDidFinishLaunching(_ notification: Notification)
     {
-        statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
-        statusItem?.image = NSImage(named: "BarIcon")
-        statusItem?.image?.isTemplate = true
-        statusItem?.highlightMode = true
-        statusItem?.action = #selector(self.presentApplicationMenu)
-        statusItem?.isEnabled = true
+        let item = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
+        
+        item.image = NSImage(named: "BarIcon")
+        item.image?.isTemplate = true
+        item.highlightMode = true
+        item.action = #selector(self.presentApplicationMenu)
+        item.isEnabled = true
+        
+        statusItem = item
     }
 
     //----------------------------------------------------------------------------
