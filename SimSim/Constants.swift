@@ -6,6 +6,8 @@ class Constants: NSObject
 {
     static let iconSize = 16
     static let maxRecentSimulators = 5
+    
+    static let githubUrl = "https://github.com/dsmelov/simsim"
 
     struct Paths
     {

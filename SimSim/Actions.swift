@@ -111,8 +111,7 @@ class Actions: NSObject
     //----------------------------------------------------------------------------
     class func aboutApp(_ sender: NSMenuItem)
     {
-        let url = URL(string: "https://github.com/dsmelov/simsim")!
-        NSWorkspace.shared().open(url)
+        NSWorkspace.shared().open(URL(string: Constants.githubUrl)!)
     }
 
     //----------------------------------------------------------------------------
