@@ -117,7 +117,7 @@ import Cocoa
                 // Skip if not a realm file
                 let realmFile = RealmFile()
                 realmFile.fileName = fileName as String
-                realmFile.path = (folderPath as NSString) as String
+                realmFile.path = folderPath as String
                 files.add(realmFile)
             }
         }
