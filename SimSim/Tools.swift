@@ -13,6 +13,15 @@ import Cocoa
 @objc class Tools: NSObject
 {
     //----------------------------------------------------------------------------
+    struct Keys
+    {
+        static let fileName = "fileName"
+        static let fileDate = "modificationDate"
+        static let fileType = "fileType"
+    }
+    
+
+    //----------------------------------------------------------------------------
     @objc class func homeDirectoryPath() -> String
     {
         return NSHomeDirectory()
@@ -94,6 +103,7 @@ import Cocoa
     @objc class func commanderOneAvailable() -> Bool
     {
         let fileManager = FileManager.default
+        
         // Check for App Store version
         let isApplicationExist: Bool = fileManager.fileExists(atPath: ConfigSys.Paths.commanderOneApp)
         let isApplicationProExist: Bool = fileManager.fileExists(atPath: ConfigSys.Paths.commanderOneProApp)
@@ -109,13 +119,6 @@ import Cocoa
         return isPlistExist
     }
 
-    struct Keys
-    {
-        static let fileName = "fileName"
-        static let fileDate = "modificationDate"
-        static let fileType = "fileType"
-    }
-    
     //----------------------------------------------------------------------------
     @objc class func getFiles(fromFolder folderPath: String) -> NSArray
     {
@@ -151,15 +154,12 @@ import Cocoa
         
         let sortedFiles = filesAndProperties.sortedArray(comparator:
         {
-            (object1, object2) -> ComparisonResult in
+            (path1, path2) -> ComparisonResult in
             
-            let path1 : NSDictionary = object1 as! NSDictionary
-            let path2 : NSDictionary = object2 as! NSDictionary
+            let date1 = (path1 as! NSDictionary)[Keys.fileDate] as! Date
+            let date2 = (path2 as! NSDictionary)[Keys.fileDate] as! Date
             
-            let date1 = path1[Keys.fileDate] as! NSDate
-            let date2 = path2[Keys.fileDate] as! NSDate
-            
-            var comp: ComparisonResult = (date1 as Date).compare(date2 as Date)
+            var comp: ComparisonResult = date1.compare(date2)
             
             if comp == .orderedDescending
             {
