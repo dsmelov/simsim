@@ -10,7 +10,7 @@ import Foundation
 import Cocoa
 
 //----------------------------------------------------------------------------
-@objc class Tools: NSObject
+class Tools: NSObject
 {
     //----------------------------------------------------------------------------
     struct Keys
@@ -22,19 +22,19 @@ import Cocoa
     
 
     //----------------------------------------------------------------------------
-    @objc class func homeDirectoryPath() -> String
+    class func homeDirectoryPath() -> String
     {
         return NSHomeDirectory()
     }
 
     //----------------------------------------------------------------------------
-    @objc class func simulatorRootPath(byUUID uuid: String) -> String
+    class func simulatorRootPath(byUUID uuid: String) -> String
     {
         return Tools.homeDirectoryPath() + "/Library/Developer/CoreSimulator/Devices/\(uuid)/"
     }
 
     //----------------------------------------------------------------------------
-    @objc class func simulatorPaths() -> Set<String>
+    class func simulatorPaths() -> Set<String>
     {
         let simulatorPropertiesPath = Tools.homeDirectoryPath() + "/Library/Preferences/com.apple.iphonesimulator.plist"
         let simulatorProperties = NSDictionary(contentsOfFile: simulatorPropertiesPath)!
@@ -56,7 +56,7 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func activeSimulators() -> [Simulator]
+    class func activeSimulators() -> [Simulator]
     {
         let simulatorPaths = self.simulatorPaths()
         var simulators = [AnyHashable]()
@@ -78,7 +78,7 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func installedApps(on simulator: Simulator?) -> [Application]?
+    class func installedApps(on simulator: Simulator?) -> [Application]?
     {
         let installedApplicationsDataPath = (simulator?.path)! + ("data/Containers/Data/Application/")
         let installedApplications = Tools.getSortedFiles(fromFolder: installedApplicationsDataPath)
@@ -100,7 +100,7 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func commanderOneAvailable() -> Bool
+    class func commanderOneAvailable() -> Bool
     {
         let fileManager = FileManager.default
         
@@ -120,7 +120,7 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func getFiles(fromFolder folderPath: String) -> NSArray
+    class func getFiles(fromFolder folderPath: String) -> NSArray
     {
         let filesArray = try? FileManager.default.contentsOfDirectory(atPath: folderPath)
         let filesAndProperties = NSMutableArray()
@@ -142,13 +142,13 @@ import Cocoa
     }
     
     //----------------------------------------------------------------------------
-    @objc class func getName(from file: NSDictionary) -> NSString
+    class func getName(from file: NSDictionary) -> NSString
     {
         return file.object(forKey: Keys.fileName) as! NSString
     }
     
     //----------------------------------------------------------------------------
-    @objc class func getSortedFiles(fromFolder folderPath: String) -> [Any]
+    class func getSortedFiles(fromFolder folderPath: String) -> [Any]
     {
         let filesAndProperties = getFiles(fromFolder: folderPath)
         
@@ -178,7 +178,7 @@ import Cocoa
     }
     
     //----------------------------------------------------------------------------
-    @objc class func getApplicationFolder(fromPath folderPath: String) -> String
+    class func getApplicationFolder(fromPath folderPath: String) -> String
     {
         var filesArray = try? FileManager.default.contentsOfDirectory(atPath: folderPath)
         let predicate = NSPredicate(format: "SELF EndsWith '.app'")

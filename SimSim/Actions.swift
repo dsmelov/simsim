@@ -10,10 +10,10 @@ import Foundation
 import Cocoa
 
 //----------------------------------------------------------------------------
-@objc class Actions: NSObject
+class Actions: NSObject
 {
     //----------------------------------------------------------------------------
-    @objc class func copy(toPasteboard sender: NSMenuItem)
+    class func copy(toPasteboard sender: NSMenuItem)
     {
         let path = sender.representedObject as! String
         let pasteboard = NSPasteboard.general
@@ -22,7 +22,7 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func resetFolder(_ folder: String, inRoot root: String!)
+    class func resetFolder(_ folder: String, inRoot root: String!)
     {
         let path = URL(fileURLWithPath: root).appendingPathComponent(folder).absoluteString
         let fm = FileManager()
@@ -41,7 +41,7 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func resetApplication(_ sender: NSMenuItem)
+    class func resetApplication(_ sender: NSMenuItem)
     {
         let path = sender.representedObject as? String
         
@@ -51,28 +51,28 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func open(inFinder sender: NSMenuItem)
+    class func open(inFinder sender: NSMenuItem)
     {
         guard let path = sender.representedObject as? String else { return }
         NSWorkspace.shared().openFile(path, withApplication: "Finder")
     }
     
     //----------------------------------------------------------------------------
-    @objc class func open(inTerminal sender: NSMenuItem)
+    class func open(inTerminal sender: NSMenuItem)
     {
         guard let path = sender.representedObject as? String else { return }
         NSWorkspace.shared().openFile(path, withApplication: "Terminal")
     }
 
     //----------------------------------------------------------------------------
-    @objc class func openIniTerm(_ sender: NSMenuItem)
+    class func openIniTerm(_ sender: NSMenuItem)
     {
         guard let path = sender.representedObject as? String else { return }
         NSWorkspace.shared().openFile(path, withApplication: "iTerm")
     }
     
     //----------------------------------------------------------------------------
-    @objc class func open(inCommanderOne sender: NSMenuItem)
+    class func open(inCommanderOne sender: NSMenuItem)
     {
         guard var path = sender.representedObject as? String else { return }
         
@@ -85,13 +85,13 @@ import Cocoa
     }
     
     //----------------------------------------------------------------------------
-    @objc class func exitApp(_ sender: NSMenuItem)
+    class func exitApp(_ sender: NSMenuItem)
     {
         NSApplication.shared().terminate(self)
     }
 
     //----------------------------------------------------------------------------
-    @objc class func handleStart(atLogin sender: NSMenuItem)
+    class func handleStart(atLogin sender: NSMenuItem)
     {
         let isEnabled: Bool = sender.representedObject != nil
         
@@ -109,14 +109,14 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func aboutApp(_ sender: NSMenuItem)
+    class func aboutApp(_ sender: NSMenuItem)
     {
         let url = URL(string: "https://github.com/dsmelov/simsim")!
         NSWorkspace.shared().open(url)
     }
 
     //----------------------------------------------------------------------------
-    @objc class func openIn(withModifier sender: NSMenuItem)
+    class func openIn(withModifier sender: NSMenuItem)
     {
         guard let event = NSApp.currentEvent else { return }
         

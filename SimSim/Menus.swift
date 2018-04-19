@@ -10,12 +10,12 @@ import Foundation
 import Cocoa
 
 //----------------------------------------------------------------------------
-@objc class Menus: NSObject
+class Menus: NSObject
 {
     private static var realm = Realm()
     
     //----------------------------------------------------------------------------
-    @objc class func addAction(_ title: String, toSubmenu submenu: NSMenu,
+    class func addAction(_ title: String, toSubmenu submenu: NSMenu,
                                forPath path: String, withIcon iconPath: String,
                                andHotkey hotkey: NSNumber,
                                does selector: Selector) -> NSNumber
@@ -33,7 +33,7 @@ import Cocoa
     }
     
     //----------------------------------------------------------------------------
-    @objc class func addAction(_ title: String, toSubmenu submenu: NSMenu,
+    class func addAction(_ title: String, toSubmenu submenu: NSMenu,
                                forPath path: String, withHotkey hotkey: NSNumber,
                                does selector: Selector) -> NSNumber
     {
@@ -47,13 +47,13 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func realmModule() -> Realm
+    class func realmModule() -> Realm
     {
         return realm
     }
 
     //----------------------------------------------------------------------------
-    @objc class func addActionForRealm(to menu: NSMenu, forPath path: String,
+    class func addActionForRealm(to menu: NSMenu, forPath path: String,
                                        withHotkey hotkey: NSNumber) -> NSNumber
     {
         guard Realm.isRealmAvailable(forPath: path) else
@@ -68,7 +68,7 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func addActionForiTerm(to menu: NSMenu, forPath path: String, withHotkey hotkey: NSNumber) -> NSNumber
+    class func addActionForiTerm(to menu: NSMenu, forPath path: String, withHotkey hotkey: NSNumber) -> NSNumber
     {
         let iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier("com.googlecode.iterm2" as CFString, nil)
         
@@ -83,7 +83,7 @@ import Cocoa
     }
     
     //----------------------------------------------------------------------------
-    @objc class func addSubMenus(to item: NSMenuItem, usingPath path: String)
+    class func addSubMenus(to item: NSMenuItem, usingPath path: String)
     {
         let subMenu = NSMenu()
         var hotkey = NSNumber(value: 1)
@@ -109,7 +109,7 @@ import Cocoa
     }
     
     //----------------------------------------------------------------------------
-    @objc class func add(_ application: Application?, to menu: NSMenu)
+    class func add(_ application: Application?, to menu: NSMenu)
     {
         let title = "\(application?.bundleName ?? "") (\(application?.version ?? ""))"
         // This path will be opened on click
@@ -123,7 +123,7 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func addApplications(_ installedApplicationsData: [Application], to menu: NSMenu)
+    class func addApplications(_ installedApplicationsData: [Application], to menu: NSMenu)
     {
         for i in 0..<installedApplicationsData.count
         {
@@ -133,7 +133,7 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func addServiceItems(to menu: NSMenu)
+    class func addServiceItems(to menu: NSMenu)
     {
         let startAtLogin = NSMenuItem(title: "Start at Login", action: #selector(Actions.handleStart(atLogin:)), keyEquivalent: "")
         startAtLogin.target = Actions.self
@@ -154,7 +154,7 @@ import Cocoa
     }
     
     //----------------------------------------------------------------------------
-    @objc class func createApplicationMenu(at statusItem: NSStatusItem) -> NSMenu
+    class func createApplicationMenu(at statusItem: NSStatusItem) -> NSMenu
     {
         let menu = NSMenu()
         let simulators = Tools.activeSimulators()

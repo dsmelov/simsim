@@ -2,7 +2,7 @@ import Foundation
 import Cocoa
 
 //----------------------------------------------------------------------------
-@objc class RealmFile: NSObject
+class RealmFile: NSObject
 {
     var fileName = ""
     var path = ""
@@ -15,10 +15,10 @@ import Cocoa
 }
 
 //----------------------------------------------------------------------------
-@objc class Realm: NSObject
+class Realm: NSObject
 {
     //----------------------------------------------------------------------------
-    @objc class func generateRealmMenu(forPath aPath: String, for menu: NSMenu, withHotKey hotkey: NSNumber, icon: NSImage)
+    class func generateRealmMenu(forPath aPath: String, for menu: NSMenu, withHotKey hotkey: NSNumber, icon: NSImage)
     {
         let realmFiles = findRealmFiles(aPath)
         
@@ -69,19 +69,19 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func openRealmFile(_ sender: NSMenuItem)
+    class func openRealmFile(_ sender: NSMenuItem)
     {
         open(inRealmBrowser: sender.representedObject as! String)
     }
     
     //----------------------------------------------------------------------------
-    @objc class func installRealmBrowser(_ sender: NSMenuItem)
+    class func installRealmBrowser(_ sender: NSMenuItem)
     {
         openUrl(sender.representedObject as! String)
     }
     
     //----------------------------------------------------------------------------
-    @objc class func openUrl(_ aUrl: String)
+    class func openUrl(_ aUrl: String)
     {
         if let anUrl = URL(string: aUrl)
         {
@@ -90,7 +90,7 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func findRealmFiles(_ aPath: String) -> NSArray?
+    class func findRealmFiles(_ aPath: String) -> NSArray?
     {
         let files = NSMutableArray()
         for realmPath: String? in Constants.Realm.dbPaths
@@ -123,34 +123,34 @@ import Cocoa
     }
 
     //----------------------------------------------------------------------------
-    @objc class func removeNonRealmObject(_ allFiles: NSArray) -> NSArray
+    class func removeNonRealmObject(_ allFiles: NSArray) -> NSArray
     {
         let endsRealm = NSPredicate(format: "self ENDSWITH '.realm'")
         return allFiles.filtered(using: endsRealm) as NSArray
     }
 
     //----------------------------------------------------------------------------
-    @objc class func isRealmBrowserAvailable() -> Bool
+    class func isRealmBrowserAvailable() -> Bool
     {
         let fileManager = FileManager.default
         return fileManager.fileExists(atPath: applicationPath())
     }
     
     //----------------------------------------------------------------------------
-    @objc class func applicationPath() -> String
+    class func applicationPath() -> String
     {
         return Constants.Paths.realmApp
     }
     
     //----------------------------------------------------------------------------
-    @objc class func isRealmAvailable(forPath aPath: String) -> Bool
+    class func isRealmAvailable(forPath aPath: String) -> Bool
     {
         let realmFiles = findRealmFiles(aPath)
         return realmFiles != nil && realmFiles!.count > 0
     }
     
     //----------------------------------------------------------------------------
-    @objc class func open(inRealmBrowser aPath: String)
+    class func open(inRealmBrowser aPath: String)
     {
         NSWorkspace.shared().openFile(aPath, withApplication: Constants.Realm.appName)
     }

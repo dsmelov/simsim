@@ -97,13 +97,13 @@
 		BE7C114E19E56B4F001A6220 /* SimSim */ = {
 			isa = PBXGroup;
 			children = (
+				7CD93A701F7EBE1F00C4AA85 /* Entities */,
 				9A4FE7892088D2A000158845 /* Application.swift */,
 				9A4FE7832087C70500158845 /* Realm.swift */,
 				9A04C01B20851CB60060BB4E /* Tools.swift */,
 				9A04C01920851B350060BB4E /* Constants.swift */,
 				EAA9E4B520814AD400DEEBC7 /* Actions.swift */,
 				9A04C013208126C90060BB4E /* Menus.swift */,
-				7CD93A701F7EBE1F00C4AA85 /* Entities */,
 				7C4BC6391CCA94D200C72BA1 /* Settings.h */,
 				7C4BC63A1CCA94D200C72BA1 /* Settings.m */,
 				9A4FE7852088BE7500158845 /* main.swift */,
