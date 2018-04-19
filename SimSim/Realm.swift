@@ -7,18 +7,16 @@ import Cocoa
     var fileName = ""
     var path = ""
 
-    func fullPath() -> String? {
-        return "\(path)/\(fileName)"
+    //----------------------------------------------------------------------------
+    func fullPath() -> String?
+    {
+        return path + fileName
     }
 }
 
 //----------------------------------------------------------------------------
 @objc class Realm: NSObject
 {
-//    static let REALM_APP_NAME = "Realm Browser"
-//    static let REALM_APP_URL = "http://itunes.apple.com/es/app/realm-browser/id1007457278"
-//    static let PATHS_REALM_FILES: Array = ["Documents", "Library/Caches", nil]
-    
     //----------------------------------------------------------------------------
     @objc class func generateRealmMenu(forPath aPath: String, for menu: NSMenu, withHotKey hotkey: NSNumber, icon: NSImage)
     {
