@@ -63,7 +63,7 @@ import Cocoa
         
         let icon = NSWorkspace.shared().icon(forFile: Realm.applicationPath())
         icon.size = NSMakeSize(CGFloat(ConfigSys.iconSize), CGFloat(ConfigSys.iconSize))
-        realm.generateMenu(forPath: path, for: menu, withHotKey: hotkey, icon: icon)
+        Realm.generateRealmMenu(forPath: path, for: menu, withHotKey: hotkey, icon: icon)
         return NSNumber(value: hotkey.intValue + 1)
     }
 

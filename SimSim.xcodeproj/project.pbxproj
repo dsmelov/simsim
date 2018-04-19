@@ -15,11 +15,11 @@
 		9A04C014208126C90060BB4E /* Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C013208126C90060BB4E /* Menus.swift */; };
 		9A04C01A20851B350060BB4E /* ConfigSys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01920851B350060BB4E /* ConfigSys.swift */; };
 		9A04C01C20851CB60060BB4E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01B20851CB60060BB4E /* Tools.swift */; };
+		9A4FE7842087C70500158845 /* Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FE7832087C70500158845 /* Realm.swift */; };
 		9AE0DDA41DAE4852000029EC /* empty_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AE0DDA31DAE4852000029EC /* empty_icon.png */; };
 		BE7C115219E56B4F001A6220 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115119E56B4F001A6220 /* main.m */; };
 		BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE7C115419E56B4F001A6220 /* AppDelegate.m */; };
 		EAA9E4B620814AD400DEEBC7 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA9E4B520814AD400DEEBC7 /* Actions.swift */; };
-		EAE2ADD21EB07943009D3F39 /* Realm.m in Sources */ = {isa = PBXBuildFile; fileRef = EAE2ADD11EB07943009D3F39 /* Realm.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +36,7 @@
 		9A04C013208126C90060BB4E /* Menus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menus.swift; sourceTree = "<group>"; };
 		9A04C01920851B350060BB4E /* ConfigSys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigSys.swift; sourceTree = "<group>"; };
 		9A04C01B20851CB60060BB4E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
+		9A4FE7832087C70500158845 /* Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Realm.swift; sourceTree = "<group>"; };
 		9AE0DDA31DAE4852000029EC /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_icon.png; sourceTree = "<group>"; };
 		BE7C114C19E56B4F001A6220 /* SimSim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimSim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7C115019E56B4F001A6220 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -43,8 +44,6 @@
 		BE7C115319E56B4F001A6220 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BE7C115419E56B4F001A6220 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		EAA9E4B520814AD400DEEBC7 /* Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
-		EAE2ADD01EB07943009D3F39 /* Realm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Realm.h; sourceTree = "<group>"; };
-		EAE2ADD11EB07943009D3F39 /* Realm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Realm.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,12 +98,12 @@
 		BE7C114E19E56B4F001A6220 /* SimSim */ = {
 			isa = PBXGroup;
 			children = (
+				9A4FE7832087C70500158845 /* Realm.swift */,
 				9A04C01B20851CB60060BB4E /* Tools.swift */,
 				9A04C01920851B350060BB4E /* ConfigSys.swift */,
 				EAA9E4B520814AD400DEEBC7 /* Actions.swift */,
 				9A04C013208126C90060BB4E /* Menus.swift */,
 				7CD93A701F7EBE1F00C4AA85 /* Entities */,
-				EA028AAB1EAF40A5008ECFA9 /* Modules */,
 				BE7C115319E56B4F001A6220 /* AppDelegate.h */,
 				BE7C115419E56B4F001A6220 /* AppDelegate.m */,
 				7C4BC6391CCA94D200C72BA1 /* Settings.h */,
@@ -123,24 +122,6 @@
 				BE7C115119E56B4F001A6220 /* main.m */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		EA028AAB1EAF40A5008ECFA9 /* Modules */ = {
-			isa = PBXGroup;
-			children = (
-				EAE2ADCF1EB07943009D3F39 /* Realm */,
-			);
-			name = Modules;
-			sourceTree = "<group>";
-		};
-		EAE2ADCF1EB07943009D3F39 /* Realm */ = {
-			isa = PBXGroup;
-			children = (
-				EAE2ADD01EB07943009D3F39 /* Realm.h */,
-				EAE2ADD11EB07943009D3F39 /* Realm.m */,
-			);
-			name = Realm;
-			path = Modules/Realm;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,9 +198,9 @@
 				9A04C01A20851B350060BB4E /* ConfigSys.swift in Sources */,
 				BE7C115519E56B4F001A6220 /* AppDelegate.m in Sources */,
 				9A04C014208126C90060BB4E /* Menus.swift in Sources */,
+				9A4FE7842087C70500158845 /* Realm.swift in Sources */,
 				BE7C115219E56B4F001A6220 /* main.m in Sources */,
 				7C4BC63B1CCA94D200C72BA1 /* Settings.m in Sources */,
-				EAE2ADD21EB07943009D3F39 /* Realm.m in Sources */,
 				7C457F561FD9AD6F007E84B5 /* Application.m in Sources */,
 				EAA9E4B620814AD400DEEBC7 /* Actions.swift in Sources */,
 				9A04C01C20851CB60060BB4E /* Tools.swift in Sources */,
