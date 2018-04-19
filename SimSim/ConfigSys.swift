@@ -13,6 +13,7 @@ import Cocoa
         static let terminalApp = "/Applications/Utilities/Terminal.app"
         static let iTermApp = "/Applications/iTerm.app"
         static let commanderOneApp = "/Applications/Commander One.app"
+        static let commanderOneProApp = "/Applications/Commander One PRO.app"
         static let realmApp = "/Applications/Realm Browser.app"
     }
     

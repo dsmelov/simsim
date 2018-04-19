@@ -95,8 +95,8 @@ import Cocoa
     {
         let fileManager = FileManager.default
         // Check for App Store version
-        let isApplicationExist: Bool = fileManager.fileExists(atPath: "/Applications/Commander One.app")
-        let isApplicationProExist: Bool = fileManager.fileExists(atPath: "/Applications/Commander One PRO.app")
+        let isApplicationExist: Bool = fileManager.fileExists(atPath: ConfigSys.Paths.commanderOneApp)
+        let isApplicationProExist: Bool = fileManager.fileExists(atPath: ConfigSys.Paths.commanderOneProApp)
         
         if isApplicationExist || isApplicationProExist
         {
