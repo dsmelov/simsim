@@ -86,6 +86,32 @@ class Tools: NSObject
     }
 
     //----------------------------------------------------------------------------
+    class func validApplication(application: Application?) -> Bool
+    {
+        guard application != nil else
+        {
+            return false
+        }
+            
+        guard application?.bundleName != nil else
+        {
+            return false
+        }
+
+        guard application?.version != nil else
+        {
+            return false
+        }
+
+        guard (application?.isAppleApplication)! == false else
+        {
+            return false
+        }
+        
+        return true
+    }
+    
+    //----------------------------------------------------------------------------
     class func installedApps(on simulator: Simulator?) -> [Application]?
     {
         let installedApplicationsDataPath = (simulator?.path)! + ("data/Containers/Data/Application/")
@@ -95,15 +121,13 @@ class Tools: NSObject
         for app in installedApplications
         {
             let application = Application(dictionary: app as? [AnyHashable: Any], simulator: simulator)
-            // BundleName and version cant be nil
-            if application != nil && application?.bundleName != nil && application?.version != nil
+            
+            if validApplication(application: application)
             {
-                if !(application?.isAppleApplication)!
-                {
-                    userApplications.append(application!)
-                }
+                userApplications.append(application!)
             }
         }
+
         return userApplications
     }
 
