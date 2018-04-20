@@ -29,7 +29,7 @@ class Tools: NSObject
     //----------------------------------------------------------------------------
     class func simulatorRootPath(byUUID uuid: String) -> String
     {
-        return Tools.homeDirectoryPath() + "/Library/Developer/CoreSimulator/Devices/\(uuid)/"
+        return Tools.homeDirectoryPath() + "/" + Constants.Simulator.rootPath + "/" + uuid + "/"
     }
 
     
@@ -70,7 +70,7 @@ class Tools: NSObject
     
         for path in paths
         {
-            let properties = NSDictionary(contentsOfFile: path + "device.plist")
+            let properties = NSDictionary(contentsOfFile: path + Constants.Simulator.deviceProperties)
 
             // skip "empty" properties
             guard properties != nil else
@@ -146,7 +146,7 @@ class Tools: NSObject
         }
         
         // Check for version from Web
-        let plistPath = "\(NSHomeDirectory())/Library/Preferences/com.eltima.cmd1.plist"
+        let plistPath = NSHomeDirectory() + "/" + Constants.Other.commanderOnePlist
         let isPlistExist: Bool = fileManager.fileExists(atPath: plistPath)
         return isPlistExist
     }
@@ -166,7 +166,7 @@ class Tools: NSObject
         
         for file in files
         {
-            if !(file == ".DS_Store")
+            if !(file == Constants.Other.dsStore)
             {
                 let filePath = folderPath + "/" + file
                 let properties = try? FileManager.default.attributesOfItem(atPath: filePath)
@@ -205,8 +205,8 @@ class Tools: NSObject
                 comp = .orderedAscending
             }
             else
-                if comp == .orderedAscending
-                {
+            if comp == .orderedAscending
+            {
                     comp = .orderedDescending
             }
             

@@ -25,4 +25,16 @@ class Constants: NSObject
         static let appUrl = "http://itunes.apple.com/es/app/realm-browser/id1007457278"
         static let dbPaths: Array = ["Documents", "Library/Caches", nil]
     }
+    
+    struct Other
+    {
+        static let commanderOnePlist = "Library/Preferences/com.eltima.cmd1.plist"
+        static let dsStore = ".DS_Store"
+    }
+    
+    struct Simulator
+    {
+        static let deviceProperties = "device.plist"
+        static let rootPath = "Library/Developer/CoreSimulator/Devices"
+    }
 }
