@@ -70,13 +70,13 @@ class Menus: NSObject
     //----------------------------------------------------------------------------
     class func addActionForiTerm(to menu: NSMenu, forPath path: String, withHotkey hotkey: NSNumber) -> NSNumber
     {
-        let iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier("com.googlecode.iterm2" as CFString, nil)
+        let iTermAppURLs = LSCopyApplicationURLsForBundleIdentifier(Constants.Other.iTermBundle as CFString, nil)
         
         guard iTermAppURLs != nil else {
             return hotkey
         }
         
-        let newkey = addAction("iTerm", toSubmenu: menu, forPath: path, withIcon: Constants.Paths.iTermApp,
+        let newkey = addAction(Constants.Actions.iTerm, toSubmenu: menu, forPath: path, withIcon: Constants.Paths.iTermApp,
                                andHotkey: hotkey, does: #selector(Actions.openIniTerm(_:)))
         
         return NSNumber(value: newkey.intValue + 1)
@@ -89,29 +89,29 @@ class Menus: NSObject
         var hotkey = NSNumber(value: 1)
         
         
-        hotkey = addAction("Finder", toSubmenu: subMenu, forPath: path, withIcon: Constants.Paths.finderApp, andHotkey: hotkey, does: #selector(Actions.open(inFinder:)))
+        hotkey = addAction(Constants.Actions.finder, toSubmenu: subMenu, forPath: path, withIcon: Constants.Paths.finderApp, andHotkey: hotkey, does: #selector(Actions.open(inFinder:)))
         
-        hotkey = addAction("Terminal", toSubmenu: subMenu, forPath: path, withIcon: Constants.Paths.terminalApp, andHotkey: hotkey, does: #selector(Actions.open(inTerminal:)))
+        hotkey = addAction(Constants.Actions.terminal, toSubmenu: subMenu, forPath: path, withIcon: Constants.Paths.terminalApp, andHotkey: hotkey, does: #selector(Actions.open(inTerminal:)))
 
         hotkey = addActionForRealm(to: subMenu, forPath: path, withHotkey: hotkey)
         hotkey = addActionForiTerm(to: subMenu, forPath: path, withHotkey: hotkey)
         
         if Tools.commanderOneAvailable()
         {
-            hotkey = addAction("Commander One", toSubmenu: subMenu, forPath: path, withIcon: Constants.Paths.commanderOneApp, andHotkey: hotkey, does: #selector(Actions.open(inCommanderOne:)))
+            hotkey = addAction(Constants.Actions.commanderOne, toSubmenu: subMenu, forPath: path, withIcon: Constants.Paths.commanderOneApp, andHotkey: hotkey, does: #selector(Actions.open(inCommanderOne:)))
         }
 
         subMenu.addItem(NSMenuItem.separator())
-        hotkey = addAction("Copy path to Clipboard", toSubmenu: subMenu, forPath: path, withHotkey: hotkey, does: #selector(Actions.copy(toPasteboard:)))
+        hotkey = addAction(Constants.Actions.clipboard, toSubmenu: subMenu, forPath: path, withHotkey: hotkey, does: #selector(Actions.copy(toPasteboard:)))
         
-        hotkey = addAction("Reset application data", toSubmenu: subMenu, forPath: path, withHotkey: hotkey, does: #selector(Actions.resetApplication(_:)))
+        hotkey = addAction(Constants.Actions.reset, toSubmenu: subMenu, forPath: path, withHotkey: hotkey, does: #selector(Actions.resetApplication(_:)))
         item.submenu = subMenu
     }
     
     //----------------------------------------------------------------------------
     class func add(_ application: Application?, to menu: NSMenu)
     {
-        let title = "\(application?.bundleName ?? "") (\(application?.version ?? ""))"
+        let title = (application?.bundleName)! + " " + (application?.version!)!
         // This path will be opened on click
         let applicationContentPath = application?.contentPath
         let item = NSMenuItem(title: title, action: #selector(Actions.openIn(withModifier:)), keyEquivalent: "\0")
@@ -135,7 +135,7 @@ class Menus: NSObject
     //----------------------------------------------------------------------------
     class func addServiceItems(to menu: NSMenu)
     {
-        let startAtLogin = NSMenuItem(title: "Start at Login", action: #selector(Actions.handleStart(atLogin:)), keyEquivalent: "")
+        let startAtLogin = NSMenuItem(title: Constants.Actions.login, action: #selector(Actions.handleStart(atLogin:)), keyEquivalent: "")
         startAtLogin.target = Actions.self
         let isStartAtLoginEnabled: Bool = Settings.isStartAtLoginEnabled()
         
@@ -148,7 +148,7 @@ class Menus: NSObject
         about.target = Actions.self
         menu.addItem(about)
         
-        let quit = NSMenuItem(title: "Quit", action: #selector(Actions.exitApp(_:)), keyEquivalent: "Q")
+        let quit = NSMenuItem(title: Constants.Actions.quit, action: #selector(Actions.exitApp(_:)), keyEquivalent: "Q")
         quit.target = Actions.self
         menu.addItem(quit)
     }
@@ -171,7 +171,7 @@ class Menus: NSObject
                 continue
             }
             
-            let simulator_title = "\(simulator.name) (\(simulator.os))"
+            let simulator_title = simulator.name + " " + simulator.os
             let simulatorMenuItem = NSMenuItem(title: simulator_title, action: nil, keyEquivalent: "")
             simulatorMenuItem.isEnabled = false
             menu.addItem(simulatorMenuItem)

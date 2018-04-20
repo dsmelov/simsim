@@ -19,6 +19,18 @@ class Constants: NSObject
         static let realmApp = "/Applications/Realm Browser.app"
     }
     
+    struct Actions
+    {
+        static let finder = "Finder"
+        static let terminal = "Terminal"
+        static let iTerm = "iTerm"
+        static let commanderOne = "Commander One"
+        static let clipboard = "Copy path to Clipboard"
+        static let reset = "Reset application data"
+        static let login = "Start at Login"
+        static let quit = "Quit"
+    }
+    
     struct Realm
     {
         static let appName = "Realm Browser"
@@ -30,6 +42,7 @@ class Constants: NSObject
     {
         static let commanderOnePlist = "Library/Preferences/com.eltima.cmd1.plist"
         static let dsStore = ".DS_Store"
+        static let iTermBundle = "com.googlecode.iterm2"
     }
     
     struct Simulator

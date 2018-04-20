@@ -54,21 +54,21 @@ class Actions: NSObject
     class func open(inFinder sender: NSMenuItem)
     {
         guard let path = sender.representedObject as? String else { return }
-        NSWorkspace.shared().openFile(path, withApplication: "Finder")
+        NSWorkspace.shared().openFile(path, withApplication: Constants.Actions.finder)
     }
     
     //----------------------------------------------------------------------------
     class func open(inTerminal sender: NSMenuItem)
     {
         guard let path = sender.representedObject as? String else { return }
-        NSWorkspace.shared().openFile(path, withApplication: "Terminal")
+        NSWorkspace.shared().openFile(path, withApplication: Constants.Actions.terminal)
     }
 
     //----------------------------------------------------------------------------
     class func openIniTerm(_ sender: NSMenuItem)
     {
         guard let path = sender.representedObject as? String else { return }
-        NSWorkspace.shared().openFile(path, withApplication: "iTerm")
+        NSWorkspace.shared().openFile(path, withApplication: Constants.Actions.iTerm)
     }
     
     //----------------------------------------------------------------------------
