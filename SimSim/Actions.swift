@@ -43,32 +43,37 @@ class Actions: NSObject
     //----------------------------------------------------------------------------
     class func resetApplication(_ sender: NSMenuItem)
     {
-        let path = sender.representedObject as? String
+        let folders = ["Documents", "Library", "tmp"]
         
-        self.resetFolder("Documents", inRoot: path)
-        self.resetFolder("Library", inRoot: path)
-        self.resetFolder("tmp", inRoot: path)
+        for victim in folders
+        {
+            self.resetFolder(victim, inRoot: sender.representedObject as? String)
+        }
     }
 
     //----------------------------------------------------------------------------
+    class func open(item: NSMenuItem, with: String)
+    {
+        guard let path = item.representedObject as? String else { return }
+        NSWorkspace.shared().openFile(path, withApplication: with)
+    }
+    
+    //----------------------------------------------------------------------------
     class func open(inFinder sender: NSMenuItem)
     {
-        guard let path = sender.representedObject as? String else { return }
-        NSWorkspace.shared().openFile(path, withApplication: Constants.Actions.finder)
+        open(item: sender, with: Constants.Actions.finder)
     }
     
     //----------------------------------------------------------------------------
     class func open(inTerminal sender: NSMenuItem)
     {
-        guard let path = sender.representedObject as? String else { return }
-        NSWorkspace.shared().openFile(path, withApplication: Constants.Actions.terminal)
+        open(item: sender, with: Constants.Actions.terminal)
     }
 
     //----------------------------------------------------------------------------
     class func openIniTerm(_ sender: NSMenuItem)
     {
-        guard let path = sender.representedObject as? String else { return }
-        NSWorkspace.shared().openFile(path, withApplication: Constants.Actions.iTerm)
+        open(item: sender, with: Constants.Actions.iTerm)
     }
     
     //----------------------------------------------------------------------------
