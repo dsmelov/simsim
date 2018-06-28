@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		13F9C8BD40BFC0BD5697F05F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */; };
 		13F9C9CACDE21D1AB57BD94D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F9CAF1018B8DF204603BAC /* MainMenu.xib */; };
+		21EF9E9D20E43AD500DE70C5 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EF9E9C20E43AD500DE70C5 /* AppGroup.swift */; };
+		21EF9EA120E443AB00DE70C5 /* Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EF9EA020E443AB00DE70C5 /* Simulator.swift */; };
 		7C457F561FD9AD6F007E84B5 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C457F551FD9AD6F007E84B5 /* Application.m */; };
 		7C4BC63B1CCA94D200C72BA1 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BC63A1CCA94D200C72BA1 /* Settings.m */; };
 		7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD93A721F7EBE3D00C4AA85 /* Simulator.m */; };
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		13F9C038950463FE8C9CF8F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = SimSim/Base.lproj/MainMenu.xib; sourceTree = SOURCE_ROOT; };
 		13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		21EF9E9C20E43AD500DE70C5 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
+		21EF9EA020E443AB00DE70C5 /* Simulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simulator.swift; sourceTree = "<group>"; };
 		7C457F541FD9AD6F007E84B5 /* Application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
 		7C457F551FD9AD6F007E84B5 /* Application.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
 		7C4BC6391CCA94D200C72BA1 /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
@@ -71,8 +75,10 @@
 			children = (
 				7CD93A711F7EBE3D00C4AA85 /* Simulator.h */,
 				7CD93A721F7EBE3D00C4AA85 /* Simulator.m */,
+				21EF9EA020E443AB00DE70C5 /* Simulator.swift */,
 				7C457F541FD9AD6F007E84B5 /* Application.h */,
 				7C457F551FD9AD6F007E84B5 /* Application.m */,
+				21EF9E9C20E43AD500DE70C5 /* AppGroup.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -193,7 +199,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21EF9E9D20E43AD500DE70C5 /* AppGroup.swift in Sources */,
 				9A04C01A20851B350060BB4E /* Constants.swift in Sources */,
+				21EF9EA120E443AB00DE70C5 /* Simulator.swift in Sources */,
 				9A4FE78A2088D2A000158845 /* Application.swift in Sources */,
 				9A04C014208126C90060BB4E /* Menus.swift in Sources */,
 				9A4FE7842087C70500158845 /* Realm.swift in Sources */,

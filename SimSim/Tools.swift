@@ -132,6 +132,16 @@ class Tools: NSObject
     }
 
     //----------------------------------------------------------------------------
+    class func sharedAppGroups(on simulator: Simulator) -> [AppGroup]
+    {
+        let appGroupsDataPath = (simulator.path)! + ("data/Containers/Shared/AppGroup/")
+        let appGroups = Tools.getSortedFiles(fromFolder: appGroupsDataPath)
+
+        return appGroups.compactMap({ AppGroup(dictionary: $0 as! [AnyHashable: Any], simulator: simulator) })
+            .filter { !$0.isAppleAppGroup }
+    }
+
+    //----------------------------------------------------------------------------
     class func commanderOneAvailable() -> Bool
     {
         let fileManager = FileManager.default
@@ -155,7 +165,7 @@ class Tools: NSObject
     class func allFilesAt(path: String) -> [String]
     {
         let files = try? FileManager.default.contentsOfDirectory(atPath: path)
-        return files!
+        return files ?? []
     }
     
     //----------------------------------------------------------------------------
