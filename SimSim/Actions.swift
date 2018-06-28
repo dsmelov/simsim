@@ -98,9 +98,9 @@ class Actions: NSObject
     //----------------------------------------------------------------------------
     class func handleStart(atLogin sender: NSMenuItem)
     {
-        let isEnabled: Bool = sender.representedObject != nil
+        let isEnabled: Bool = sender.representedObject as! Bool
         
-        Settings.setStartAtLoginEnabled(!isEnabled)
+        Settings.isStartAtLoginEnabled = !isEnabled
         sender.representedObject = !isEnabled
         
         if isEnabled

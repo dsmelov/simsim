@@ -149,7 +149,7 @@ class Menus: NSObject
     {
         let startAtLogin = NSMenuItem(title: Constants.Actions.login, action: #selector(Actions.handleStart(atLogin:)), keyEquivalent: "")
         startAtLogin.target = Actions.self
-        let isStartAtLoginEnabled: Bool = Settings.isStartAtLoginEnabled()
+        let isStartAtLoginEnabled = Settings.isStartAtLoginEnabled
         
         startAtLogin.state = isStartAtLoginEnabled ? NSOnState : NSOffState
         startAtLogin.representedObject = isStartAtLoginEnabled
