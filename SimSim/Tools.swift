@@ -155,7 +155,7 @@ class Tools: NSObject
     class func allFilesAt(path: String) -> [String]
     {
         let files = try? FileManager.default.contentsOfDirectory(atPath: path)
-        return files!
+        return files ?? []
     }
     
     //----------------------------------------------------------------------------
