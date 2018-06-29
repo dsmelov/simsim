@@ -131,7 +131,7 @@ class Realm: NSObject
             
             for file in allFilesOfFolder
             {
-                let fileName = Tools.getName(from: file as! NSDictionary) as NSString
+                let fileName = Tools.getName(from: file) as NSString
                 
                 if (fileName.pathExtension == "realm")
                 {

@@ -11,16 +11,15 @@
 		13F9C9CACDE21D1AB57BD94D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F9CAF1018B8DF204603BAC /* MainMenu.xib */; };
 		21EF9E9D20E43AD500DE70C5 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EF9E9C20E43AD500DE70C5 /* AppGroup.swift */; };
 		21EF9EA120E443AB00DE70C5 /* Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EF9EA020E443AB00DE70C5 /* Simulator.swift */; };
-		7C457F561FD9AD6F007E84B5 /* Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C457F551FD9AD6F007E84B5 /* Application.m */; };
-		7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD93A721F7EBE3D00C4AA85 /* Simulator.m */; };
 		9A04C014208126C90060BB4E /* Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C013208126C90060BB4E /* Menus.swift */; };
 		9A04C01A20851B350060BB4E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01920851B350060BB4E /* Constants.swift */; };
 		9A04C01C20851CB60060BB4E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01B20851CB60060BB4E /* Tools.swift */; };
 		9A4FE7842087C70500158845 /* Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FE7832087C70500158845 /* Realm.swift */; };
 		9A4FE7862088BE7600158845 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FE7852088BE7500158845 /* main.swift */; };
-		9A4FE78A2088D2A000158845 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FE7892088D2A000158845 /* Application.swift */; };
+		9A4FE78A2088D2A000158845 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4FE7892088D2A000158845 /* AppDelegate.swift */; };
 		9AE0DDA41DAE4852000029EC /* empty_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AE0DDA31DAE4852000029EC /* empty_icon.png */; };
 		D31A77E020E54838007C9E01 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31A77DF20E54838007C9E01 /* Settings.swift */; };
+		D31A77E220E55F65007C9E01 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31A77E120E55F65007C9E01 /* Application.swift */; };
 		EAA9E4B620814AD400DEEBC7 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA9E4B520814AD400DEEBC7 /* Actions.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,22 +28,18 @@
 		13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		21EF9E9C20E43AD500DE70C5 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		21EF9EA020E443AB00DE70C5 /* Simulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simulator.swift; sourceTree = "<group>"; };
-		7C457F541FD9AD6F007E84B5 /* Application.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
-		7C457F551FD9AD6F007E84B5 /* Application.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Application.m; sourceTree = "<group>"; };
 		7C85CC561D11824B008ED739 /* SimSim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimSim.entitlements; sourceTree = "<group>"; };
-		7CD93A711F7EBE3D00C4AA85 /* Simulator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Simulator.h; sourceTree = "<group>"; };
-		7CD93A721F7EBE3D00C4AA85 /* Simulator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Simulator.m; sourceTree = "<group>"; };
-		9A04C012208126C80060BB4E /* SimSim-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimSim-Bridging-Header.h"; sourceTree = "<group>"; };
 		9A04C013208126C90060BB4E /* Menus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menus.swift; sourceTree = "<group>"; };
 		9A04C01920851B350060BB4E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		9A04C01B20851CB60060BB4E /* Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		9A4FE7832087C70500158845 /* Realm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Realm.swift; sourceTree = "<group>"; };
 		9A4FE7852088BE7500158845 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		9A4FE7892088D2A000158845 /* Application.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
+		9A4FE7892088D2A000158845 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9AE0DDA31DAE4852000029EC /* empty_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_icon.png; sourceTree = "<group>"; };
 		BE7C114C19E56B4F001A6220 /* SimSim.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimSim.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7C115019E56B4F001A6220 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D31A77DF20E54838007C9E01 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		D31A77E120E55F65007C9E01 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		EAA9E4B520814AD400DEEBC7 /* Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,12 +67,9 @@
 		7CD93A701F7EBE1F00C4AA85 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				7CD93A711F7EBE3D00C4AA85 /* Simulator.h */,
-				7CD93A721F7EBE3D00C4AA85 /* Simulator.m */,
 				21EF9EA020E443AB00DE70C5 /* Simulator.swift */,
-				7C457F541FD9AD6F007E84B5 /* Application.h */,
-				7C457F551FD9AD6F007E84B5 /* Application.m */,
 				21EF9E9C20E43AD500DE70C5 /* AppGroup.swift */,
+				D31A77E120E55F65007C9E01 /* Application.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -103,7 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				7CD93A701F7EBE1F00C4AA85 /* Entities */,
-				9A4FE7892088D2A000158845 /* Application.swift */,
+				9A4FE7892088D2A000158845 /* AppDelegate.swift */,
 				9A4FE7832087C70500158845 /* Realm.swift */,
 				9A04C01B20851CB60060BB4E /* Tools.swift */,
 				9A04C01920851B350060BB4E /* Constants.swift */,
@@ -113,7 +105,6 @@
 				9A4FE7852088BE7500158845 /* main.swift */,
 				BE7C114F19E56B4F001A6220 /* Supporting Files */,
 				13F9CD9C30F220C6ED2765F1 /* Resources */,
-				9A04C012208126C80060BB4E /* SimSim-Bridging-Header.h */,
 			);
 			path = SimSim;
 			sourceTree = "<group>";
@@ -197,18 +188,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D31A77E220E55F65007C9E01 /* Application.swift in Sources */,
 				21EF9E9D20E43AD500DE70C5 /* AppGroup.swift in Sources */,
 				9A04C01A20851B350060BB4E /* Constants.swift in Sources */,
 				D31A77E020E54838007C9E01 /* Settings.swift in Sources */,
 				21EF9EA120E443AB00DE70C5 /* Simulator.swift in Sources */,
-				9A4FE78A2088D2A000158845 /* Application.swift in Sources */,
+				9A4FE78A2088D2A000158845 /* AppDelegate.swift in Sources */,
 				9A04C014208126C90060BB4E /* Menus.swift in Sources */,
 				9A4FE7842087C70500158845 /* Realm.swift in Sources */,
-				7C457F561FD9AD6F007E84B5 /* Application.m in Sources */,
 				9A4FE7862088BE7600158845 /* main.swift in Sources */,
 				EAA9E4B620814AD400DEEBC7 /* Actions.swift in Sources */,
 				9A04C01C20851CB60060BB4E /* Tools.swift in Sources */,
-				7CD93A731F7EBE3D00C4AA85 /* Simulator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +266,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 			};
 			name = Debug;
 		};
@@ -323,6 +314,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 			};
 			name = Release;
 		};
@@ -336,7 +328,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dsmelov.SimSim;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "SimSim/SimSim-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -352,7 +343,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dsmelov.SimSim;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "SimSim/SimSim-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

@@ -176,7 +176,7 @@ class Menus: NSObject
         var simulatorsCount: Int = 0
         for simulator in recentSimulators
         {
-            let installedApplications = Tools.installedApps(on: simulator)!
+            let installedApplications = Tools.installedApps(on: simulator)
             let sharedAppGroups = Tools.sharedAppGroups(on: simulator)
             
             guard installedApplications.count != 0 else

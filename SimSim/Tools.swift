@@ -70,15 +70,13 @@ class Tools: NSObject
     
         for path in paths
         {
-            let properties = NSDictionary(contentsOfFile: path + Constants.Simulator.deviceProperties)
-
-            // skip "empty" properties
-            guard properties != nil else
+            let propertiesPath = path + Constants.Simulator.deviceProperties
+            guard let properties = NSDictionary(contentsOfFile: propertiesPath) as? [AnyHashable : Any] else
             {
                 continue
             }
             
-            let simulator = Simulator(dictionary: properties as? [AnyHashable: Any], path: path)!
+            let simulator = Simulator(dictionary: properties, path: path)
             
             simulators.append(simulator)
         }
@@ -112,15 +110,15 @@ class Tools: NSObject
     }
     
     //----------------------------------------------------------------------------
-    class func installedApps(on simulator: Simulator?) -> [Application]?
+    class func installedApps(on simulator: Simulator) -> [Application]
     {
-        let installedApplicationsDataPath = (simulator?.path)! + ("data/Containers/Data/Application/")
+        let installedApplicationsDataPath = simulator.path + ("data/Containers/Data/Application/")
         let installedApplications = Tools.getSortedFiles(fromFolder: installedApplicationsDataPath)
         var userApplications = [Application]()
         
         for app in installedApplications
         {
-            let application = Application(dictionary: app as? [AnyHashable: Any], simulator: simulator)
+            let application = Application(dictionary: app, simulator: simulator)
             
             if validApplication(application: application)
             {
@@ -134,7 +132,7 @@ class Tools: NSObject
     //----------------------------------------------------------------------------
     class func sharedAppGroups(on simulator: Simulator) -> [AppGroup]
     {
-        let appGroupsDataPath = (simulator.path)! + ("data/Containers/Shared/AppGroup/")
+        let appGroupsDataPath = simulator.path + ("data/Containers/Shared/AppGroup/")
         let appGroups = Tools.getSortedFiles(fromFolder: appGroupsDataPath)
 
         return appGroups.compactMap({ AppGroup(dictionary: $0 as! [AnyHashable: Any], simulator: simulator) })
@@ -169,10 +167,10 @@ class Tools: NSObject
     }
     
     //----------------------------------------------------------------------------
-    class func getFiles(fromFolder folderPath: String) -> NSArray
+    class func getFiles(fromFolder folderPath: String) -> [NSDictionary]
     {
         let files = allFilesAt(path: folderPath)
-        let filesAndProperties = NSMutableArray()
+        var filesAndProperties: [NSDictionary] = []
         
         for file in files
         {
@@ -183,7 +181,11 @@ class Tools: NSObject
                 let modificationDate = properties![.modificationDate] as! Date
                 let fileType = properties![.type] as! String
                 
-                filesAndProperties.add([Keys.fileName: file, Keys.fileDate: modificationDate, Keys.fileType: fileType])
+                filesAndProperties.append([
+                    Keys.fileName : file,
+                    Keys.fileDate : modificationDate,
+                    Keys.fileType : fileType
+                ])
             }
         }
         
@@ -197,30 +199,21 @@ class Tools: NSObject
     }
     
     //----------------------------------------------------------------------------
-    class func getSortedFiles(fromFolder folderPath: String) -> [Any]
+    class func getSortedFiles(fromFolder folderPath: String) -> [NSDictionary]
     {
         let filesAndProperties = getFiles(fromFolder: folderPath)
         
-        let sortedFiles = filesAndProperties.sortedArray(comparator:
+        let sortedFiles = filesAndProperties.sorted(by:
         {
-            (path1, path2) -> ComparisonResult in
+            path1, path2 in
             
-            let date1 = (path1 as! NSDictionary)[Keys.fileDate] as! Date
-            let date2 = (path2 as! NSDictionary)[Keys.fileDate] as! Date
-            
-            var comp: ComparisonResult = date1.compare(date2)
-            
-            if comp == .orderedDescending
+            guard let date1 = path1[Keys.fileDate] as? Date,
+                  let date2 = path2[Keys.fileDate] as? Date else
             {
-                comp = .orderedAscending
-            }
-            else
-            if comp == .orderedAscending
-            {
-                    comp = .orderedDescending
+                return false
             }
             
-            return comp
+            return date1 < date2
         })
         
         return sortedFiles
