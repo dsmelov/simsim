@@ -147,13 +147,10 @@ struct Application
                 iconPath = nil
             }
         }
+        
+        let icon = iconPath != nil ? NSImage(contentsOfFile: iconPath!) : NSImage(named: "empty_icon")
 
-        guard let path = iconPath,
-              let icon = NSImage(contentsOfFile: path),
-              let scaledIcon = scale(icon, toSize: NSMakeSize(24, 24)) else
-        {
-            return scale(NSImage(named: "empty_icon")!, toSize: NSMakeSize(24, 24))!
-        }
+        let scaledIcon = scale(icon!, toSize: NSMakeSize(24, 24))!
 
         return roundCorners(scaledIcon)
     }
