@@ -222,10 +222,8 @@ class Tools: NSObject
     //----------------------------------------------------------------------------
     class func getApplicationFolder(fromPath folderPath: String) -> String
     {
-        var files = allFilesAt(path: folderPath)
-        let predicate = NSPredicate(format: "SELF EndsWith '.app'")
-        files = ((files as NSArray).filtered(using: predicate) as! [String])
-        return files[0]
+        return allFilesAt(path: folderPath)
+               .first(where: { URL(fileURLWithPath: $0).pathExtension == "app" })!
     }
 }
 
