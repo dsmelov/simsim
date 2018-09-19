@@ -44,17 +44,17 @@ class Tools: NSObject
     class func simulatorPaths() -> Set<String>
     {
         let properties = getSimulatorProperties()
-        
-        let uuid = properties["CurrentDeviceUDID"] as! String
-        let devicePreferences = properties["DevicePreferences"] as? NSDictionary
-        
         var simulatorPaths = Set<String>()
-        _ = simulatorPaths.insert(simulatorRootPath(byUUID: uuid))
         
-        if devicePreferences != nil
+        if let currentSimulatorUuid = properties["CurrentDeviceUDID"] as? String
+        {
+            _ = simulatorPaths.insert(simulatorRootPath(byUUID: currentSimulatorUuid))
+        }
+        
+        if let devicePreferences = properties["DevicePreferences"] as? NSDictionary
         {
             // we're running on xcode 9
-            for uuid: NSString in devicePreferences?.allKeys as! [NSString]
+            for uuid: NSString in devicePreferences.allKeys as! [NSString]
             {
                 _ = simulatorPaths.insert(self.simulatorRootPath(byUUID: uuid as String))
             }
