@@ -5,7 +5,13 @@ import Cocoa
 class RealmFile: NSObject
 {
     var fileName = ""
-    var path = ""
+    var path = "" {
+      didSet {
+        if path.hasSuffix("/") == false {
+          path += "/"
+        }
+      }
+    }
 
     //----------------------------------------------------------------------------
     func fullPath() -> String?
@@ -125,7 +131,7 @@ class Realm: NSObject
                 break
             }
             
-            let folderPath = aPath + realmPath! + "/"
+            let folderPath = aPath + realmPath!
             
             let allFilesOfFolder = Tools.getSortedFiles(fromFolder: folderPath)
             
