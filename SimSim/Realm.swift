@@ -5,8 +5,11 @@ import Cocoa
 class RealmFile: NSObject
 {
     var fileName = ""
-    var path = "" {
-      didSet {
+    var path = ""
+    {
+      didSet
+      {
+        // Make sure that path always ends with a slash
         if path.hasSuffix("/") == false {
           path += "/"
         }
