@@ -125,7 +125,7 @@ class Realm: NSObject
                 break
             }
             
-            let folderPath = aPath + realmPath!
+            let folderPath = aPath + realmPath! + "/"
             
             let allFilesOfFolder = Tools.getSortedFiles(fromFolder: folderPath)
             
