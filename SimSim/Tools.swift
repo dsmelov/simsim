@@ -34,10 +34,10 @@ class Tools: NSObject
 
     
     //----------------------------------------------------------------------------
-    class func getSimulatorProperties() -> NSDictionary
+    class func getSimulatorProperties() -> NSDictionary?
     {
         let path = Tools.homeDirectoryPath() + "/Library/Preferences/com.apple.iphonesimulator.plist"
-        return NSDictionary(contentsOfFile: path)!
+        return NSDictionary(contentsOfFile: path)
     }
     
     //----------------------------------------------------------------------------
@@ -46,12 +46,12 @@ class Tools: NSObject
         let properties = getSimulatorProperties()
         var simulatorPaths = Set<String>()
         
-        if let currentSimulatorUuid = properties["CurrentDeviceUDID"] as? String
+        if let currentSimulatorUuid = properties?["CurrentDeviceUDID"] as? String
         {
             _ = simulatorPaths.insert(simulatorRootPath(byUUID: currentSimulatorUuid))
         }
         
-        if let devicePreferences = properties["DevicePreferences"] as? NSDictionary
+        if let devicePreferences = properties?["DevicePreferences"] as? NSDictionary
         {
             // we're running on xcode 9
             for uuid: NSString in devicePreferences.allKeys as! [NSString]
