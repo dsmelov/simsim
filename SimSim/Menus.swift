@@ -170,6 +170,13 @@ class Menus: NSObject
     {
         let menu = NSMenu()
         let simulators = Tools.activeSimulators()
+        
+        if simulators.isEmpty
+        {
+            let noSimulatorsItem = NSMenuItem(title: "No Simulators", action: nil, keyEquivalent: "")
+            noSimulatorsItem.isEnabled = false
+            menu.addItem(noSimulatorsItem)
+        }
 
         let recentSimulators = simulators.sorted { $0.date > $1.date }
         
