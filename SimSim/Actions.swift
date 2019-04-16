@@ -13,12 +13,13 @@ import Cocoa
 class Actions: NSObject
 {
     //----------------------------------------------------------------------------
+    @objc
     class func copy(toPasteboard sender: NSMenuItem)
     {
         let path = sender.representedObject as! String
         let pasteboard = NSPasteboard.general
-        pasteboard().declareTypes([NSPasteboardTypeString], owner: nil)
-        pasteboard().setString(path, forType: NSPasteboardTypeString)
+        pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
+        pasteboard.setString(path, forType: NSPasteboard.PasteboardType.string)
     }
 
     //----------------------------------------------------------------------------
@@ -41,6 +42,7 @@ class Actions: NSObject
     }
 
     //----------------------------------------------------------------------------
+    @objc
     class func resetApplication(_ sender: NSMenuItem)
     {
         let folders = ["Documents", "Library", "tmp"]
@@ -55,28 +57,32 @@ class Actions: NSObject
     class func open(item: NSMenuItem, with: String)
     {
         guard let path = item.representedObject as? String else { return }
-        NSWorkspace.shared().openFile(path, withApplication: with)
+        NSWorkspace.shared.openFile(path, withApplication: with)
     }
     
     //----------------------------------------------------------------------------
+    @objc
     class func open(inFinder sender: NSMenuItem)
     {
         open(item: sender, with: Constants.Actions.finder)
     }
     
     //----------------------------------------------------------------------------
+    @objc
     class func open(inTerminal sender: NSMenuItem)
     {
         open(item: sender, with: Constants.Actions.terminal)
     }
 
     //----------------------------------------------------------------------------
+    @objc
     class func openIniTerm(_ sender: NSMenuItem)
     {
         open(item: sender, with: Constants.Actions.iTerm)
     }
     
     //----------------------------------------------------------------------------
+    @objc
     class func open(inCommanderOne sender: NSMenuItem)
     {
         guard var path = sender.representedObject as? String else { return }
@@ -84,18 +90,20 @@ class Actions: NSObject
         // For some reason Commander One opens not the last folder in path
         path = path + ("Library/")
         let pasteboard = NSPasteboard.general
-        pasteboard().clearContents()
-        pasteboard().setPropertyList([path], forType: NSFilenamesPboardType)
-        NSPerformService("reveal-in-commander1", pasteboard())
+        pasteboard.clearContents()
+        pasteboard.setPropertyList([path], forType: .fileURL)
+        NSPerformService("reveal-in-commander1", pasteboard)
     }
     
     //----------------------------------------------------------------------------
+    @objc
     class func exitApp(_ sender: NSMenuItem)
     {
-        NSApplication.shared().terminate(self)
+        NSApplication.shared.terminate(self)
     }
 
     //----------------------------------------------------------------------------
+    @objc
     class func handleStart(atLogin sender: NSMenuItem)
     {
         let isEnabled: Bool = sender.representedObject as! Bool
@@ -105,30 +113,32 @@ class Actions: NSObject
         
         if isEnabled
         {
-            sender.state = NSOffState
+            sender.state = .off
         }
         else
         {
-            sender.state = NSOnState
+            sender.state = .on
         }
     }
 
     //----------------------------------------------------------------------------
+    @objc
     class func aboutApp(_ sender: NSMenuItem)
     {
-        NSWorkspace.shared().open(URL(string: Constants.githubUrl)!)
+        NSWorkspace.shared.open(URL(string: Constants.githubUrl)!)
     }
 
     //----------------------------------------------------------------------------
+    @objc
     class func openIn(withModifier sender: NSMenuItem)
     {
         guard let event = NSApp.currentEvent else { return }
         
-        if event.modifierFlags.rawValue & NSAlternateKeyMask.rawValue != 0
+        if event.modifierFlags.contains(.option)
         {
             Actions.open(inTerminal: sender)
         }
-        else if event.modifierFlags.rawValue & NSControlKeyMask.rawValue != 0
+        else if event.modifierFlags.contains(.control)
         {
             if Tools.commanderOneAvailable()
             {

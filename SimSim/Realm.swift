@@ -103,12 +103,14 @@ class Realm: NSObject
     }
 
     //----------------------------------------------------------------------------
+    @objc
     class func openRealmFile(_ sender: NSMenuItem)
     {
         open(inRealmBrowser: sender.representedObject as! String)
     }
     
     //----------------------------------------------------------------------------
+    @objc
     class func installRealmBrowser(_ sender: NSMenuItem)
     {
         openUrl(sender.representedObject as! String)
@@ -119,7 +121,7 @@ class Realm: NSObject
     {
         if let anUrl = URL(string: aUrl)
         {
-            NSWorkspace.shared().open(anUrl)
+            NSWorkspace.shared.open(anUrl)
         }
     }
 
@@ -184,7 +186,7 @@ class Realm: NSObject
     //----------------------------------------------------------------------------
     class func open(inRealmBrowser aPath: String)
     {
-        NSWorkspace.shared().openFile(aPath, withApplication: Constants.Realm.appName)
+        NSWorkspace.shared.openFile(aPath, withApplication: Constants.Realm.appName)
     }
 
 }

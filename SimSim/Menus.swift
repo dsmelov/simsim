@@ -24,7 +24,7 @@ class Menus: NSObject
         item.target = Actions.self
         item.representedObject = path
         
-        item.image = NSWorkspace.shared().icon(forFile: iconPath)
+        item.image = NSWorkspace.shared.icon(forFile: iconPath)
         item.image?.size = NSMakeSize(CGFloat(Constants.iconSize), CGFloat(Constants.iconSize))
         
         submenu.addItem(item)
@@ -61,7 +61,7 @@ class Menus: NSObject
             return hotkey
         }
         
-        let icon = NSWorkspace.shared().icon(forFile: Realm.applicationPath())
+        let icon = NSWorkspace.shared.icon(forFile: Realm.applicationPath())
         icon.size = NSMakeSize(CGFloat(Constants.iconSize), CGFloat(Constants.iconSize))
         Realm.generateRealmMenu(forPath: path, for: menu, withHotKey: hotkey, icon: icon)
         return NSNumber(value: hotkey.intValue + 1)
@@ -151,10 +151,10 @@ class Menus: NSObject
         startAtLogin.target = Actions.self
         let isStartAtLoginEnabled = Settings.isStartAtLoginEnabled
         
-        startAtLogin.state = isStartAtLoginEnabled ? NSOnState : NSOffState
+        startAtLogin.state = isStartAtLoginEnabled ? .on : .off
         startAtLogin.representedObject = isStartAtLoginEnabled
         menu.addItem(startAtLogin)
-        let appVersion = "About \(NSRunningApplication.current().localizedName ?? "") \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "")"
+        let appVersion = "About \(NSRunningApplication.current.localizedName ?? "") \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "")"
         
         let about = NSMenuItem(title: appVersion, action: #selector(Actions.aboutApp(_:)), keyEquivalent: "I")
         about.target = Actions.self

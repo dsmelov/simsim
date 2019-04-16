@@ -165,7 +165,7 @@ struct Application
             let smallImage = NSImage(size: size)
             smallImage.lockFocus()
             sourceImage.size = size
-            NSGraphicsContext.current()?.imageInterpolation = .high
+            NSGraphicsContext.current?.imageInterpolation = .high
             sourceImage.draw(at: NSPoint.zero,
                     from: CGRect(x: 0, y: 0, width: size.width, height: size.height),
                     operation: NSCompositingOperation.copy,
@@ -216,11 +216,11 @@ struct Application
         let composedImage = NSImage(size: newSize)
     
         composedImage.lockFocus()
-        NSGraphicsContext.current()?.imageInterpolation = .high
+        NSGraphicsContext.current?.imageInterpolation = .high
     
         let imageFrame = NSRectFromCGRect(CGRect(x: 0, y: 0, width: existingSize.width, height: existingSize.height))
         let clipPath = NSBezierPath(roundedRect: imageFrame, xRadius: 3, yRadius: 3)
-        clipPath.windingRule = .evenOddWindingRule
+        clipPath.windingRule = .evenOdd
         clipPath.addClip()
     
         image.draw(at: NSZeroPoint,

@@ -31,7 +31,7 @@ class AppGroup {
         guard let plistData = try? Data(contentsOf: URL(fileURLWithPath: plistPath)) else {
             return nil
         }
-        guard let metadataPlist = try? PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as! [String: Any] else {
+        guard let metadataPlist = try? PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as? [String: Any] else {
             return nil
         }
 

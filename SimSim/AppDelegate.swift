@@ -29,7 +29,7 @@ extension AppDelegate: NSApplicationDelegate
     //----------------------------------------------------------------------------
     func applicationDidFinishLaunching(_ notification: Notification)
     {
-        let item = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
+        let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         
         item.image = NSImage(named: "BarIcon")
         item.image?.isTemplate = true
@@ -41,6 +41,7 @@ extension AppDelegate: NSApplicationDelegate
     }
 
     //----------------------------------------------------------------------------
+    @objc
     func presentApplicationMenu()
     {
         let menu: NSMenu? = Menus.createApplicationMenu(at: statusItem!)
