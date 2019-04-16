@@ -16,7 +16,7 @@ class Constants: NSObject
         static let iTermApp = "/Applications/iTerm.app"
         static let commanderOneApp = "/Applications/Commander One.app"
         static let commanderOneProApp = "/Applications/Commander One PRO.app"
-        static let realmApp = "/Applications/Realm Browser.app"
+        static let realmApp = "/Applications/Realm Studio.app"
     }
     
     struct Actions
@@ -33,8 +33,8 @@ class Constants: NSObject
     
     struct Realm
     {
-        static let appName = "Realm Browser"
-        static let appUrl = "http://itunes.apple.com/es/app/realm-browser/id1007457278"
+        static let appName = "Realm Studio"
+        static let appUrl = "https://realm.io/products/realm-studio/"
         static let dbPaths: Array = ["Documents", "Library/Caches", nil]
     }
     
