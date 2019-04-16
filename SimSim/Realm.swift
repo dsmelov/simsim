@@ -32,7 +32,7 @@ class Realm: NSObject
         var item: NSMenuItem? = nil
        
         // There is at least one realm file but no realmbrowser installed
-        item = NSMenuItem(title: "Install Realm Browser", action: #selector(Realm.installRealmBrowser(_:)), keyEquivalent: "\(hotkey)")
+        item = NSMenuItem(title: "Install Realm Studio", action: #selector(Realm.installRealmBrowser(_:)), keyEquivalent: "\(hotkey)")
         item?.target = self
         item?.representedObject = Constants.Realm.appUrl
 
@@ -48,7 +48,7 @@ class Realm: NSObject
         if files.count == 1
         {
             // There is exactly one realm file
-            item = NSMenuItem(title: "Realm", action: #selector(Realm.openRealmFile(_:)), keyEquivalent: "\(hotkey)")
+            item = NSMenuItem(title: "Realm Studio", action: #selector(Realm.openRealmFile(_:)), keyEquivalent: "\(hotkey)")
             item.representedObject = aPath
             item.image = icon
             item.target = self
@@ -58,11 +58,11 @@ class Realm: NSObject
         else
         {
             // There is more than one realm file
-            item = NSMenuItem(title: "Realm", action: nil, keyEquivalent: "\(hotkey)")
+            item = NSMenuItem(title: "Realm Studio", action: nil, keyEquivalent: "\(hotkey)")
             item.representedObject = aPath
             item.image = icon
             
-            let menuRealm = NSMenu(title: "Realm Browser")
+            let menuRealm = NSMenu(title: "Realm Studio")
             menuRealm.autoenablesItems = false
             
             let browserInstalled = isRealmBrowserAvailable()
