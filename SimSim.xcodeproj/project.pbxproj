@@ -11,6 +11,7 @@
 		13F9C9CACDE21D1AB57BD94D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F9CAF1018B8DF204603BAC /* MainMenu.xib */; };
 		21EF9E9D20E43AD500DE70C5 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EF9E9C20E43AD500DE70C5 /* AppGroup.swift */; };
 		21EF9EA120E443AB00DE70C5 /* Simulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21EF9EA020E443AB00DE70C5 /* Simulator.swift */; };
+		410A6B5C22CA3B1A00C43B56 /* AppExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410A6B5B22CA3B1A00C43B56 /* AppExtension.swift */; };
 		9A04C014208126C90060BB4E /* Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C013208126C90060BB4E /* Menus.swift */; };
 		9A04C01A20851B350060BB4E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01920851B350060BB4E /* Constants.swift */; };
 		9A04C01C20851CB60060BB4E /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A04C01B20851CB60060BB4E /* Tools.swift */; };
@@ -28,6 +29,7 @@
 		13F9C81FB41E59E5B1EF4FD9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		21EF9E9C20E43AD500DE70C5 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		21EF9EA020E443AB00DE70C5 /* Simulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Simulator.swift; sourceTree = "<group>"; };
+		410A6B5B22CA3B1A00C43B56 /* AppExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppExtension.swift; sourceTree = "<group>"; };
 		7C85CC561D11824B008ED739 /* SimSim.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimSim.entitlements; sourceTree = "<group>"; };
 		9A04C013208126C90060BB4E /* Menus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menus.swift; sourceTree = "<group>"; };
 		9A04C01920851B350060BB4E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				21EF9EA020E443AB00DE70C5 /* Simulator.swift */,
 				21EF9E9C20E43AD500DE70C5 /* AppGroup.swift */,
 				D31A77E120E55F65007C9E01 /* Application.swift */,
+				410A6B5B22CA3B1A00C43B56 /* AppExtension.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 				D31A77E220E55F65007C9E01 /* Application.swift in Sources */,
 				21EF9E9D20E43AD500DE70C5 /* AppGroup.swift in Sources */,
 				9A04C01A20851B350060BB4E /* Constants.swift in Sources */,
+				410A6B5C22CA3B1A00C43B56 /* AppExtension.swift in Sources */,
 				D31A77E020E54838007C9E01 /* Settings.swift in Sources */,
 				21EF9EA120E443AB00DE70C5 /* Simulator.swift in Sources */,
 				9A4FE78A2088D2A000158845 /* AppDelegate.swift in Sources */,

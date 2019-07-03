@@ -53,4 +53,10 @@ struct Simulator
     {
         return path + "data/Containers/Shared/AppGroup/\(uuid)/"
     }
+    
+    //----------------------------------------------------------------------------
+    func pathForAppExtension(withUUID uuid: String) -> String
+    {
+        return path + "data/Containers/Data/PluginKitPlugin/\(uuid)/"
+    }
 }
