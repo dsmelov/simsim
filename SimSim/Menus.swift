@@ -143,6 +143,18 @@ class Menus: NSObject
 
         menu.addItem(item)
     }
+    
+    //----------------------------------------------------------------------------
+    class func add(appExtension: AppExtension, to menu: NSMenu)
+    {
+        let item = NSMenuItem(title: appExtension.identifier, action: #selector(Actions.openIn(withModifier:)), keyEquivalent: "\0")
+        item.target = Actions.self
+        item.representedObject = appExtension.path
+        
+        self.addSubMenus(to: item, usingPath: appExtension.path)
+        
+        menu.addItem(item)
+    }
 
     //----------------------------------------------------------------------------
     class func addServiceItems(to menu: NSMenu)
@@ -185,6 +197,7 @@ class Menus: NSObject
         {
             let installedApplications = Tools.installedApps(on: simulator)
             let sharedAppGroups = Tools.sharedAppGroups(on: simulator)
+            let appExtensions = Tools.appExtensions(on: simulator)
             
             guard installedApplications.count != 0 else
             {
@@ -197,6 +210,7 @@ class Menus: NSObject
             menu.addItem(simulatorMenuItem)
             addApplications(installedApplications, to: menu)
             sharedAppGroups.forEach { add(appGroup: $0, to: menu) }
+            appExtensions.forEach { add(appExtension: $0, to: menu) }
             simulatorsCount += 1
         
             if simulatorsCount >= Constants.maxRecentSimulators

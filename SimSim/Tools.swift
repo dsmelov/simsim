@@ -138,6 +138,16 @@ class Tools: NSObject
         return appGroups.compactMap({ AppGroup(dictionary: $0 as! [AnyHashable: Any], simulator: simulator) })
             .filter { !$0.isAppleAppGroup }
     }
+    
+    //----------------------------------------------------------------------------
+    class func appExtensions(on simulator: Simulator) -> [AppExtension]
+    {
+        let appExtensionsDataPath = simulator.path + ("data/Containers/Data/PluginKitPlugin/");
+        let appExtensions = Tools.getSortedFiles(fromFolder: appExtensionsDataPath)
+        
+        return appExtensions.compactMap({ AppExtension(dictionary: $0 as! [AnyHashable: Any], simulator: simulator) })
+            .filter { !$0.isAppleExtension }
+    }
 
     //----------------------------------------------------------------------------
     class func commanderOneAvailable() -> Bool
