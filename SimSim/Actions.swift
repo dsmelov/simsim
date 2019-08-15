@@ -25,19 +25,15 @@ class Actions: NSObject
     //----------------------------------------------------------------------------
     class func resetFolder(_ folder: String, inRoot root: String!)
     {
-        let path = URL(fileURLWithPath: root).appendingPathComponent(folder).absoluteString
+        let pathUrl = URL(fileURLWithPath: root).appendingPathComponent(folder)
         let fm = FileManager()
-        let en = fm.enumerator(atPath: path)
-        while let file = en?.nextObject() as? String
+        do
         {
-            do
-            {
-                try fm.removeItem(atPath: URL(fileURLWithPath: path).appendingPathComponent(file).absoluteString)
-            }
-            catch let error as NSError
-            {
-                print("Ooops! Something went wrong: \(error)")
-            }
+            try fm.removeItem(at: pathUrl)
+        }
+        catch let error as NSError
+        {
+            print("Ooops! Something went wrong: \(error)")
         }
     }
 
