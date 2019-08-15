@@ -50,9 +50,10 @@ class Actions: NSObject
     }
 
     //----------------------------------------------------------------------------
-    class func open(item: NSMenuItem, with: String)
+    class func open(item: NSMenuItem, with: String, appendingPath: String = "")
     {
-        guard let path = item.representedObject as? String else { return }
+        guard var path = item.representedObject as? String else { return }
+        path += appendingPath
         NSWorkspace.shared.openFile(path, withApplication: with)
     }
     
@@ -81,14 +82,8 @@ class Actions: NSObject
     @objc
     class func open(inCommanderOne sender: NSMenuItem)
     {
-        guard var path = sender.representedObject as? String else { return }
-        
         // For some reason Commander One opens not the last folder in path
-        path = path + ("Library/")
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.setPropertyList([path], forType: .fileURL)
-        NSPerformService("reveal-in-commander1", pasteboard)
+        open(item: sender, with: Constants.Actions.commanderOne, appendingPath: "Library/")
     }
     
     //----------------------------------------------------------------------------
