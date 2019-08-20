@@ -16,9 +16,9 @@ class Menus: NSObject
     
     //----------------------------------------------------------------------------
     class func addAction(_ title: String, toSubmenu submenu: NSMenu,
-                               forPath path: String, withIcon iconPath: String,
-                               andHotkey hotkey: NSNumber,
-                               does selector: Selector) -> NSNumber
+                         forPath path: String, withIcon iconPath: String,
+                         andHotkey hotkey: NSNumber,
+                         does selector: Selector) -> NSNumber
     {
         let item = NSMenuItem(title: title, action: selector, keyEquivalent: hotkey.stringValue)
         item.target = Actions.self
@@ -54,7 +54,7 @@ class Menus: NSObject
 
     //----------------------------------------------------------------------------
     class func addActionForRealm(to menu: NSMenu, forPath path: String,
-                                       withHotkey hotkey: NSNumber) -> NSNumber
+                                 withHotkey hotkey: NSNumber) -> NSNumber
     {
         guard Realm.isRealmAvailable(forPath: path) else
         {
@@ -109,26 +109,25 @@ class Menus: NSObject
     }
     
     //----------------------------------------------------------------------------
-    class func add(_ application: Application?, to menu: NSMenu)
+    class func add(_ application: Application, to menu: NSMenu)
     {
-        let title = (application?.bundleName)! + " " + (application?.version!)!
+        let title = "\(application.bundleName ?? "nil") \(application.version ?? "nil")"
         // This path will be opened on click
-        let applicationContentPath = application?.contentPath
+        let applicationContentPath = application.contentPath
         let item = NSMenuItem(title: title, action: #selector(Actions.openIn(withModifier:)), keyEquivalent: "\0")
         item.target = Actions.self
         item.representedObject = applicationContentPath
-        item.image = application?.icon
-        self.addSubMenus(to: item, usingPath: applicationContentPath!)
+        item.image = application.icon
+        self.addSubMenus(to: item, usingPath: applicationContentPath)
         menu.addItem(item)
     }
 
     //----------------------------------------------------------------------------
-    class func addApplications(_ installedApplicationsData: [Application], to menu: NSMenu)
+    class func add(_ applications: [Application], to menu: NSMenu)
     {
-        for i in 0..<installedApplicationsData.count
+        for application in applications
         {
-            let application: Application? = installedApplicationsData[i]
-            self.add(application, to: menu)
+            add(application, to: menu)
         }
     }
 
@@ -192,8 +191,7 @@ class Menus: NSObject
 
         let recentSimulators = simulators.sorted { $0.date > $1.date }
         
-        var simulatorsCount: Int = 0
-        for simulator in recentSimulators
+        for simulator in recentSimulators[0..<Constants.maxRecentSimulators]
         {
             let installedApplications = Tools.installedApps(on: simulator)
             let sharedAppGroups = Tools.sharedAppGroups(on: simulator)
@@ -204,24 +202,17 @@ class Menus: NSObject
                 continue
             }
             
-            let simulator_title = simulator.name + " " + simulator.os
-            let simulatorMenuItem = NSMenuItem(title: simulator_title, action: nil, keyEquivalent: "")
+            let simulatorTitle = simulator.name + " " + simulator.os
+            let simulatorMenuItem = NSMenuItem(title: simulatorTitle, action: nil, keyEquivalent: "")
             simulatorMenuItem.isEnabled = false
             menu.addItem(simulatorMenuItem)
-            addApplications(installedApplications, to: menu)
+            add(installedApplications, to: menu)
             sharedAppGroups.forEach { add(appGroup: $0, to: menu) }
             appExtensions.forEach { add(appExtension: $0, to: menu) }
-            simulatorsCount += 1
-        
-            if simulatorsCount >= Constants.maxRecentSimulators
-            {
-                break
-            }
         }
         menu.addItem(NSMenuItem.separator())
         addServiceItems(to: menu)
         return menu
-
     }
 }
 

@@ -84,24 +84,19 @@ class Tools: NSObject
     }
 
     //----------------------------------------------------------------------------
-    class func validApplication(application: Application?) -> Bool
+    class func validApplication(_ application: Application) -> Bool
     {
-        guard application != nil else
-        {
-            return false
-        }
-            
-        guard application?.bundleName != nil else
+        guard application.bundleName != nil else
         {
             return false
         }
 
-        guard application?.version != nil else
+        guard application.version != nil else
         {
             return false
         }
 
-        guard (application?.isAppleApplication)! == false else
+        guard !application.isAppleApplication else
         {
             return false
         }
@@ -114,17 +109,16 @@ class Tools: NSObject
     {
         let installedApplicationsDataPath = simulator.path + ("data/Containers/Data/Application/")
         let installedApplications = Tools.getSortedFiles(fromFolder: installedApplicationsDataPath)
-        var userApplications = [Application]()
         
-        for app in installedApplications
-        {
-            let application = Application(dictionary: app, simulator: simulator)
-            
-            if validApplication(application: application)
+        let userApplications = installedApplications
+            .compactMap
             {
-                userApplications.append(application!)
+                Application(dictionary: $0, simulator: simulator)
             }
-        }
+            .filter
+            {
+                !$0.isAppleApplication
+            }
 
         return userApplications
     }
@@ -135,18 +129,32 @@ class Tools: NSObject
         let appGroupsDataPath = simulator.path + ("data/Containers/Shared/AppGroup/")
         let appGroups = Tools.getSortedFiles(fromFolder: appGroupsDataPath)
 
-        return appGroups.compactMap({ AppGroup(dictionary: $0 as! [AnyHashable: Any], simulator: simulator) })
-            .filter { !$0.isAppleAppGroup }
+        return appGroups
+            .compactMap
+            {
+                AppGroup(dictionary: $0 as! [AnyHashable: Any], simulator: simulator)
+            }
+            .filter
+            {
+                !$0.isAppleAppGroup
+            }
     }
     
     //----------------------------------------------------------------------------
     class func appExtensions(on simulator: Simulator) -> [AppExtension]
     {
-        let appExtensionsDataPath = simulator.path + ("data/Containers/Data/PluginKitPlugin/");
+        let appExtensionsDataPath = simulator.path + ("data/Containers/Data/PluginKitPlugin/")
         let appExtensions = Tools.getSortedFiles(fromFolder: appExtensionsDataPath)
         
-        return appExtensions.compactMap({ AppExtension(dictionary: $0 as! [AnyHashable: Any], simulator: simulator) })
-            .filter { !$0.isAppleExtension }
+        return appExtensions
+            .compactMap
+            {
+                AppExtension(dictionary: $0 as! [AnyHashable: Any], simulator: simulator)
+            }
+            .filter
+            {
+                !$0.isAppleExtension
+            }
     }
 
     //----------------------------------------------------------------------------
