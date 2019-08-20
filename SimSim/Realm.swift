@@ -1,19 +1,20 @@
 import Foundation
 import Cocoa
 
-//----------------------------------------------------------------------------
+//============================================================================
 class RealmFile: NSObject
 {
     var fileName = ""
     var path = ""
     {
-      didSet
-      {
-        // Make sure that path always ends with a slash
-        if path.hasSuffix("/") == false {
-          path += "/"
+        didSet
+        {
+            // Make sure that path always ends with a slash
+            if !path.hasSuffix("/")
+            {
+                path += "/"
+            }
         }
-      }
     }
 
     //----------------------------------------------------------------------------
@@ -23,20 +24,19 @@ class RealmFile: NSObject
     }
 }
 
-//----------------------------------------------------------------------------
+//============================================================================
 class Realm: NSObject
 {
     //----------------------------------------------------------------------------
     class func insertInstallerItem(for menu: NSMenu, withHotKey hotkey: NSNumber)
     {
-        var item: NSMenuItem? = nil
-       
         // There is at least one realm file but no realmbrowser installed
-        item = NSMenuItem(title: "Install Realm Studio", action: #selector(Realm.installRealmBrowser(_:)), keyEquivalent: "\(hotkey)")
-        item?.target = self
-        item?.representedObject = Constants.Realm.appUrl
+        let item = NSMenuItem(title: "Install Realm Studio", action: #selector(Realm.installRealmBrowser(_:)), keyEquivalent: "\(hotkey)")
+        
+        item.target = self
+        item.representedObject = Constants.Realm.appUrl
 
-        menu.addItem(item!)
+        menu.addItem(item)
     }
     
     //----------------------------------------------------------------------------
@@ -188,5 +188,4 @@ class Realm: NSObject
     {
         NSWorkspace.shared.openFile(aPath, withApplication: Constants.Realm.appName)
     }
-
 }
