@@ -177,9 +177,10 @@ class Menus: NSObject
     }
     
     //----------------------------------------------------------------------------
-    class func createApplicationMenu(at statusItem: NSStatusItem) -> NSMenu
+    class func updateApplicationMenu(_ menu: NSMenu, at statusItem: NSStatusItem) -> Void
     {
-        let menu = NSMenu()
+        menu.removeAllItems()
+
         let simulators = Tools.activeSimulators()
         
         if simulators.isEmpty
@@ -212,7 +213,6 @@ class Menus: NSObject
         }
         menu.addItem(NSMenuItem.separator())
         addServiceItems(to: menu)
-        return menu
     }
 }
 

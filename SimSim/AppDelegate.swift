@@ -35,22 +35,24 @@ extension AppDelegate: NSApplicationDelegate
         item.image = NSImage(named: "BarIcon")
         item.image?.isTemplate = true
         item.highlightMode = true
-        item.action = #selector(self.presentApplicationMenu)
         item.isEnabled = true
+
+        let menu = NSMenu()
+        menu.delegate = self
+        item.menu = menu
         
         statusItem = item
     }
+}
 
+//============================================================================
+extension AppDelegate: NSMenuDelegate
+{
     //----------------------------------------------------------------------------
-    @objc
-    func presentApplicationMenu()
-    {
-        let menu: NSMenu? = Menus.createApplicationMenu(at: statusItem!)
-        if let aMenu = menu
-        {
-            statusItem?.popUpMenu(aMenu)
-        }
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        Menus.updateApplicationMenu(menu, at: self.statusItem!)
     }
 }
+
 
 
