@@ -190,9 +190,11 @@ class Menus: NSObject
             menu.addItem(noSimulatorsItem)
         }
 
-        let recentSimulators = simulators.sorted { $0.date > $1.date }
-        
-        for simulator in recentSimulators[0..<Constants.maxRecentSimulators]
+        let recentSimulators = simulators
+            .sorted { $0.date > $1.date }
+            .prefix(Constants.maxRecentSimulators)
+
+        for simulator in recentSimulators
         {
             let installedApplications = Tools.installedApps(on: simulator)
             let sharedAppGroups = Tools.sharedAppGroups(on: simulator)
