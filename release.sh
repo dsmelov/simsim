@@ -1,3 +1,5 @@
+#!/bin/sh
+
 NEW_VERSION_STRING=$1
 
 PLIST="./SimSim/Info.plist"
