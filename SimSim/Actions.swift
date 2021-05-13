@@ -16,6 +16,7 @@ class Actions: NSObject
     @objc
     class func copy(toPasteboard sender: NSMenuItem)
     {
+        // This is the path to the object
         let path = sender.representedObject as! String
         let pasteboard = NSPasteboard.general
         pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
