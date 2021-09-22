@@ -18,7 +18,8 @@ class AppGroup
         return identifier.isEmpty ||
             identifier.starts(with: "com.apple") ||
             identifier.starts(with: "group.com.apple") ||
-            identifier.starts(with: "group.is.workflow")
+            identifier.starts(with: "group.is.workflow") ||
+            identifier.starts(with: "243LU875E5.groups.com.apple")
     }
 
     //----------------------------------------------------------------------------
