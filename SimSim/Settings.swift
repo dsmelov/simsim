@@ -17,7 +17,7 @@ class Settings
             
             if let loginItems = LSSharedFileListCreate(nil, kLSSharedFileListSessionLoginItems.takeRetainedValue(), nil)?.takeRetainedValue()
             {
-                let loginItemsArray = LSSharedFileListCopySnapshot(loginItems, nil).takeRetainedValue() as! [LSSharedFileListItem]
+                let loginItemsArray = LSSharedFileListCopySnapshot(loginItems, nil)?.takeRetainedValue() as! [LSSharedFileListItem]
                 
                 for item in loginItemsArray
                 {
@@ -44,13 +44,11 @@ class Settings
             {
                 if newValue
                 {
-                    LSSharedFileListInsertItemURL(loginItems,
-                                                  nil, nil, nil,
-                                                  appURL as CFURL, nil, nil).release()
+                    LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst as! LSSharedFileListItem, nil, nil, appURL as CFURL, nil, nil)?.release()
                 }
                 else
                 {
-                    let loginItemsArray = LSSharedFileListCopySnapshot(loginItems, nil).takeRetainedValue() as! [LSSharedFileListItem]
+                    let loginItemsArray = LSSharedFileListCopySnapshot(loginItems, nil)?.takeRetainedValue() as! [LSSharedFileListItem]
                     
                     for item in loginItemsArray
                     {

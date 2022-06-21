@@ -158,13 +158,19 @@ class Menus: NSObject
     //----------------------------------------------------------------------------
     class func addServiceItems(to menu: NSMenu)
     {
-        let startAtLogin = NSMenuItem(title: Constants.Actions.login, action: #selector(Actions.handleStart(atLogin:)), keyEquivalent: "")
-        startAtLogin.target = Actions.self
-        let isStartAtLoginEnabled = Settings.isStartAtLoginEnabled
-        
-        startAtLogin.state = isStartAtLoginEnabled ? .on : .off
-        startAtLogin.representedObject = isStartAtLoginEnabled
-        menu.addItem(startAtLogin)
+        /*
+         Start at login API was changed, so this feature needs to be updated:
+         https://jogendra.dev/implementing-launch-at-login-feature-in-macos-apps
+
+         let startAtLogin = NSMenuItem(title: Constants.Actions.login, action: #selector(Actions.handleStart(atLogin:)), keyEquivalent: "")
+         startAtLogin.target = Actions.self
+         let isStartAtLoginEnabled = Settings.isStartAtLoginEnabled
+
+         startAtLogin.state = isStartAtLoginEnabled ? .on : .off
+         startAtLogin.representedObject = isStartAtLoginEnabled
+         menu.addItem(startAtLogin)
+         */
+
         let appVersion = "About \(NSRunningApplication.current.localizedName ?? "") \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "")"
         
         let about = NSMenuItem(title: appVersion, action: #selector(Actions.aboutApp(_:)), keyEquivalent: "I")
