@@ -1,67 +1,25 @@
 // ***************************************************************************
 
 import Foundation
+import ServiceManagement
 
 //============================================================================
 class Settings
 {
-    //----------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
+
     class var isStartAtLoginEnabled: Bool
     {
-        //----------------------------------------------------------------------------
         get
         {
-            let appPath = Bundle.main.bundlePath
-            
-            var result = false
-            
-            if let loginItems = LSSharedFileListCreate(nil, kLSSharedFileListSessionLoginItems.takeRetainedValue(), nil)?.takeRetainedValue()
-            {
-                let loginItemsArray = LSSharedFileListCopySnapshot(loginItems, nil)?.takeRetainedValue() as! [LSSharedFileListItem]
-                
-                for item in loginItemsArray
-                {
-                    guard let url = LSSharedFileListItemCopyResolvedURL(item, 0, nil)?.takeRetainedValue() as NSURL? else
-                    {
-                        continue
-                    }
-                    
-                    if url.path == appPath
-                    {
-                        result = true
-                    }
-                }
-            }
-            
-            return result
+            return UserDefaults.standard.bool(forKey: Settings.SM_LOGIN_ENABLED)
         }
-        //----------------------------------------------------------------------------
         set
         {
-            let appURL = Bundle.main.bundleURL
-            
-            if let loginItems = LSSharedFileListCreate(nil, kLSSharedFileListSessionLoginItems.takeRetainedValue(), nil)?.takeRetainedValue()
-            {
-                if newValue
-                {
-                    LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst as! LSSharedFileListItem, nil, nil, appURL as CFURL, nil, nil)?.release()
-                }
-                else
-                {
-                    let loginItemsArray = LSSharedFileListCopySnapshot(loginItems, nil)?.takeRetainedValue() as! [LSSharedFileListItem]
-                    
-                    for item in loginItemsArray
-                    {
-                        if let url = LSSharedFileListItemCopyResolvedURL(item, 0, nil)?.takeRetainedValue() as URL?
-                        {
-                            if appURL.absoluteURL == url.absoluteURL
-                            {
-                                LSSharedFileListItemRemove(loginItems, item)
-                            }
-                        }
-                    }
-                }
-            }
+            SMLoginItemSetEnabled("com.dsmelov.SimSimHelper" as CFString, newValue)
+            UserDefaults.standard.set(newValue, forKey: Settings.SM_LOGIN_ENABLED)
         }
     }
+
+    private static let SM_LOGIN_ENABLED = "SM_LOGIN_ENABLED"
 }

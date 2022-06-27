@@ -11,7 +11,19 @@ import Cocoa
 //============================================================================
 class AppDelegate: NSObject
 {
-    var statusItem: NSStatusItem? = nil
+    var statusItem: NSStatusItem?
+
+    private func killSimSimHelperIfNeeded()
+    {
+        let launcherAppId = "com.dsmelov.SimSimHelper"
+        let runningApps = NSWorkspace.shared.runningApplications
+        let isRunning = !runningApps.filter { $0.bundleIdentifier == launcherAppId }.isEmpty
+
+        if isRunning
+        {
+            DistributedNotificationCenter.default().post(name: .killLauncher, object: Bundle.main.bundleIdentifier!)
+        }
+    }
 }
 
 //============================================================================
@@ -27,11 +39,11 @@ extension AppDelegate
 //============================================================================
 extension AppDelegate: NSApplicationDelegate
 {
-    //----------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
     func applicationDidFinishLaunching(_ notification: Notification)
     {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        
+
         item.image = NSImage(named: "BarIcon")
         item.image?.isTemplate = true
         item.highlightMode = true
@@ -40,8 +52,10 @@ extension AppDelegate: NSApplicationDelegate
         let menu = NSMenu()
         menu.delegate = self
         item.menu = menu
-        
+
         statusItem = item
+
+        killSimSimHelperIfNeeded()
     }
 }
 
@@ -54,5 +68,8 @@ extension AppDelegate: NSMenuDelegate
     }
 }
 
-
-
+//============================================================================
+extension Notification.Name
+{
+    static let killLauncher = Notification.Name("killLauncher")
+}
