@@ -12,7 +12,7 @@ class Constants: NSObject
     struct Paths
     {
         static let finderApp = "/System/Library/CoreServices/Finder.app"
-        static let terminalApp = "/Applications/Utilities/Terminal.app"
+        static let terminalApp = "/System/Applications/Utilities/Terminal.app"
         static let iTermApp = "/Applications/iTerm.app"
         static let commanderOneApp = "/Applications/Commander One.app"
         static let commanderOneProApp = "/Applications/Commander One PRO.app"
